@@ -7,5 +7,6 @@ public class User {
 		System.out.print("blabla");
 		System.out.print("third");
 		System.out.println("makmdada");
+		System.out.println("cloo");
 	}
 }
