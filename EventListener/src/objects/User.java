@@ -38,8 +38,18 @@ public class User {
 		return name;
 	}
 	
+	
+	
 	public String getLastName(){
 		return lastName;
+	}
+	
+	public String userName(){
+		return userName;
+	}
+	
+	public String mobileNumber(){
+		return mobileNumber;
 	}
 	
 	public String getPassword(){
