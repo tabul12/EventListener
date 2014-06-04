@@ -4,7 +4,7 @@ import java.sql.*;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
-import Objects.Band;
+import objects.Band;
 
 public class BandManager {
 	private BasicDataSource connectionPool;

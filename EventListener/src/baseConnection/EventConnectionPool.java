@@ -4,7 +4,7 @@ import java.sql.*;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
-import Objects.Band;
+import objects.Band;
 import sun.jdbc.odbc.ee.DataSource;
 import sun.org.mozilla.javascript.internal.ast.NewExpression;
 
