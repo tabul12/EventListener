@@ -2,9 +2,9 @@ package baseConnection;
 
 import java.sql.*;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
-
 import objects.Band;
+
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 public class BandManager {
 	private BasicDataSource connectionPool;
