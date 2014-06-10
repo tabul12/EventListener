@@ -1,8 +1,6 @@
 package objects;
 
-import java.util.ArrayList;
-import java.util.List;
-import objects.Band;
+
 
 
 public class User {
@@ -14,10 +12,9 @@ public class User {
 	private String mail;
 	private String image;
 	private String mobileNumber;
-	private ArrayList<Band> wishList;
 	
 	public User(int ID, String name, String lastName, String userName, String password, String mail,
-			String image, ArrayList<Band> wishList, String mobileNumber){
+			String image,  String mobileNumber){
 		this.ID = ID;
 		this.name = name;
 		this.lastName = lastName;
@@ -26,7 +23,6 @@ public class User {
 		this.mail = mail;
 		this.image = image;
 		this.mobileNumber = mobileNumber;
-		this.wishList = wishList;
 	}
 	
 	
@@ -64,8 +60,6 @@ public class User {
 		return image;
 	}
 	
-	public ArrayList<Band> getWishList(){
-		return wishList;
-	}	
+	
 	
 }
