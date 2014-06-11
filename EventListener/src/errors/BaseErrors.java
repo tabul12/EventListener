@@ -1,6 +1,6 @@
-package erors;
+package errors;
 
-public class BaseErors {
+public class BaseErrors {
 	public static final int UNABLE_CONNECTION = 1;
 	public static final int UNABLE_CREATE_STATEMENT = 2;
 	public static final int UNABLE_EXECUTE = 3;

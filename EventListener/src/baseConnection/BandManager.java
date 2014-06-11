@@ -6,7 +6,7 @@ import objects.Band;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
-import erors.BaseErors;
+import errors.BaseErrors;
 
 public class BandManager {
 	private BasicDataSource eventDataSource;
@@ -69,17 +69,17 @@ public class BandManager {
 					stm.executeUpdate(query);
 				} catch (Exception e) {
 					con.close();
-					return BaseErors.UNABLE_EXECUTE;
+					return BaseErrors.UNABLE_EXECUTE;
 				}		
 				con.close();
 			} catch (Exception e) {
 				con.close();
-				return BaseErors.UNABLE_CREATE_STATEMENT;
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
 			}
 		} catch (SQLException e){
 			// TODO Auto-generated catch block
-			return BaseErors.UNABLE_CONNECTION;
+			return BaseErrors.UNABLE_CONNECTION;
 		}
-		return BaseErors.ALL_DONE;
+		return BaseErrors.ALL_DONE;
 	}
 }

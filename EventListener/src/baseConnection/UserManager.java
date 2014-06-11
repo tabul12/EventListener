@@ -4,10 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import objects.User;
+
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import com.mysql.jdbc.Connection;
+
+import errors.BaseErrors;
 
 public class UserManager {
 	private BasicDataSource eventDataSource;
@@ -61,31 +65,44 @@ public class UserManager {
 	 * @param mail
 	 * @param image
 	 * @param mobileNumber
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 
-	public boolean createUser(String name, String lastName, String userName,
-			String password, String mail, String image, String mobileNumber) throws SQLException
-			 {
-		Connection con = (Connection) eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "Insert into User(FisrtName,LastName,UserName,Password,MobileNumber,"
-				+ "Image,Mail)"
-				+ "Values('"
-				+ name
-				+ "','"
-				+ lastName
-				+ "','"
-				+ userName
-				+ "','"
-				+ password
-				+ "','"
-				+ mobileNumber
-				+ "','"
-				+ image + "','" + mail + "');";
-		stmt.executeUpdate(query);
-		con.close();
-		return true;
+	public int createUser(String name, String lastName, String userName,
+			String password, String mail, String image, String mobileNumber) {
+		Connection con;
+		try {
+			con = (Connection) eventDataSource.getConnection();
+			try {
+				Statement stm = con.createStatement();
+				String query = "Insert into User(FisrtName,LastName,UserName,Password,MobileNumber,"
+						+ "Image,Mail)"
+						+ "Values('"
+						+ name
+						+ "','"
+						+ lastName
+						+ "','"
+						+ userName
+						+ "','"
+						+ password
+						+ "','"
+						+ mobileNumber + "','" + image + "','" + mail + "');";
+				try {
+					stm.executeUpdate(query);
+				} catch (Exception e) {
+					con.close();
+					return BaseErrors.UNABLE_EXECUTE;
+				}
+				con.close();
+			} catch (Exception e) {
+				con.close();
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			return BaseErrors.UNABLE_CONNECTION;
+		}
+		return BaseErrors.ALL_DONE;
 	}
 
 	/***
@@ -108,7 +125,6 @@ public class UserManager {
 			return false;
 		}
 	}
-
 
 	/***
 	 * amowmebs dasjilia tu ara useri
@@ -281,14 +297,31 @@ public class UserManager {
 	 * @param bandID
 	 */
 
-	public boolean addInWishList(int userID, int bandID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "insert into User_Band_Wishlist (UserID, BandID)"
-				+ "values (" + userID + "," + bandID + ");";
-		stmt.executeUpdate(query);
-		con.close();
-		return true;
+	public int addInWishList(int userID, int bandID) {
+
+		Connection con;
+		try {
+			con = (Connection) eventDataSource.getConnection();
+			try {
+				Statement stm = con.createStatement();
+				String query = "insert into User_Band_Wishlist (UserID, BandID)"
+						+ "values (" + userID + "," + bandID + ");";
+				try {
+					stm.executeUpdate(query);
+				} catch (Exception e) {
+					con.close();
+					return BaseErrors.UNABLE_EXECUTE;
+				}
+				con.close();
+			} catch (Exception e) {
+				con.close();
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			return BaseErrors.UNABLE_CONNECTION;
+		}
+		return BaseErrors.ALL_DONE;
 	}
 
 	/***
@@ -382,6 +415,5 @@ public class UserManager {
 		con.close();
 		return list;
 	}
-
 
 }
