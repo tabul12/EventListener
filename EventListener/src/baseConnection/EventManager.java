@@ -9,14 +9,14 @@ import objects.Event;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 public class EventManager {
-private BasicDataSource connectionPool;
+private BasicDataSource eventDataSource;
 	
 	public EventManager(BasicDataSource connectionPool){
-		this.connectionPool = connectionPool;
+		this.eventDataSource = connectionPool;
 	}
 
 	public Event getEvent(int eventID) throws SQLException{
-		Connection connection = connectionPool.getConnection();
+		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
 		stmt.execute("Use database ev");
 		
