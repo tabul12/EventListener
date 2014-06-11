@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import objects.Place;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
+import errors.BaseErrors;
 
 
 public class PlaceManager {
@@ -54,73 +57,122 @@ public class PlaceManager {
 		return place;
 	}
 	
-	public boolean addPlace(int userID,String name,String adress,String about) {
+	public int addPlace(int userID,String name,String adress,String about) {
 		Connection connection = null;
 		Statement stmt = null;
 		String query = "insert into Place(UserID,Name,Adress,About)"
 				+ "values(" + userID + ",'" + name + "','" + adress + "','" + about +"');";
 		
-		
 		try {
 			connection = eventDataSource.getConnection();
-		} catch (SQLException e) {
-			return false;
-		}
-		
-		try {
-			stmt = connection.createStatement();
-		} catch (SQLException e) {
 			try {
+				stmt = connection.createStatement();
+				 
+				try {
+					stmt.executeUpdate(query);
+				} catch (Exception e) {
+					connection.close();
+					return BaseErrors.UNABLE_EXECUTE;
+				}		
 				connection.close();
-			} catch (SQLException e1) {
-				return false;
-			}
-			return false;
-		}
-
-		try {
-			stmt.execute(query);
-		} catch (SQLException e) {
-			try {
+			} catch (Exception e) {
 				connection.close();
-			} catch (SQLException e1) {
-				return false;
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
 			}
-			return false;
+		} catch (SQLException e){
+			return BaseErrors.UNABLE_CONNECTION;
 		}
-		
-		try {
-			connection.close();
-		} catch (SQLException e1) {
-			return false;
-		}
-
-		
-		 return true;		
+		return BaseErrors.ALL_DONE;
 	}
 
 	
 	
-	public boolean addRate(int userID,int placeID,int eventID,int score){
+	public int addRate(int userID,int placeID,int eventID,int score) throws SQLException{
+		Connection connection = null;
+		Statement stmt = null;
+		String query = "insert into Place_Rating(UserID,PlaceID,EventID,Rating)" +""
+				+ "values(" + userID + "," + placeID + "," + eventID + "," + score +");";
+		
+		
+		if(hasAlreadyRated(userID, placeID, eventID, score)) 
+			return BaseErrors.USER_ALREADY_RATED_PLACE;
+		
+		try {
+			connection = eventDataSource.getConnection();	
+			
+			try{
+				stmt = connection.createStatement();
+				try{
+					stmt.executeUpdate(query);				
+				} catch(SQLException e){
+					connection.close();
+					return BaseErrors.UNABLE_EXECUTE;
+				}
+			} catch(SQLException e){
+				connection.close();
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
+			}
+			 
+		} catch (SQLException e) {
+			return BaseErrors.UNABLE_CONNECTION;
+		}
+		 
+		return BaseErrors.ALL_DONE;
+		
+	}
+	
+	public boolean hasAlreadyRated(int userID,int placeID,int eventID,int score) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select * from Place_Rating" +
+					"where userID=" + userID + " and placeID=" + placeID
+					+ " and eventID=" + eventID + ";";
+		
+		ResultSet result = stmt.executeQuery(query);
+		
+		return result.next();
+		
+	}
+	
+	public int changeProfileImage(int placeID,int imageID)
+	{
 		Connection connection = null;
 		Statement stmt = null;
 		
+		String query = "update Place_Profile_Image "
+				+ "set Place_ImageID=" + imageID + ""
+						+ "where PlaceID=" + placeID + ";";		
 		try {
 			connection = eventDataSource.getConnection();
-			stmt = connection.createStatement();
-				
-			//String query =			
+			
+			try{
+				stmt = connection.createStatement();
+				try{
+					stmt.executeUpdate(query);
+				} catch(SQLException e){
+					connection.close();
+					return BaseErrors.UNABLE_EXECUTE;
+				}
+			} catch(SQLException e){
+				connection.close();
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
+			}
 			
 		} catch (SQLException e) {
-			 try {
-				connection.close();
-			} catch (SQLException e1) {
-				return false;
-			}
-			 return false;
+			return BaseErrors.UNABLE_CONNECTION;
 		}
-		 
-		return false;
+		
+		return BaseErrors.ALL_DONE;
 		
 	}
+	/*
+	public ArrayList<Integer> getPictures(int placeID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select Place_Image.ID from Place_Image"
+				+ "";
+		
+	}*/
 }
