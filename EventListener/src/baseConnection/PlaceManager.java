@@ -9,18 +9,19 @@ import objects.Place;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
+
 public class PlaceManager {
 	
-	private BasicDataSource connectionPool;
+	private BasicDataSource eventDataSource;
 	
 	public PlaceManager(BasicDataSource connectionPool){
-		this.connectionPool = connectionPool;
+		this.eventDataSource = connectionPool;
 	}
 	
 	public Place getPlace(int placeID) throws SQLException{
-		Connection connection = connectionPool.getConnection();
+		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
-		stmt.execute("Use database ev");
+		
 		
 		String query = "Select * from Place where ID=" + placeID + ";";
 		
@@ -39,7 +40,7 @@ public class PlaceManager {
 			about = result.getString("About");			
 		}
 		
-		query = "select Place_Image.Name from Place_Image,Place_Profile_Image,Place" +""
+		query = "select Place_Image.Name from Place_Image, Place_Profile_Image ,Place " +""
 				+ "where Place_Profile_Image.Place_ImageID=Place_Image.ID and "
 				+ "Place_Profile_Image.PlaceID=" + placeID + ";";
 		result = stmt.executeQuery(query);
@@ -49,7 +50,77 @@ public class PlaceManager {
 		
 		Place place = new Place(placeID,userID, name, adress, about, image);
 		connection.close();
+		System.out.println("yumyy");
 		return place;
 	}
 	
+	public boolean addPlace(int userID,String name,String adress,String about) {
+		Connection connection = null;
+		Statement stmt = null;
+		String query = "insert into Place(UserID,Name,Adress,About)"
+				+ "values(" + userID + ",'" + name + "','" + adress + "','" + about +"');";
+		
+		
+		try {
+			connection = eventDataSource.getConnection();
+		} catch (SQLException e) {
+			return false;
+		}
+		
+		try {
+			stmt = connection.createStatement();
+		} catch (SQLException e) {
+			try {
+				connection.close();
+			} catch (SQLException e1) {
+				return false;
+			}
+			return false;
+		}
+
+		try {
+			stmt.execute(query);
+		} catch (SQLException e) {
+			try {
+				connection.close();
+			} catch (SQLException e1) {
+				return false;
+			}
+			return false;
+		}
+		
+		try {
+			connection.close();
+		} catch (SQLException e1) {
+			return false;
+		}
+
+		
+		 return true;		
+	}
+
+	
+	
+	public boolean addRate(int userID,int placeID,int eventID,int score){
+		Connection connection = null;
+		Statement stmt = null;
+		
+		try {
+			connection = eventDataSource.getConnection();
+			stmt = connection.createStatement();
+				
+			//String query =			
+			
+		} catch (SQLException e) {
+			 try {
+				connection.close();
+			} catch (SQLException e1) {
+				return false;
+			}
+			 return false;
+		}
+		 
+		return false;
+		
+	}
 }
