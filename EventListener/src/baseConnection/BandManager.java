@@ -6,14 +6,16 @@ import objects.Band;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
+import erors.BaseErors;
+
 public class BandManager {
-	private BasicDataSource connectionPool;
+	private BasicDataSource eventDataSource;
 	/**
 	 * constructor
 	 * @param connectionPool
 	 */
-	public BandManager(BasicDataSource connectionPool) {
-		this.connectionPool = connectionPool;
+	public BandManager(BasicDataSource evenBasicDataSource) {
+		this.eventDataSource = evenBasicDataSource;
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -29,9 +31,8 @@ public class BandManager {
 		String Name = null;
 		String About = null;
 		String Mail = null;
-		Connection con  = connectionPool.getConnection();
+		Connection con  = eventDataSource.getConnection();
 		java.sql.Statement stm = con.createStatement();
-		stm.executeQuery("USE "+EventDBInfo.MYSQL_DATABASE_NAME);
 		String query = "select * from Band where ID="+id;
 		ResultSet rest=stm.executeQuery(query);
 		while(rest.next())
@@ -43,6 +44,42 @@ public class BandManager {
 			Mail = rest.getString("Mail");
 		}
 		Band band = new Band(ID,UserID,Name, About, Mail);
+		con.close();
 		return band;
+	}
+	/**
+	 * adds Band into database, return true if adding complete succesfully 
+	 * else returns false;
+	 * @param userID
+	 * @param Name
+	 * @param About
+	 * @param Mail
+	 * @return
+	 */
+	public int addBand(int userID,String Name,String About,String Mail)
+	{
+		Connection con;	
+		try {
+			con = eventDataSource.getConnection();
+			try {
+				Statement stm = con.createStatement();
+				String query= "Insert into Band(UserID,Name,About,Mail) "
+						+ "values("+userID+",'"+Name+"','"+About+"','"+Mail+"')";
+				try {
+					stm.executeUpdate(query);
+				} catch (Exception e) {
+					con.close();
+					return BaseErors.UNABLE_EXECUTE;
+				}		
+				con.close();
+			} catch (Exception e) {
+				con.close();
+				return BaseErors.UNABLE_CREATE_STATEMENT;
+			}
+		} catch (SQLException e){
+			// TODO Auto-generated catch block
+			return BaseErors.UNABLE_CONNECTION;
+		}
+		return BaseErors.ALL_DONE;
 	}
 }
