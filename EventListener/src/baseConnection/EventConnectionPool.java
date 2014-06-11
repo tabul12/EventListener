@@ -33,48 +33,33 @@ public class EventConnectionPool {
 		eventDataSource = dataSource;
 	}
 	/**
-	 * return connection
+	 * returns datasource object
+	 * @return
 	 */
-	public Connection getConnection()
+	public BasicDataSource getEventDataSource()
 	{
-		Connection ret=null;
-		try {
-			ret = eventDataSource.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Connection Requisition*** Could not connect to the database msg :" + e.getMessage());		
-		}
-		return ret;
+		return eventDataSource;
 	}
 	public static void main(String[] args) {
 		EventConnectionPool CP;
 		try {
 			CP = new EventConnectionPool();
-			Connection con1 = CP.getConnection();
-
+			BandManager manag = new BandManager(CP.getEventDataSource());
+			Connection con1 = CP.getEventDataSource().getConnection();
 			Statement stm1 = con1.createStatement();
-
-			stm1.executeQuery("USE "+EventDBInfo.MYSQL_DATABASE_NAME);
 			String update = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,Image)" 
 					+ "Values('jondi','bagaturia','jondi-jondi','shalva','555555555','jondi.jpg')";
 			stm1.executeUpdate(update);
 			con1.close();
-			Connection con2 = CP.getConnection();
+			Connection con2 = CP.getEventDataSource().getConnection();
 			Statement stm2 = con2.createStatement();
-			stm2.executeQuery("USE "+EventDBInfo.MYSQL_DATABASE_NAME);
 			String select = "Select * from User";
 			ResultSet res = stm2.executeQuery(select);
 			while(res.next())
 			{
-				System.out.println(res.getString(2));
+				System.out.println(res.getString("UserName"));
 			}
-			String BandUpdate = "Insert into Band(UserID,Name,About,Mail) "
-					+ "values(1,'Radiohead','Rock Group','radiohead@gmail.com')";
-			Connection cc = CP.getConnection();
-			Statement sts = cc.createStatement();
-			sts.executeQuery("USE "+EventDBInfo.MYSQL_DATABASE_NAME);
-			sts.executeUpdate(BandUpdate);
-			BandManager manag = new BandManager(eventDataSource);
+			manag.addBand(1,"Radiohead","Rock Group", "radiohead@gmail.com");
 			Band b = manag.getBand(1);
 			System.out.println(b.getName());
 			System.out.println(b.getAbout());
