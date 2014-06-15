@@ -29,35 +29,43 @@ public class BandManagerTests {
 	//1 is damatebis shemtxveveashi
 	public void addBandTest1() throws SQLException {
 			BandManager manag = new BandManager(dataSource);
-			assertEquals(BaseErrors.ALL_DONE,manag.addBand(1,"Radiohead","Rock Group", "radiohead@gmail.com"));
 			Connection con = dataSource.getConnection();
 			Statement stm = con.createStatement();
+			String insertToUser = "insert into User(UserName) values('tornike')";
+			stm.executeUpdate(insertToUser);
+			assertEquals(BaseErrors.ALL_DONE,manag.addBand(1,"Radiohead","Rock Group", "radiohead@gmail.com"));
 			String q ="select * from Band where Name='Radiohead'";
 			ResultSet res = stm.executeQuery(q);
-			while(res.next())
+			if(res.next())
 			{
 				assertEquals("Radiohead",res.getString("Name"));
 				assertEquals("Rock Group",res.getString("About"));
 				assertEquals("radiohead@gmail.com",res.getString("Mail"));
 			}
+			else
+				throw new AssertionError();
 			con.close();
 	}
 	@Test
 	//tu bazashi 2 maincaa
 	public void addBandTest2() throws SQLException
-	{
+	{		
 		BandManager manag = new BandManager(dataSource);
-		manag.addBand(1,"Pink Floyd","Rock Group", "PinkFloyd@gmail.com");
 		Connection con = dataSource.getConnection();
 		Statement stm = con.createStatement();
+		String insertToUser = "insert into User(UserName) values('toko')";
+		stm.executeUpdate(insertToUser);
+		assertEquals(BaseErrors.ALL_DONE,manag.addBand(1,"Pink Floyd","Rock Group", "PinkFloyd@gmail.com"));
 		String q ="select * from Band where Name='Pink Floyd'";
 		ResultSet res = stm.executeQuery(q);
-		while(res.next())
+		if(res.next())
 		{
 			assertEquals("Pink Floyd",res.getString("Name"));
 			assertEquals("Rock Group",res.getString("About"));
 			assertEquals("PinkFloyd@gmail.com",res.getString("Mail"));
 		}
+		else
+			throw new AssertionError();
 		con.close();
 
 	}
@@ -81,10 +89,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='NigtHwish'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		Band b = manag.getBand(TID);
 		assertEquals("Nigthwish", b.getName());
 		assertEquals("Rock Group", b.getAbout());
@@ -104,19 +114,23 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='Gia'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		System.out.println(manag.updateBandInfo(TID,"Otxi Gia","Pop Band","4G.gmail.com"));
 		String q3 = "select * from Band where ID="+TID;
 		ResultSet resG = stm.executeQuery(q3);
-		while(resG.next())
+		if(resG.next())
 		{
 			assertEquals("Otxi Gia",resG.getString("Name"));
 			assertEquals("Pop Band",resG.getString("About"));
 			assertEquals("4G.gmail.com",resG.getString("Mail"));
 		} 
+		else
+			throw new AssertionError();
 		con.close();
 
 	}
@@ -132,10 +146,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='The Mins'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		manag.addMusic(TID,"Blind World");
 		String qMusic = "select * from Music where Name='Blind World' and BandID="+TID;
 		ResultSet resMus = stm.executeQuery(qMusic);
@@ -154,10 +170,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='The Mins'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		manag.addMusic(TID, "ki");
 		assertEquals(BaseErrors.UNABLE_EXECUTE,manag.addMusic(TID, "ki"));
 		con.close();
@@ -174,10 +192,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='tt'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		manag.addImage(TID,"t.jpg");
 		String qMusic = "select * from Band_Image where Name='t.jpg' and BandID="+TID;
 		ResultSet resMus = stm.executeQuery(qMusic);
@@ -196,10 +216,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='yvela'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		manag.addImage(TID,"tt.jpg");
 		assertEquals(BaseErrors.UNABLE_EXECUTE,manag.addImage(TID,"tt.jpg"));		
 		con.close();
@@ -216,10 +238,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='sting'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		manag.addVideo(TID,"fragile.mp4");
 		String qVide = "select * from Video where Name='fragile.mp4' and BandID="+TID;
 		ResultSet resVid = stm.executeQuery(qVide);
@@ -238,10 +262,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='beatles'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		manag.addVideo(TID, "imagine.mp4");
 		assertEquals(BaseErrors.UNABLE_EXECUTE,manag.addVideo(TID,"imagine.mp4"));
 		con.close();
@@ -258,10 +284,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='beatles'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		String q1 = "insert into Band_Image(Name,BandID) values('love.jpg',"+TID+")";
 		String q11 = "insert into Band_Image(Name,BandID) values('queen.jpg',"+TID+")";
 		stm.executeUpdate(q1);
@@ -269,19 +297,23 @@ public class BandManagerTests {
 		String imID = "select ID from Band_Image where Name='love.jpg'";
 		ResultSet resImage = stm.executeQuery(imID);
 		int imageID = 0;
-		while(resImage.next())
+		if(resImage.next())
 		{
 			imageID = resImage.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		String q3 = "insert into Band_Profile_Image(Band_ImageID,BandID) values("+imageID+","+TID+")";
 		stm.executeUpdate(q3);
 		String imIDNew = "select * from Band_Image where Name='queen.jpg'";
 		ResultSet resImageNew = stm.executeQuery(imIDNew);
 		int imageIDNew = 0;
-		while(resImageNew.next())
+		if(resImageNew.next())
 		{
 			imageIDNew = resImageNew.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		assertEquals(BaseErrors.ALL_DONE,manag.updateProfileImage(TID, imageIDNew));
 		String check = "select* from Band_Profile_Image where BandID="+TID;
 		ResultSet resCheck = stm.executeQuery(check);
@@ -305,10 +337,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='loudspeaker'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		String qVoide1 = "insert into Video(BandID,Name) values("+TID+","+"'in this world')";
 		String qVoide2 = "insert into Video(BandID,Name) values("+TID+","+"'world in my eyes')";
 		stm.executeUpdate(qVoide1);
@@ -333,10 +367,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='moby'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		String qImage1 = "insert into Band_Image(BandID,Name) values("+TID+","+"'natural blue')";
 		String qImage2 = "insert into Band_Image(BandID,Name) values("+TID+","+"'be the one')";
 		stm.executeUpdate(qImage1);
@@ -362,10 +398,12 @@ public class BandManagerTests {
 		String id ="select ID from Band where Name='led zeppelin'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
-		while(res.next())
+		if(res.next())
 		{
 			TID = res.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		String q1 = "insert into Band_Image(Name,BandID) values('heaven.jpg',"+TID+")";
 		stm.executeUpdate(q1);
 		String imID = "select ID from Band_Image where Name='heaven.jpg'";
