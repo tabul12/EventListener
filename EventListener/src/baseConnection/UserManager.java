@@ -276,7 +276,7 @@ public class UserManager {
 		con.close();
 		return list;
 	}
-
+	
 	/***
 	 * amatebs bands useris wishlistshi
 	 * 

@@ -751,8 +751,6 @@ public class UserManagerTests {
 		if(r.next()){
 			k = r.getInt("UserID");
 		}
-		System.out.println(events.get(0));
-		System.out.println(k);
 		assertEquals(manager.isGoing(k, events.get(0)),true);
 		assertEquals(manager.isGoing(k, events.get(1)),false);
 		assertEquals(manager.isGoing(1, events.get(1)),false);
@@ -873,6 +871,60 @@ public class UserManagerTests {
 		}
 		manager.addInWishList(userID, bands.get(0));
 		manager.addInWishList(userID, bands.get(1));
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		s = "select BandID from User_Band_Wishlist where UserID = " + userID;
+		ResultSet result = stmt.executeQuery(s);
+		while(result.next()){
+			arr.add(result.getInt("BandID"));
+		}
+		assertEquals(arr,bands);
+	}
+	
+	@Test
+	public void getWishlistTest() throws SQLException{
+		Connection con = dataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
+				+ "Image,Mail) Values('vincente','bosque','vbosq12','123456','123456789','boria.jpg',"
+				+ "'bnizh2013@agruni.edu.ge');";
+		stmt.executeUpdate(query);
+		String qu = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
+				+ "Image,Mail) Values('joze','mourinio','jmour12','123456','123456789','boria.jpg',"
+				+ "'bnizh2013@agruni.edu.ge');";
+		stmt.executeUpdate(qu);
+		ResultSet res = stmt.executeQuery("select ID from User where UserName = 'jmour12';");
+		int userID = -1;
+		while(res.next()){
+			userID = res.getInt("ID");
+		}
+		String quer = "insert into Band (UserID,Name,About)"
+				+ "values(" + userID + ",'black','machaxela');";
+		stmt.executeUpdate(quer);
+		quer =  "insert into Band (UserID,Name,About)"
+				+ "values(" + userID + ",'sabath','orilula');";	
+		stmt.executeUpdate(quer);
+		ArrayList<Integer> bands = new ArrayList<Integer>(); 
+		String  s = "Select ID from Band where Name ='black';";
+		ResultSet re = stmt.executeQuery(s);
+		while(re.next()){
+			bands.add(re.getInt("ID"));
+		}
+		s = "Select ID from Band where Name = 'sabath'";
+		ResultSet r = stmt.executeQuery(s);
+		if(r.next()){
+			bands.add(r.getInt("ID"));
+		}
+		s =  "insert into User_Band_Wishlist (UserID, BandID)"
+				+ "values (" + userID + "," + bands.get(0) + ");";
+		stmt.executeUpdate(s);
+		s =  "insert into User_Band_Wishlist (UserID, BandID)"
+				+ "values (" + userID + "," + bands.get(1) + ");";
+		stmt.executeUpdate(s);
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr = manager.getWishlist(userID, 1);
+		System.out.println(arr.get(0));
+		System.out.println(arr.get(1));
+		assertEquals(arr,bands);
 	}
 	
 }
