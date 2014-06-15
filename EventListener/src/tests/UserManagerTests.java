@@ -873,7 +873,6 @@ public class UserManagerTests {
 		}
 		manager.addInWishList(userID, bands.get(0));
 		manager.addInWishList(userID, bands.get(1));
-		
 	}
 	
 }
