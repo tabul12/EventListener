@@ -29,7 +29,7 @@ public class BandManagerTests {
 	//1 is damatebis shemtxveveashi
 	public void addBandTest1() throws SQLException {
 			BandManager manag = new BandManager(dataSource);
-			manag.addBand(1,"Radiohead","Rock Group", "radiohead@gmail.com");
+			assertEquals(BaseErrors.ALL_DONE,manag.addBand(1,"Radiohead","Rock Group", "radiohead@gmail.com"));
 			Connection con = dataSource.getConnection();
 			Statement stm = con.createStatement();
 			String q ="select * from Band where Name='Radiohead'";
