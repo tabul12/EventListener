@@ -409,10 +409,12 @@ public class BandManagerTests {
 		String imID = "select ID from Band_Image where Name='heaven.jpg'";
 		ResultSet resImage = stm.executeQuery(imID);
 		int imageID = 0;
-		while(resImage.next())
+		if(resImage.next())
 		{
 			imageID = resImage.getInt("ID");
 		}
+		else
+			throw new AssertionError();
 		String q3 = "insert into Band_Profile_Image(Band_ImageID,BandID) values("+imageID+","+TID+")";
 		stm.executeUpdate(q3);
 		assertEquals("heaven.jpg",manag.getProfileImage(TID));
