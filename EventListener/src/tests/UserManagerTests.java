@@ -613,12 +613,15 @@ public class UserManagerTests {
 		if(r.next()){
 			events.add(r.getInt("ID"));
 		}
+		
 		ArrayList<Integer> eve = new ArrayList<Integer>();
 		assertEquals(manager.hasAddedEvent(userID, events.get(0)), true);
 		assertEquals(manager.hasAddedEvent(userID, events.get(1)), true);
 		assertEquals(manager.hasAddedEvent(1, events.get(1)), false);
 		assertEquals(manager.hasAddedEvent(userID, 7), false);
-		assertEquals(manager.hasAddedEvent(1, 7), false);
+		
+		assertEquals(manager.hasAddedEvent(0, 7), false);
+	
 	}
 	
 	
@@ -706,7 +709,7 @@ public class UserManagerTests {
 			userID = res.getInt("ID");
 		}
 		String quer = "insert into Place(UserID,Name,Adress,About)"
-				+ "values(" + userID + ",'samikitno','rgbr','msdg');";
+				+ "values(" + userID + ",'ssamikitno','rgbr','msdg');";
 		stmt.executeUpdate(quer);
 		quer =  "insert into Place(UserID,Name,Adress,About)"
 				+ "values(" + userID + ",'shemoixede','javakhishvili','mkjhvk');";
@@ -717,7 +720,7 @@ public class UserManagerTests {
 		while(re.next()){
 			bands.add(re.getInt("ID"));
 		}
-		s = "Select ID from Place where Name ='samikitno'";
+		s = "Select ID from Place where Name ='ssamikitno'";
 		ResultSet r = stmt.executeQuery(s);
 		if(r.next()){
 			bands.add(r.getInt("ID"));
@@ -813,13 +816,13 @@ public class UserManagerTests {
 			userID = res.getInt("ID");
 		}
 		String quer = "insert into Place(UserID,Name,About)"
-				+ "values(" + userID + ",'machaxela','machaxela');";
+				+ "values(" + userID + ",'mmachaxela','machaxela');";
 		stmt.executeUpdate(quer);
 		quer =  "insert into Place(UserID,Name,About)"
 				+ "values(" + userID + ",'orilula','orilula');";
 		stmt.executeUpdate(quer);
 		ArrayList<Integer> bands = new ArrayList<Integer>(); 
-		String  s = "Select ID from Place where Name ='machaxela';";
+		String  s = "Select ID from Place where Name ='mmachaxela';";
 		ResultSet re = stmt.executeQuery(s);
 		while(re.next()){
 			bands.add(re.getInt("ID"));
@@ -870,7 +873,6 @@ public class UserManagerTests {
 		}
 		manager.addInWishList(userID, bands.get(0));
 		manager.addInWishList(userID, bands.get(1));
-		
 	}
 	
 }

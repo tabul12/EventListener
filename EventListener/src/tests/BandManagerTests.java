@@ -66,7 +66,7 @@ public class BandManagerTests {
 	public void addBandTest3()
 	{
 		BandManager manag = new BandManager(dataSource);
-		manag.addBand(1,"Pink Floyd1","Rock Group", "PinkFloyd@gmail.com");
+		assertEquals(BaseErrors.ALL_DONE,manag.addBand(1,"Pink Floyd1","Rock Group", "PinkFloyd@gmail.com"));
 		assertEquals(BaseErrors.UNABLE_EXECUTE,manag.addBand(1,"Pink Floyd1","Rock Group", "PinkFloyd@gmail.com"));
 	}
 	@Test

@@ -289,6 +289,7 @@ public class UserManager {
 				+ "values (" + userID + "," + bandID + ");";
 		return changeBase(query);
 	}
+	
 
 	/***
 	 * amowmebs aris tu ara es band gadacemuli useris mier damatebuli
