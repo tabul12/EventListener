@@ -9,6 +9,7 @@ public class Event {
 	private String price;
 	private String image;
 	
+	
 	public Event(int ID,int userID,int placeID,String time,String about,String price,
 			String image){
 		
@@ -21,29 +22,52 @@ public class Event {
 		this.image = image;		
 	}
 	
+	/*
+	 * this method returns event ID
+	 */
 	public int getID(){
 		return this.ID;
 	}
 	
-	public int getPlaceId(){
+	/*
+	 * this method returns place ID
+	 * where this event is held
+	 */
+	public int getPlaceID(){
 		return this.placeID;
 	}
 	
+	
+	/*
+	 * this event returns user ID who added this event
+	 */
 	public int getUserID(){
 		return this.userID;
 	}
 	
+	/*
+	 * this method returns time of this event
+	 */
 	public String getTime(){
 		return this.time;
 	}
 	
+	/*
+	 * this method returns about for this event
+	 */
 	public String getAbout(){
 		return this.about;
 	}
 	
+	/*
+	 * this method returns price, for this event
+	 */
 	public String getPrice(){
 		return this.price;
 	}
+	/*
+	 * this method returns image for this event
+	 */
 	public String getImage(){
 		return this.image;
 	}
