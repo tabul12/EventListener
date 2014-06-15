@@ -1,5 +1,6 @@
 package baseConnection;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,8 +9,6 @@ import java.util.ArrayList;
 import objects.User;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
-
-import com.mysql.jdbc.Connection;
 
 import errors.BaseErrors;
 
@@ -34,7 +33,7 @@ public class UserManager {
 	 */
 
 	public User getUser(int ID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select * from User where ID = " + ID + ";";
 		ResultSet res = stmt.executeQuery(query);
@@ -68,41 +67,23 @@ public class UserManager {
 	 * @throws SQLException
 	 */
 
-	public int createUser(String name, String lastName, String userName,
+	public int addUser(String name, String lastName, String userName,
 			String password, String mail, String image, String mobileNumber) {
-		Connection con;
-		try {
-			con = (Connection) eventDataSource.getConnection();
-			try {
-				Statement stm = con.createStatement();
-				String query = "Insert into User(FisrtName,LastName,UserName,Password,MobileNumber,"
-						+ "Image,Mail)"
-						+ "Values('"
-						+ name
-						+ "','"
-						+ lastName
-						+ "','"
-						+ userName
-						+ "','"
-						+ password
-						+ "','"
-						+ mobileNumber + "','" + image + "','" + mail + "');";
-				try {
-					stm.executeUpdate(query);
-				} catch (Exception e) {
-					con.close();
-					return BaseErrors.UNABLE_EXECUTE;
-				}
-				con.close();
-			} catch (Exception e) {
-				con.close();
-				return BaseErrors.UNABLE_CREATE_STATEMENT;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			return BaseErrors.UNABLE_CONNECTION;
-		}
-		return BaseErrors.ALL_DONE;
+		String query = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
+				+ "Image,Mail) "
+				+ "Values('"
+				+ name
+				+ "','"
+				+ lastName
+				+ "','"
+				+ userName
+				+ "','"
+				+ password
+				+ "','"
+				+ mobileNumber
+				+ "','"
+				+ image + "','" + mail + "');";
+		return changeBase(query);
 	}
 
 	/***
@@ -112,16 +93,18 @@ public class UserManager {
 	 * @param userName
 	 * @return
 	 */
+
 	public boolean alreadyExists(String userName) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from User  where UserName = '" + userName
 				+ "';";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
+			con.close();
 			return true;
 		} else {
+			con.close();
 			return false;
 		}
 	}
@@ -134,15 +117,16 @@ public class UserManager {
 	 */
 
 	public boolean isPunished(int userID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from  Punished  where UserID = " + userID
 				+ ";";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
+			con.close();
 			return true;
 		} else {
+			con.close();
 			return false;
 		}
 	}
@@ -155,14 +139,15 @@ public class UserManager {
 	 */
 
 	public boolean isAdmin(int userID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from Admin  where UserID = " + userID + ";";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
+			con.close();
 			return true;
 		} else {
+			con.close();
 			return false;
 		}
 	}
@@ -178,7 +163,7 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numBeenPlacesPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select EventID from User_Going_Event where "
 				+ "UserID  = " + userID + " LIMIT " + num + ","
@@ -202,15 +187,17 @@ public class UserManager {
 	 */
 
 	public int getUserID(String userName, String password) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from User where " + "Username  = '"
 				+ userName + "' and Password= '" + password + "';";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
-			return res.getInt("UserID");
+			int ret = res.getInt("ID");
+			con.close();
+			return ret;
 		} else {
+			con.close();
 			return -1;
 		}
 	}
@@ -227,15 +214,15 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numBandsPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
-		String query = "select ID from Band where " + "UserID  = " + userID
+		String query = "select ID from Band  where " + "UserID  = " + userID
 				+ " LIMIT " + num + "," + numBandsPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
-		while (res.next()) {
-			int bandID = res.getInt("BandID");
+		while(res.next()){
+			int bandID = res.getInt("ID");
 			list.add(bandID);
-		}
+		 }
 		con.close();
 		return list;
 	}
@@ -252,13 +239,13 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numPlacesPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from Place where " + "UserID  = " + userID
 				+ " LIMIT " + num + "," + numPlacesPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
 		while (res.next()) {
-			int placeID = res.getInt("PlaceID");
+			int placeID = res.getInt("ID");
 			list.add(placeID);
 		}
 		con.close();
@@ -277,13 +264,13 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numEventsPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from Event where " + "UserID  = " + userID
 				+ " LIMIT " + num + "," + numEventsPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
 		while (res.next()) {
-			int eventID = res.getInt("EventID");
+			int eventID = res.getInt("ID");
 			list.add(eventID);
 		}
 		con.close();
@@ -298,30 +285,9 @@ public class UserManager {
 	 */
 
 	public int addInWishList(int userID, int bandID) {
-
-		Connection con;
-		try {
-			con = (Connection) eventDataSource.getConnection();
-			try {
-				Statement stm = con.createStatement();
-				String query = "insert into User_Band_Wishlist (UserID, BandID)"
-						+ "values (" + userID + "," + bandID + ");";
-				try {
-					stm.executeUpdate(query);
-				} catch (Exception e) {
-					con.close();
-					return BaseErrors.UNABLE_EXECUTE;
-				}
-				con.close();
-			} catch (Exception e) {
-				con.close();
-				return BaseErrors.UNABLE_CREATE_STATEMENT;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			return BaseErrors.UNABLE_CONNECTION;
-		}
-		return BaseErrors.ALL_DONE;
+		String query = "insert into User_Band_Wishlist (UserID, BandID)"
+				+ "values (" + userID + "," + bandID + ");";
+		return changeBase(query);
 	}
 
 	/***
@@ -333,15 +299,16 @@ public class UserManager {
 	 */
 
 	public boolean hasAddedBand(int userID, int bandID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from Band  " + " where ID  = " + bandID
 				+ " and UserID = " + userID + ";";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
+			con.close();
 			return true;
 		} else {
+			con.close();
 			return false;
 		}
 	}
@@ -355,15 +322,16 @@ public class UserManager {
 	 */
 
 	public boolean hasAddedPlace(int userID, int placeID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from Place  " + " where ID  = " + placeID
 				+ " and UserID = " + userID + ";";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
+			con.close();
 			return true;
 		} else {
+			con.close();
 			return false;
 		}
 	}
@@ -377,15 +345,16 @@ public class UserManager {
 	 */
 
 	public boolean hasAddedEvent(int userID, int eventID) throws SQLException {
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select ID from Event  " + " where ID  = " + eventID
 				+ " and UserID = " + userID + ";";
 		ResultSet res = stmt.executeQuery(query);
-		con.close();
 		if (res.next()) {
+			con.close();
 			return true;
 		} else {
+			con.close();
 			return false;
 		}
 	}
@@ -398,10 +367,11 @@ public class UserManager {
 	 * @return
 	 * @throws SQLException
 	 */
+
 	public ArrayList<Integer> getWishlist(int userID, int pageNum)
 			throws SQLException {
 		int num = (pageNum - 1) * numWishlistBandsPerPage;
-		Connection con = (Connection) eventDataSource.getConnection();
+		Connection con = eventDataSource.getConnection();
 		Statement stmt = con.createStatement();
 		String query = "select BandID from User_Band_Wishlist where "
 				+ "UserID = " + userID + " LIMIT " + num + ","
@@ -414,6 +384,108 @@ public class UserManager {
 		}
 		con.close();
 		return list;
+	}
+
+	/***
+	 * vanaxlebt useris shesaxeb informacias
+	 * 
+	 * @param ID
+	 * @param firstName
+	 * @param lastName
+	 * @param mail
+	 * @param mobileNumber
+	 * @param image
+	 * @param password
+	 * @return
+	 */
+
+	public int updateInfo(int ID, String firstName, String lastName,
+			String mail, String mobileNumber, String image, String password) {
+		String query = "UPDATE User SET FirstName='" + firstName
+				+ "',LastName ='" + lastName + "', Mail ='" + mail
+				+ "', MobileNumber ='" + mobileNumber + "', Image ='" + image
+				+ "', Password  ='" + password + "' where ID =" + ID + ";";
+		return changeBase(query);
+	}
+
+	/***
+	 * administratori sjis users
+	 * 
+	 * @param userID
+	 * @return
+	 */
+
+	public int punishUser(int userID) {
+		String query = "insert into Punished (UserID)" + "values (" + userID
+				+ ");";
+		return changeBase(query);
+	}
+
+	/***
+	 * amatebs userze going mititebul iventze roca user adzlevs goings
+	 * 
+	 * @param userID
+	 * @param eventID
+	 * @return
+	 */
+
+	public int addGoing(int userID, int eventID) {
+		String query = "insert into User_Going_Event (UserID, EventID)"
+				+ "values (" + userID + ", " + eventID + ");";
+		return changeBase(query);
+	}
+	
+	/***
+	 * amowmebs mocemul users mocemul eventze aqvs tu ara going micemuli
+	 * @param userID
+	 * @param eventID
+	 * @return
+	 * @throws SQLException
+	 */
+
+	public boolean isGoing(int userID, int eventID) throws SQLException {
+		Connection con = eventDataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "select ID from  User_Going_Event where UserID = "
+				+ userID + " and EventID = " + eventID + ";";
+		ResultSet res = stmt.executeQuery(query);
+		if (res.next()) {
+			con.close();
+			return true;
+		} else {
+			con.close();
+			return false;
+		}
+	}
+
+	/***
+	 * axorcielebs bazashi cvlilebebs gadacemuli querys mixedvit
+	 * 
+	 * @param quer
+	 * @return
+	 */
+
+	private int changeBase(String quer) {
+		Connection con;
+		try {
+			con = eventDataSource.getConnection();
+			try {
+				Statement stm = con.createStatement();
+				try {
+					stm.executeUpdate(quer);
+				} catch (Exception e) {
+					con.close();
+					return BaseErrors.UNABLE_EXECUTE;
+				}
+				con.close();
+			} catch (Exception e) {
+				con.close();
+				return BaseErrors.UNABLE_CREATE_STATEMENT;
+			}
+		} catch (SQLException e) {
+			return BaseErrors.UNABLE_CONNECTION;
+		}
+		return BaseErrors.ALL_DONE;
 	}
 
 }

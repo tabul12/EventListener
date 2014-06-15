@@ -10,7 +10,7 @@ import sun.org.mozilla.javascript.internal.ast.NewExpression;
 
 public class EventConnectionPool {
 	private String driver = EventDBInfo.MYSQL_DRIVER;
-	private String url = "jdbc:mysql://"+EventDBInfo.MYSQL_DATABASE_SERVER;
+	private String url = EventDBInfo.MYSQL_DATABASE_SERVER;
 	private String userName = EventDBInfo.MYSQL_USERNAME;
 	private String password = EventDBInfo.MYSQL_PASSWORD;
 	private int maxActive = 100;

@@ -40,11 +40,11 @@ public class User {
 		return lastName;
 	}
 	
-	public String userName(){
+	public String getUserName(){
 		return userName;
 	}
 	
-	public String mobileNumber(){
+	public String getMobileNumber(){
 		return mobileNumber;
 	}
 	
