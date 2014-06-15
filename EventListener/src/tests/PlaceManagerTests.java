@@ -72,12 +72,14 @@ public class PlaceManagerTests {
 		stmt = connection.createStatement();
 		result = stmt.executeQuery(query);
 		
-		if(result.next()){
-			assertEquals(result.getInt("UserID"),1);
-			assertEquals(result.getString("Name"),"samikitno");
-			assertEquals(result.getString("Adress"),"saakadze");
-			assertEquals(result.getString("About"),"xinkali");
-		}
+		if(!result.next()) assertEquals(true, false); 
+		
+		assertEquals(result.getInt("UserID"),1);
+		assertEquals(result.getString("Name"),"samikitno");
+		assertEquals(result.getString("Adress"),"saakadze");
+		assertEquals(result.getString("About"),"xinkali");
+		 
+		
 		connection.close();
 	}
 	
@@ -90,12 +92,13 @@ public class PlaceManagerTests {
 		stmt = connection.createStatement();
 		result = stmt.executeQuery(query);
 		
-		if(result.next()){
-			assertEquals(result.getInt("UserID"),2);
-			assertEquals(result.getString("Name"),"machaxela");
-			assertEquals(result.getString("Adress"),"saakadze");
-			assertEquals(result.getString("About"),"lobiani");
-		}
+		if(!result.next()) assertEquals(true, false);
+		
+		assertEquals(result.getInt("UserID"),2);
+		assertEquals(result.getString("Name"),"machaxela");
+		assertEquals(result.getString("Adress"),"saakadze");
+		assertEquals(result.getString("About"),"lobiani");
+		
 		
 		connection.close();
 	}

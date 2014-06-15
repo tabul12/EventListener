@@ -63,7 +63,8 @@ private BasicDataSource eventDataSource;
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
 		ResultSet result = stmt.executeQuery(query);
-		System.out.println(query);
+		connection.close();
+		
 		boolean is = result.next();
 		if(is) return result.getInt("ID");
 		return 0;
@@ -77,7 +78,7 @@ private BasicDataSource eventDataSource;
 		String query = "insert into Event(UserID,placeID,Time,About,Price,Image)"
 				+ "values(" + userID + "," + placeID + ",'" + time + "','" + about +"','" + 
 				price + "','" + image +"');";
-		System.out.println(query);
+		 
 		return changeBase(query);		 
 	}
 	
@@ -113,7 +114,7 @@ private BasicDataSource eventDataSource;
 		while(result.next()){
 			list.add(result.getInt("UserID"));
 		} 
-		
+		connection.close();
 		return list;
 	}
 	
@@ -135,6 +136,8 @@ private BasicDataSource eventDataSource;
 			list.add(result.getInt("BandID"));
 		} 
 		
+		connection.close();
+		
 		return list;
 	}
 	
@@ -147,9 +150,9 @@ private BasicDataSource eventDataSource;
 						"where UserID=" + userID + " and  ID=" + eventID + ";";
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
-		System.out.println(query);
 		ResultSet result = stmt.executeQuery(query);
 		 
+		connection.close();
 		return result.next();
 	}
 	
@@ -199,6 +202,8 @@ private BasicDataSource eventDataSource;
 		while(result.next()){
 			list.add(result.getInt("ID"));
 		} 
+		
+		connection.close();
 		
 		return list;
 	}

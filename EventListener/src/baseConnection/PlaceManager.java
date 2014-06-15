@@ -36,6 +36,7 @@ public class PlaceManager {
 		
 		int ID = 0;
 		if(result.next()) ID = result.getInt("ID");
+		connection.close();
 		return ID;
 		
 	}
@@ -43,8 +44,6 @@ public class PlaceManager {
 	public Place getPlace(int placeID) throws SQLException{
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
-		
-		
 		
 		String query = "Select * from Place where ID=" + placeID + ";";
 		
@@ -183,6 +182,7 @@ public class PlaceManager {
 		while(result.next()){
 			list.add(result.getString("Name"));
 		}
+		connection.close();
 		
 		return list;
 	}
@@ -197,6 +197,7 @@ public class PlaceManager {
 					      "from Place_Rating where PlaceID=" + placeID + ";";
 		
 		ResultSet result = stmt.executeQuery(query);
+		connection.close();
 		if(result.next())
 		return result.getDouble("avg(Rating)");		
 		return 0.0;
@@ -224,6 +225,7 @@ public class PlaceManager {
 			list.add(result.getInt("ID"));
 		}
 		
+		connection.close();
 		return list;		
 	}
 	
