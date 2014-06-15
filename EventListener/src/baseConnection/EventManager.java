@@ -63,11 +63,14 @@ private BasicDataSource eventDataSource;
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
 		ResultSet result = stmt.executeQuery(query);
+		 
+		int ans = 0;
+		
+		if(result.next()) ans = result.getInt("ID");
+		
 		connection.close();
 		
-		boolean is = result.next();
-		if(is) return result.getInt("ID");
-		return 0;
+		return ans;
 	}
 	/*
 	 * this method adds new event
@@ -152,8 +155,9 @@ private BasicDataSource eventDataSource;
 		Statement stmt = connection.createStatement();
 		ResultSet result = stmt.executeQuery(query);
 		 
+		boolean is = result.next();
 		connection.close();
-		return result.next();
+		return is;
 	}
 	
 	/*

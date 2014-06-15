@@ -197,10 +197,11 @@ public class PlaceManager {
 					      "from Place_Rating where PlaceID=" + placeID + ";";
 		
 		ResultSet result = stmt.executeQuery(query);
-		connection.close();
+		double ans = 0.0;
 		if(result.next())
-		return result.getDouble("avg(Rating)");		
-		return 0.0;
+			ans = result.getDouble("avg(Rating)");	
+		connection.close();
+		return ans;
 	}
 	
 	/*
