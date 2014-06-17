@@ -209,7 +209,7 @@ public class PlaceManager {
 	 */
 	public ArrayList<Integer> getTopPlaces(int num) throws SQLException{
 		String query = "select ID from Place"
-				+	" order by averageRating(ID) desc limit " + num + ";";
+				+	" order by placeAverageRating(ID) desc limit " + num + ";";
 		
 		
 		Connection connection = eventDataSource.getConnection();

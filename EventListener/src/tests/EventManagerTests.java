@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import errors.BaseErrors;
+import errors.ConstantValues;
 import baseConnection.EventConnectionPool;
 import baseConnection.EventManager;
 import baseConnection.PlaceManager;
@@ -26,12 +27,14 @@ public class EventManagerTests {
 	private Statement stmt;
 	private ResultSet result;
 	
+	
 	@Before
 	public void setUp() throws SQLException {
 		 EventConnectionPool pool = new EventConnectionPool();
 		 dataSource = pool.getEventDataSource();
 		 manager = new EventManager(dataSource);
 	}
+	
 	
 	@Test 
 	public void testGetEvent() throws SQLException{
@@ -342,9 +345,67 @@ public class EventManagerTests {
 		
 		ArrayList<Integer> list2 = manager.getBandsOnEvent(manager.getEventID("hasting.jpg"));
 		
-		assertEquals((int)list.get(0), id1);		
+		assertEquals((int)list2.get(0), id1);		
 		connection.close();
 		
+	}
+	
+	@Test
+	public void testGetEventsNum() throws SQLException{
+	
+		connection = dataSource.getConnection();
+		stmt = connection.createStatement();
+		String query = "select count(ID) from Event";
+		
+		result = stmt.executeQuery(query);
+		
+		assertEquals(result.next(), true);
+		assertEquals(result.getInt("count(ID)"), manager.getEventsNum()); 
+		
+	}
+	
+	 
+	
+	@Test
+	public void testgetEventsForNthPage() throws SQLException{
+		
+		connection = dataSource.getConnection();
+		stmt = connection.createStatement();
+		stmt.execute("insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image) " +
+					"values('mamuka','sakhelashvili','donchika','ramtamtam','msakh12@edu.ge','+995598465565','selfshot.jpg');");
+		stmt.execute("insert into Place(UserID,Name,Adress,About)"+
+						"values(1,'dkad','dad','xinkali');");
+		
+		String add = "insert into Event(UserID,PlaceID,Time,About,Price,Image)" +
+			"values(1,1,'2/15/2014','moitmoit','5.00','kda.jpg');";
+		 
+		stmt.executeUpdate(add); 
+		
+		add = "insert into Event(UserID,PlaceID,Time,About,Price,Image)" +
+		"values(1,1,'2/15/2014','moitmoit','5.00','md.jpg');";
+		
+		 
+		stmt.executeUpdate(add);
+						 
+		connection = dataSource.getConnection();
+		stmt = connection.createStatement();
+		String query = "select ID from Event order by ID desc limit 0," + ConstantValues.NUM_EVENT_ON_PER_PAGE + ";";
+		result = stmt.executeQuery(query);
+		 
+		
+		
+		
+		ArrayList<Integer> list = manager.getEventsForNthPage(1);
+		 
+		
+		
+		
+		assertEquals(result.next(), true);
+		for(int i = 0; i < list.size(); i++){
+			int num = result.getInt("ID");
+			assertEquals((int)list.get(i), num);	
+			result.next();
+		}
 	}
 	
 }

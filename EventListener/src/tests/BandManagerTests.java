@@ -356,6 +356,8 @@ public class BandManagerTests {
 			assertEquals(exp.get(i), act.get(i));
 		con.close();
 	}
+	
+	
 	@Test
 	public void getImagesTest() throws SQLException
 	{
@@ -420,6 +422,26 @@ public class BandManagerTests {
 		assertEquals("heaven.jpg",manag.getProfileImage(TID));
 		con.close();
 	}
+	
+	@Test
+	public void testGetTopBands() throws SQLException{
+		Connection connection = dataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		ResultSet result = stmt.executeQuery("select ID from Band order by bandAverageRating(ID) desc limit 10;" );
+		
+		BandManager manager =  new BandManager(dataSource);
+		ArrayList<Integer> list = manager.getTopBands(10);
+		
+		result.next();
+		
+		
+		
+		for(int i = 0; i < list.size(); i++){
+			assertEquals((int)list.get(i), result.getInt("ID"));
+			result.next();
+		}
+ 	}
 	
 	
 

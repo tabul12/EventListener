@@ -11,10 +11,11 @@ import objects.Event;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import errors.BaseErrors;
+import errors.ConstantValues;
 
 public class EventManager {
 private BasicDataSource eventDataSource;
-	
+	 
 	public EventManager(BasicDataSource connectionPool){
 		this.eventDataSource = connectionPool;
 	}
@@ -53,6 +54,8 @@ private BasicDataSource eventDataSource;
 		return event;
 	}
 	
+	 
+	
 	/*
 	 * this method returns The ID of the event
 	 * we pass it image Name of this event because
@@ -70,6 +73,19 @@ private BasicDataSource eventDataSource;
 		
 		connection.close();
 		
+		return ans;
+	}
+	
+	public int getEventsNum() throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select count(ID) from Event;";		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		int ans = 0;
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();
 		return ans;
 	}
 	/*
@@ -108,17 +124,7 @@ private BasicDataSource eventDataSource;
 		String query = "select UserID from User_Going_Event "
 				+ "where EventID=" + eventID + ";";
 		
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		
-		while(result.next()){
-			list.add(result.getInt("UserID"));
-		} 
-		connection.close();
-		return list;
+		return getList(query,"UserID");
 	}
 	
 	/*
@@ -129,19 +135,7 @@ private BasicDataSource eventDataSource;
 		String query = "select BandID from Band_On_Event" +
 					" where EventID=" + eventID + ";"; 
 		
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		
-		while(result.next()){
-			list.add(result.getInt("BandID"));
-		} 
-		
-		connection.close();
-		
-		return list;
+		return getList(query, "BandID");
 	}
 	
 	/*
@@ -196,16 +190,26 @@ private BasicDataSource eventDataSource;
 	public ArrayList<Integer> getLatestEvents(int num) throws SQLException{
 		String query = "select ID from Event order by ID desc limit " + num + ";";
 		
+		return getList(query,"ID");
+	}
+	
+	public ArrayList<Integer> getEventsForNthPage(int pageNum) throws SQLException{
+		String query = "select ID from Event order by ID desc limit " + 
+				(pageNum - 1)*ConstantValues.NUM_EVENT_ON_PER_PAGE + "," + ConstantValues.NUM_EVENT_ON_PER_PAGE + ";";
+		 
+		return getList(query,"ID");
+	}
+	
+	public ArrayList<Integer> getList(String query,String column) throws SQLException{
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
-		System.out.println(query);
 		ResultSet result = stmt.executeQuery(query);
 		
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		
 		while(result.next()){
-			list.add(result.getInt("ID"));
-		} 
+			list.add(result.getInt(column));
+		}
 		
 		connection.close();
 		

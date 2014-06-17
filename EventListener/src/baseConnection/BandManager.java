@@ -17,6 +17,7 @@ public class BandManager {
 	private static final int numberOfImagesPerPage = 10;
 	private static final int numberOfMusicsPerPage = 10;
 	private BasicDataSource eventDataSource;
+	
 	/**
 	 * constructor
 	 * @param connectionPool
@@ -248,5 +249,45 @@ public class BandManager {
 		return ans;
 	}
 	
+	public ArrayList<Integer> getTopBands(int num) throws SQLException{
+		String query = "select ID,bandAverageRating(ID) from Band"
+				+	" order by bandAverageRating(ID) desc limit " + num + ";";
+		
+		
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();		
+		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		
+		
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+		
+		while(result.next()){
+			list.add(result.getInt("ID"));
+		}
+		
+		
+		connection.close();
+		return list;	
+	}
+	
+	/*
+	 * this method gives us rating for specified Band
+	 */
+	public double getRating(int bandID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		String query = "select avg(Rating)" + 
+					      "from Band_Rating where BandID=" + bandID + ";";
+		
+		ResultSet result = stmt.executeQuery(query);
+		double ans = 0.0;
+		if(result.next())
+			ans = result.getDouble("avg(Rating)");	
+		connection.close();
+		return ans;
+	}
 	
 }
