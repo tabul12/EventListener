@@ -170,13 +170,13 @@ public class UserManager {
 				+ numBeenPlacesPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
 		while (res.next()) {
-			int eventID = res.getInt("User_Going_EventEventID");
+			int eventID = res.getInt("EventID");
 			list.add(eventID);
 		}
 		con.close();
 		return list;
 	}
-
+	
 	/***
 	 * abrunebs useris ID is username is da passwordis mixedvit sachiroa
 	 * daloginebisas
