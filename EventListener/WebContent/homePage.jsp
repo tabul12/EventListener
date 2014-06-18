@@ -15,6 +15,29 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Event Listener</title>
 <link href="homePageCSS.css" rel="stylesheet" type="text/css" media="screen" />
+<script>
+function loadXMLDoc(p)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("content").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","UpdateOnlyDiv.jsp?page="+p,true);
+xmlhttp.send();
+}
+</script>
 </head>
 <body>
 <!-- start header -->
@@ -68,7 +91,7 @@
 				<ul>
 					<li> <p class="byline"><strong>Latest Event List. Enjoy Your Life Man!</strong></p></li>
 				</ul>
-				<div class="entry">
+				<div class="entry" >
 					 
 					 
 					 	 
@@ -118,8 +141,9 @@
 			  
 			  
 			  for(int i = startPageNum; i <= endPageNum; i++){
-				  out.println("<a href=\"homePage.jsp?id=" + i + "\">" + i + "</a>");
-			  }		   
+				  out.println("<a href=# onclick=loadXMLDoc("+i+")>"+i+" </a>");
+				  //out.println("<a href=\"homePage.jsp?id=" + i + "\">" + i + "</a>");
+			  }		
 		       
 			%>  
 			 

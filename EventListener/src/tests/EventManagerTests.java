@@ -68,7 +68,7 @@ public class EventManagerTests {
 	@Test
 	public void testAdd() throws SQLException{
 		String addUser = "insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image)" +
-						" values('mamuka','sakhelashvili','bolean','wtf','birja12@terjola.edu.ge',"
+						" values('mamuka','sakhelashvili','bolean1ks','wtf','birja12@terjola.edu.ge',"
 						+ "'+995598465565','mdinareze.jpg')";
 		connection = dataSource.getConnection();
 		stmt = connection.createStatement(); 
