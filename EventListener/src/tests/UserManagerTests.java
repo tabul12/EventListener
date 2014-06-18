@@ -922,8 +922,6 @@ public class UserManagerTests {
 		stmt.executeUpdate(s);
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 		arr = manager.getWishlist(userID, 1);
-		System.out.println(arr.get(0));
-		System.out.println(arr.get(1));
 		assertEquals(arr,bands);
 	}
 	
