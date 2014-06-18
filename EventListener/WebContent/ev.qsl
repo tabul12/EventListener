@@ -193,10 +193,9 @@ create table Place_Rating(
 
  
 
-
-DROP FUNCTION IF EXISTS hh;
+ 
 DELIMITER $$
-CREATE FUNCTION averageRating(ID int)
+CREATE FUNCTION placeAverageRating(ID int)
   RETURNS double
 BEGIN
   DECLARE num double;
@@ -205,7 +204,43 @@ return num;
 END;
 $$
 DELIMITER ;
+
+
+
+
+DELIMITER $$
+CREATE FUNCTION bandAverageRating(ID int)
+  RETURNS double
+BEGIN
+  DECLARE num double;
+  SELECT avg(Rating) INTO num FROM Band_Rating WHERE BandID = ID;
+return num;
+END;
+$$
+DELIMITER ; 
+
+
+
+
+
+
  
+
+
+
+/*
+
+select * from Band;
+ 
+
+select * from Event;
+
+ 
+
+/*
+
+
+select count(ID) from Event;
 
 
 
