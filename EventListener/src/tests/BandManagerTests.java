@@ -427,19 +427,28 @@ public class BandManagerTests {
 	public void testGetTopBands() throws SQLException{
 		Connection connection = dataSource.getConnection();
 		Statement stmt = connection.createStatement();
+		 
+
+		stmt.executeUpdate("insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image) "+
+	          "values('mamuka','sakhelashvili','bolean','ramtamtam','msakh12@edu.ge','+995598465565','selfshot.jpg');");
+ 
+		stmt.executeUpdate("insert into Place(UserID,Name,Adress,About) values(1,'სამიკიტნო','სააკაძე','კაი ხინკალია');");
+ 
+		stmt.executeUpdate("insert into Event(UserID,PlaceID,Time,About,Price,Image)"+
+		 "values(1,1,'14/06/2014','wavidaa!','5.00','chveen.jpg');");
+		
+		stmt.executeUpdate("insert into Band_Rating(UserID,BandID,EventID,Rating) values(1,1,1,10);" );
+		stmt.executeUpdate("insert into Band_Rating(UserID,BandID,EventID,Rating) values(1,3,1,8);");
+		stmt.executeUpdate("insert into Band_Rating(UserID,BandID,EventID,Rating) values(1,2,1,9);");
 		
 		ResultSet result = stmt.executeQuery("select ID from Band order by bandAverageRating(ID) desc limit 10;" );
 		
 		BandManager manager =  new BandManager(dataSource);
 		ArrayList<Integer> list = manager.getTopBands(10);
-		
-		result.next();
-		
-		
-		
-		for(int i = 0; i < list.size(); i++){
+		int i = 0;
+		while(result.next()){
 			assertEquals((int)list.get(i), result.getInt("ID"));
-			result.next();
+			i++;
 		}
  	}
 	

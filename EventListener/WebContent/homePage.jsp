@@ -43,8 +43,8 @@
 								
 								for(int i = 0; i < bandsList.size(); i++){
 									Band band = bandManager.getBand(bandsList.get(i));
-									out.println("<li> <h3>" + band.getName() + "</h3> " 
-											+ bandManager.getRating(band.getID()) + " </li>");
+									out.println("<li><a href=\"band.jsp?id=" + band.getID() + "\"><h3>" + band.getName() + "</h3></a>" +
+											bandManager.getRating(band.getID()) + " </li>");
 								}
 							
 							%>
@@ -86,7 +86,9 @@
 							 	 
 							 	 for(int i = 0; i < eventsList.size(); i++){
 							 		 Event event = eventManager.getEvent(eventsList.get(i));
-							 		 out.println("<p> <h1 align ='center'>" + event.getAbout() + "</h1><p>");
+							 		out.println("<li><a href=\"event.jsp?id=" + event.getID() + "\"><h3>" + event.getAbout() + "</h3></a>" +
+													 " </li>");
+
 							 		 out.println("<div style=\"height: 250px\">" +
 				     						"<img src=\"images/dj-3.jpg\" alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
 										"</div>");
@@ -98,7 +100,8 @@
 				</div>
 			</div>
 		  	<ul>
-		  	 <h1 align="center" > <
+		  	 <h1 align="center" > 
+		  	 
 			<%		 			
 				
 			   
@@ -119,7 +122,7 @@
 			  }		   
 		       
 			%>  
-			>
+			 
 			 </h1>
 			</ul>
 			  
@@ -129,31 +132,48 @@
 		<div id="sidebar2" class="sidebar">
 			<ul>
 				<li>
-					<form id="logingForm" method="get" action="#">
+					<form >
 						<div>
 						<%
 							String name = request.getParameter("FirstName");
-							if(name != null) out.println("<p>" + name + "</p>");
+							boolean weShouldDrawLogOut = false;
+							if(name == null && session.getAttribute("UserName") == null) {
+								out.println("<h2>Sign In</h2>");
+								out.println("<ul><li>");
+								out.println("<form action=\"LoginServlet\" method=\"post\"> <br/>");
+								out.println("User Name: <br/>");
+								out.println("<input type=\"text\" name=\"name\"><br />");
+								out.println("Password: <br/>");
+								out.println("<input type=\"text\" name =\"password\"> <br/>");
+								out.println("<input type=\"submit\" value=\"Log in\">");
+								out.println("<a href=\"register.html\" > Sign Up</a>");
+								out.println("</form></li></ul>");
+							}
+							else {
+								weShouldDrawLogOut = true;
+								String userName = request.getParameter("UserName");
+								if(userName == null) userName = (String)session.getAttribute("UserName");
+								else session.setAttribute("UserName", userName);
+								out.println("<p><h2> Welcome " +  userName + "</h2></p>");
+							}
 						
-						%>
-							<h2>Sign In</h2>
-							<ul><li>
-							
-							<form action="LoginServlet" method="post">
-								<br/>
-								User Name: <br/>
-								<input type="text" name="name">
-								<br />
-								Password: <br/>
-								<input type="text" name ="password"> 
-								<br/>
-								 <input type="submit" value="Log in">
-								 <a href="register.html" > Sign Up</a>
-							</form>
-							</li></ul>
-						</div>
+						%> 
+						
+							</div>
 					</form>
 				</li>
+				
+				<%
+					if(weShouldDrawLogOut){
+						out.println("<li>");
+						out.println("<form action=\"logout\" method=\"post\">");
+						out.println(" <input type=\"submit\" value=\"Log Out\">	");
+						out.println("</form></li>");
+					}
+				%>		 
+				 	  
+					 
+				 
 				<li id = "topPlaces">
 				
 					<h2>Top Places</h2>
@@ -164,11 +184,14 @@
 							
 							for(int i = 0; i < topPlaces.size(); i++){
 								Place place = placeManager.getPlace(topPlaces.get(i));
-								out.println("<li> <h3> " + place.getName() + " </h3> " + placeManager.getRating(place.getID()) + "</li>");
+								out.println("<li><a href=\"place.jsp?id=" + place.getID() + "\"><h3>" + place.getName() + "</h3></a>" +
+										placeManager.getRating(place.getID()) + " </li>");
 							}
 						%>
 					</ol>
-					<li>
+					
+					 
+					 
 					<h2>Calendar</h2>
 					<div id="calendar_wrap">
 					<br/>

@@ -1,0 +1,24 @@
+
+div{
+	
+	height: 290px;    
+	width:300px;    
+	border-color:#C8C8C8;    
+	background-color:#C8C8C8;  
+	border-radius: 25px;
+	text-align: left;
+	margin:auto;
+}
+
+p{
+	text-align:center;
+	color: yellow;
+	 
+}
+
+
+a:hover {
+	color: #cc0000;
+	font-weight: bold;
+	text-decoration: none;
+}
