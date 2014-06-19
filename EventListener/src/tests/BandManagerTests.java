@@ -281,7 +281,7 @@ public class BandManagerTests {
 		Statement stm = con.createStatement();
 		String q ="insert into Band(Name,About,Mail) values('queen','Rock Group','queen@gmail.com')";
 		stm.executeUpdate(q);
-		String id ="select ID from Band where Name='beatles'";
+		String id ="select ID from Band where Name='queen'";
 		ResultSet res = stm.executeQuery(id);
 		int TID = 0;
 		if(res.next())
@@ -320,6 +320,7 @@ public class BandManagerTests {
 		if(resCheck.next())
 		{
 			assertEquals(resCheck.getInt("Band_ImageID"), imageIDNew);
+			System.out.println(imageIDNew);
 		}
 		else
 			throw new AssertionError();

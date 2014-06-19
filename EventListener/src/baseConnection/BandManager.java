@@ -223,7 +223,7 @@ public class BandManager {
 	 */
 	public String getProfileImage(int BandID)
 	{
-		String ans="";
+		String ans=null;
 		String query = "select Name from Band_Image,Band_Profile_Image where "
 				+ "Band_Profile_Image.Band_ImageID=Band_Image.ID and Band_Image.BandID="+BandID;
 		try {
@@ -238,12 +238,15 @@ public class BandManager {
 					}				
 				} catch (Exception e) {
 					System.err.println("eror code "+BaseErrors.UNABLE_EXECUTE);
+					return ans;
 				}
 			} catch (SQLException e) {
 				System.err.println("eror code "+BaseErrors.UNABLE_CREATE_STATEMENT);
+				return ans;
 			}
 		} catch (SQLException e) {
 			System.err.println("eror code "+BaseErrors.UNABLE_CONNECTION);
+			return ans;
 		}
 		
 		return ans;

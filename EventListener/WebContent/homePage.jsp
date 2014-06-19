@@ -66,7 +66,7 @@ xmlhttp.send();
 								
 								for(int i = 0; i < bandsList.size(); i++){
 									Band band = bandManager.getBand(bandsList.get(i));
-									out.println("<li><a href=\"band.jsp?id=" + band.getID() + "\"><h3>" + band.getName() + "</h3></a>" +
+									out.println("<li><a href=\"BandProfile.jsp?BandID=" + band.getID() + "\"><h3>" + band.getName() + "</h3></a>" +
 											bandManager.getRating(band.getID()) + " </li>");
 								}
 							
