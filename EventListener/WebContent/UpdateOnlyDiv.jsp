@@ -16,7 +16,7 @@
 			<div class="dj"><img src="images/dj-3.jpg" alt="" width="510" height="250" /></div>
 			<div class="post">
 				<h1 class="title"><a href="#">Welcome to Our Website!</a></h1>
-				
+
 				<div class="entry">
 					<p><strong>Event Listener</strong> is designed by MACS students <a href="images/webcam-toy-photo3.jpg">TMM</a>.
 				</div>
@@ -27,19 +27,19 @@
 					<li> <p class="byline"><strong>Latest Event List. Enjoy Your Life Man!</strong></p></li>
 				</ul>
 				<div class="entry">
-					 
-					 
-					 	 
+
+
+
 							<%
 								EventManager eventManager =(EventManager) application.getAttribute("EventManager");
 								int numEvents = eventManager.getEventsNum();
 							 	 String currPage = request.getParameter("page");
-							  
+
 							 	 int pageNum = 0;
 							  	 pageNum = Integer.parseInt(currPage);
-							 	 
+
 							 	 ArrayList<Integer> eventsList = eventManager.getEventsForNthPage(pageNum);
-							 	 
+
 							 	 for(int i = 0; i < eventsList.size(); i++){
 							 		 Event event = eventManager.getEvent(eventsList.get(i));
 							 		out.println("<li><a href=\"event.jsp?id=" + event.getID() + "\"><h3>" + event.getAbout() + "</h3></a>" +
@@ -49,39 +49,39 @@
 				     						"<img src=\"images/dj-3.jpg\" alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
 										"</div>");
 							 	 }
-							
+
 							%>
-					 
-					
+
+
 				</div>
 			</div>
 		  	<ul>
 		  	 <h1 align="center" > 
-		  	 
+
 			<%		 			
-				
-			   
-			  
+
+
+
 			  int eventsPerPage = ConstantValues.NUM_EVENT_ON_PER_PAGE;
 			  int numPages = numEvents / eventsPerPage;
-			  
+
 			  if(numEvents % eventsPerPage > 0) numPages++;
-			  
-			  
-			  
+
+
+
 			  int startPageNum = Math.max(1,pageNum- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 			  int endPageNum = Math.min(numPages,pageNum + ConstantValues.NUM_LEFT_RIGHT_PAGES);
-			  
-			  
+
+
 			  for(int i = startPageNum; i <= endPageNum; i++){
 				  out.println("<a href=# onclick=loadXMLDoc("+i+")>"+i+" </a>");
 			  }		   
-		       
+
 			%>  
-			 
+
 			 </h1>
 			</ul>
-			  
+
 		</div>
 		<!-- end content -->
 </body>

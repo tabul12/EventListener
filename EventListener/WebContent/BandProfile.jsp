@@ -95,16 +95,16 @@
 				<li>
 				    <h2>Top Bands</h2>
 				    <ol>
-						  
+
 							<% 
 								ArrayList<Integer> bandsList = bandManager.getTopBands(ConstantValues.NUM_TOP_BANDS);
-								
+
 								for(int i = 0; i < bandsList.size(); i++){
 									Band currBand = bandManager.getBand(bandsList.get(i));
 									out.println("<li><a href=\"BandProfile.jsp?BandID=" + currBand.getID() + "\"><h3>" + currBand.getName() + "</h3></a>" +
 											bandManager.getRating(currBand.getID()) + " </li>");
 								}
-							
+
 							%>
 						</ol>
 				</li>
@@ -114,7 +114,7 @@
 						<%
 							PlaceManager placeManager = (PlaceManager)application.getAttribute("PlaceManager");
 							ArrayList<Integer> topPlaces = placeManager.getTopPlaces(ConstantValues.NUM_TOP_PLACES);
-							
+
 							for(int i = 0; i < topPlaces.size(); i++){
 								Place place = placeManager.getPlace(topPlaces.get(i));
 								out.println("<li><a href=\"place.jsp?id=" + place.getID() + "\"><h3>" + place.getName() + "</h3></a>" +

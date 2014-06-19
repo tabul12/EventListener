@@ -4,13 +4,14 @@ public class Event {
 	private int ID;
 	private int userID;
 	private int placeID;
+	private String name;
 	private String time;
 	private String about;
 	private String price;
 	private String image;
 	
 	
-	public Event(int ID,int userID,int placeID,String time,String about,String price,
+	public Event(int ID,int userID,int placeID,String name,String time,String about,String price,
 			String image){
 		
 		this.ID = ID;
@@ -20,6 +21,7 @@ public class Event {
 		this.about = about;
 		this.price = price;
 		this.image = image;		
+		this.name = name;
 	}
 	
 	/*
@@ -39,10 +41,17 @@ public class Event {
 	
 	
 	/*
-	 * this event returns user ID who added this event
+	 * this method returns user ID who added this event
 	 */
 	public int getUserID(){
 		return this.userID;
+	}
+	
+	/*
+	 * This method returns string name
+	 */
+	public String getName(){
+		return this.name;
 	}
 	
 	/*

@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import errors.BaseErrors;
+import errors.ConstantValues;
 import sun.rmi.server.Dispatcher;
 import baseConnection.UserManager;
 
@@ -41,6 +44,7 @@ public class registrationServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
 		HttpSession session = request.getSession();
 		ServletContext context = request.getServletContext();
 		UserManager userManager = (UserManager) context.getAttribute("UserManager");
@@ -51,10 +55,28 @@ public class registrationServlet extends HttpServlet {
 		String mail = request.getParameter("Mail");
 		String mobileNumber = request.getParameter("MobileNumber");
 		
-		userManager.addUser(firstName, lastName, userName, password, mail, "default.jpg", mobileNumber);
+		 
 		
-		RequestDispatcher dispatch = request.getRequestDispatcher("homePage.jsp");
-		dispatch.forward(request, response);
+		boolean exists = false;
+		try {
+			 exists = userManager.alreadyExists(userName);
+		} catch (SQLException e) {
+			
+		}
+		
+		 
+		if(exists){
+				session.setAttribute("UserNameAlreadyUsed", BaseErrors.USER_NAME_ALREADY_USED);
+				RequestDispatcher dispatch = request.getRequestDispatcher("register.jsp");
+				dispatch.forward(request, response);
+		} else {			 	
+				userManager.addUser(firstName, lastName, userName, password, mail, "default.jpg", mobileNumber);
+				RequestDispatcher	dispatch = request.getRequestDispatcher("homePage.jsp");
+				dispatch.forward(request, response);	
+		}
+			 
+		
+		 
 	}
 
 }

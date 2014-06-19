@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import objects.User;
-
+import errors.BaseErrors;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import errors.BaseErrors;
@@ -69,15 +69,16 @@ public class UserManager {
 
 	public int addUser(String name, String lastName, String userName,
 			String password, String mail, String image, String mobileNumber) {
+		 
 		String query = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
 				+ "Image,Mail) "
 				+ "Values('"
 				+ name
-				+ "','"
+				+ "','" 
 				+ lastName
-				+ "','"
-				+ userName
-				+ "','"
+				+ "','" 
+				+ userName 
+				+ "','" 
 				+ password
 				+ "','"
 				+ mobileNumber
@@ -170,13 +171,13 @@ public class UserManager {
 				+ numBeenPlacesPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
 		while (res.next()) {
-			int eventID = res.getInt("EventID");
+			int eventID = res.getInt("User_Going_EventEventID");
 			list.add(eventID);
 		}
 		con.close();
 		return list;
 	}
-	
+
 	/***
 	 * abrunebs useris ID is username is da passwordis mixedvit sachiroa
 	 * daloginebisas
@@ -200,6 +201,20 @@ public class UserManager {
 			con.close();
 			return -1;
 		}
+	}
+	
+	/*
+	 * Here we Check whether user with this userName
+	 * and Password exists
+	 */
+	
+	public boolean userExists(String userName,String password) throws SQLException{
+		Connection con = eventDataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "select ID from User where Password='" + password + "' and UserName='" + userName + "';";
+		ResultSet result = stmt.executeQuery(query);
+		boolean is = result.next();
+		con.close();return is;
 	}
 
 	/***

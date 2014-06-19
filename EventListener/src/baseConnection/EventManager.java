@@ -35,6 +35,7 @@ private BasicDataSource eventDataSource;
 		 
 		int userID = 0;
 		int placeID = 0;
+		String name = "";
 		String time = "";
 		String about = "";
 		String price = "";
@@ -43,6 +44,7 @@ private BasicDataSource eventDataSource;
 		if(result.next()){
 			userID = result.getInt("UserID");
 			placeID = result.getInt("PlaceID");
+			name = result.getString("Name");
 			time = result.getString("Time");
 			about = result.getString("About");
 			price = result.getString("Price");
@@ -50,7 +52,7 @@ private BasicDataSource eventDataSource;
 		}
 		
 		connection.close();
-		Event event = new Event(eventID, userID, placeID, time, about, price, image);
+		Event event = new Event(eventID, userID, placeID, name, time, about, price, image);
 		return event;
 	}
 	
@@ -61,8 +63,8 @@ private BasicDataSource eventDataSource;
 	 * we pass it image Name of this event because
 	 * image Name is unic
 	 */
-	public int getEventID(String eventImageName) throws SQLException{
-		String query = "select ID from Event where Image='" + eventImageName + "';";
+	public int getEventID(String eventName) throws SQLException{
+		String query = "select ID from Event where Name='" + eventName + "';";
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
 		ResultSet result = stmt.executeQuery(query);
@@ -92,10 +94,10 @@ private BasicDataSource eventDataSource;
 	 * this method adds new event
 	 * it constructs query string and passes to changeBase method
 	 */
-	public int addEvent(int userID,int placeID,String time,String about,String price,String image){
+	public int addEvent(int userID,int placeID,String name,String time,String about,String price,String image){
 		 
-		String query = "insert into Event(UserID,placeID,Time,About,Price,Image)"
-				+ "values(" + userID + "," + placeID + ",'" + time + "','" + about +"','" + 
+		String query = "insert into Event(UserID,placeID,Name,Time,About,Price,Image)"
+				+ "values(" + userID + "," + placeID + ",'" + name + "','" + time + "','" + about +"','" + 
 				price + "','" + image +"');";
 		 
 		return changeBase(query);		 
@@ -107,9 +109,9 @@ private BasicDataSource eventDataSource;
 	 * this method updates info about specified event
 	 * it constructs query string and passes it to changeBase method
 	 */
-	public int updateInfo(int eventID,int placeID,String time,String about,String price,String image){
+	public int updateInfo(int eventID,int placeID,String name,String time,String about,String price,String image){
 		String query = "update Event "
-				+ "set PlaceId=" + placeID + ", Time='" + time + "', About='" + about + "', "
+				+ "set PlaceId=" + placeID + ", Name='" + name + "', Time='" + time + "', About='" + about + "', "
 						+ "Price='" + price + "', Image='" + image + "' "
 								+ "where ID=" + eventID + ";";
 		 

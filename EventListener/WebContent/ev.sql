@@ -176,8 +176,8 @@ create table Band_Rating(
 	foreign key(BandID) references Band(ID),
 	foreign key(EventID) references Event(ID)
 );
-insert into Band_Rating(UserID,BandID,EventID,Rating) values(1,12,1,10);
-select * from Band_Rating
+
+
 create table Place_Rating(
 	ID int auto_increment not null,
 	primary key(ID),
@@ -258,9 +258,7 @@ insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image)
              
 
 
-/*select * from Band_Profile_Image;
-select * from Band_Image
-select * from Band
+/*select * from Place_Profile_Image;
 /*
 
 insert into Place(UserID,Name,Adress,About)
