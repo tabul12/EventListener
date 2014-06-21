@@ -107,7 +107,7 @@ img.right {
 	margin: 0 auto;
 	padding: 0;
 	height: 50px;
-	background: url(images/img02.jpg) no-repeat left top;
+	background-color:black; 
 }
 
 #menu ul {
@@ -139,7 +139,8 @@ img.right {
 }
 
 #menu .current_page_item a {
-	color: #FFFFFF;
+	color: white;
+	font-size:20px;
 }
 
 /* Wrapper */
@@ -380,4 +381,7 @@ img.right {
 
 .flower {
 	padding-left: 20px;
+}
+.colRed{
+	color: red;
 }

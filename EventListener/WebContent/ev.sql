@@ -14,6 +14,7 @@ create table User(
 	MobileNumber varchar(30),
 	Image varchar(30),
 	PRIMARY KEY (ID)
+	
 );
 
 create table Admin(
@@ -54,6 +55,7 @@ create table Event(
 	ID int auto_increment not null,
 	primary key(ID),
 	UserID int,
+	Name varchar(30) unique,
 	PlaceID int,
 	Time text,
 	About text,
@@ -136,7 +138,7 @@ create table Music(
 	Name varchar(50) unique,
 	foreign key(BandID) references Band(ID)	
 );
-
+/*insert into Music(BandID,Name) values(1,'radiohead5.mp3') */
 create table Video(
 	ID int auto_increment not null,
 	Primary key(ID),
@@ -144,7 +146,7 @@ create table Video(
 	Name varchar(50) unique,
 	foreign key(BandID) references Band(ID)	
 );
-
+/* insert into Video(BandID,Name) values(1,'Maybe.mp4')    */
 
 create table Place_Image(
 	ID int auto_increment not null,
@@ -219,22 +221,8 @@ END;
 $$
 DELIMITER ; 
 
-
-
-
-
-
+  
  
-
-
-
-/*
-
-select * from Band;
- 
-
-select * from Event;
-
  
 
 /*
@@ -271,8 +259,8 @@ insert into Place(UserID,Name,Adress,About)
 insert into Place_Image(Name,PlaceID)
 	values('magaria.jpg',1);
 
-insert into Place_Image(Name,PlaceID)
-	values('chveen.jpg',2);
+insert into Band_Image(Name,BandID)
+	values('radiohead2.jpg',1);
 
 
 insert into Place_Profile_Image(Place_ImageID,PlaceID)
@@ -299,7 +287,7 @@ where ID = 2;
 
 
 
-SELECT * FROM User 
+SELECT * FROM Band 
 where ID > 3 
 order BY ID desc  LIMIT 2,2;*/
 
