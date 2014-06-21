@@ -33,16 +33,19 @@
 							<%
 								EventManager eventManager =(EventManager) application.getAttribute("EventManager");
 								int numEvents = eventManager.getEventsNum();
-							 	 String currPage = request.getParameter("page");
-
-							 	 int pageNum = 0;
-							  	 pageNum = Integer.parseInt(currPage);
-
+							 	String currPage = request.getParameter("page");
+								session.setAttribute("HomePageNum", currPage);
+								
+								 
+							 	int pageNum = 0;
+							  	pageNum = Integer.parseInt(currPage);
+							   
 							 	 ArrayList<Integer> eventsList = eventManager.getEventsForNthPage(pageNum);
-
+								//	System.out.println(eventsList.size() + "eventebis raodenobaa update");
 							 	 for(int i = 0; i < eventsList.size(); i++){
 							 		 Event event = eventManager.getEvent(eventsList.get(i));
-							 		out.println("<li><a href=\"event.jsp?id=" + event.getID() + "\"><h3>" + event.getAbout() + "</h3></a>" +
+							 		
+							 		out.println("<li><a href=\"event.jsp?EventID=" + event.getID() + "\"><h3>" + event.getName() + "</h3></a>" +
 													 " </li>");
 
 							 		 out.println("<div style=\"height: 250px\">" +
@@ -67,10 +70,12 @@
 
 			  if(numEvents % eventsPerPage > 0) numPages++;
 
-
+			   
 
 			  int startPageNum = Math.max(1,pageNum- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 			  int endPageNum = Math.min(numPages,pageNum + ConstantValues.NUM_LEFT_RIGHT_PAGES);
+				
+			  System.out.println(numPages  + " " + pageNum + ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 
 			  for(int i = startPageNum; i <= endPageNum; i++){

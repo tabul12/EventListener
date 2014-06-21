@@ -161,7 +161,7 @@ public class EventManagerTests {
 				+ "values(2,"+ id + ");";
 		stmt.executeUpdate(addGoingUsers);
 		
-		ArrayList<Integer> list = manager.getGoingUsers(id);
+		ArrayList<Integer> list = manager.getGoingUsers(id,1);
 		
 		assertEquals(1, (int)list.get(0));
 		assertEquals(2,(int)list.get(1));		

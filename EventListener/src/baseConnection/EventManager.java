@@ -103,7 +103,18 @@ private BasicDataSource eventDataSource;
 		return changeBase(query);		 
 	}
 	
-	
+	public int userAttendsEvent(int userID,int eventID) throws SQLException{		
+		String query = "select * from User_Going_Event where UserID=" + userID + " and EventID=" + eventID + ";"; 		
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		if(result.next()){
+			connection.close();
+			return BaseErrors.USER_ALREADY_ATTENDS_EVENT;
+		}
+		query = "insert into User_Going_Event(UserID,EventID) values(" + userID + "," + eventID + ");";
+		return changeBase(query);
+	}
 	
 	/*
 	 * this method updates info about specified event
@@ -119,12 +130,32 @@ private BasicDataSource eventDataSource;
 	}
 	
 	/*
+	 * this method returns number of going users on 
+	 * specified event
+	 */
+	public int getGoingUsersNum(int eventID) throws SQLException{
+		String query = "select count(ID) from User_Going_Event where EventID='" + eventID + "';";
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		 
+		int ans = 0;
+		
+		if(result.next()) ans = result.getInt("count(ID)");
+		
+		connection.close();
+		
+		return ans;
+	}
+	
+	/*
 	 * this method returns list of ID of users, who goes on this 
 	 * event 
 	 */
-	public ArrayList<Integer> getGoingUsers(int eventID) throws SQLException{
+	public ArrayList<Integer> getGoingUsers(int eventID,int pageNum) throws SQLException{
 		String query = "select UserID from User_Going_Event "
-				+ "where EventID=" + eventID + ";";
+				+ "where EventID=" + eventID + " order by ID limit " + (pageNum - 1)*ConstantValues.NUM_GOING_USERS_PER_PAGE + 
+				"," + ConstantValues.NUM_GOING_USERS_PER_PAGE + ";";
 		
 		return getList(query,"UserID");
 	}
@@ -139,6 +170,8 @@ private BasicDataSource eventDataSource;
 		
 		return getList(query, "BandID");
 	}
+	
+
 	
 	/*
 	 * this method return boolean about 
@@ -217,5 +250,7 @@ private BasicDataSource eventDataSource;
 		
 		return list;
 	}
+	
+	
 	
 }

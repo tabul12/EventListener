@@ -11,13 +11,14 @@ import objects.Place;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import errors.BaseErrors;
+import errors.ConstantValues;
 
 
 
 public class PlaceManager {
 	
 	private BasicDataSource eventDataSource;
-	private static final int placeImagesPerPage = 2;
+	private static final int placeImagesPerPage = ConstantValues.PLACE_IMAGES_ON_PER_PAGE;
 	
 	public PlaceManager(BasicDataSource connectionPool){
 		this.eventDataSource = connectionPool;
@@ -201,6 +202,22 @@ public class PlaceManager {
 		if(result.next())
 			ans = result.getDouble("avg(Rating)");	
 		connection.close();
+		return ans;
+	}
+	
+	/*
+	 * this method returns number of images of specified place
+	 */
+	public int getPlaceImagesNum(int placeID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		String query = "select count(ID) " + 
+					      "from Place_Image where PlaceID=" + placeID + ";";
+		
+		int ans = 0;
+		ResultSet result = stmt.executeQuery(query);
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();		
 		return ans;
 	}
 	
