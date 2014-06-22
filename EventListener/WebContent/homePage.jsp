@@ -34,6 +34,7 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById("content").innerHTML=xmlhttp.responseText;
+    document.getElementById("logIncor").innerHTML="";
     }
   }
 xmlhttp.open("GET","UpdateOnlyDiv.jsp?page="+p,true);
@@ -46,7 +47,7 @@ xmlhttp.send();
 <div id="header">
 	<div id="menu">
 		<ul id="main">
-			<li class="current_page_item"><a href="#">Home Page</a></li>
+			<li class="current_page_item"><a href="homePage.jsp?HomePageNum=1">Home Page</a></li>
 		</ul>
 	</div>
 </div>
@@ -98,26 +99,36 @@ xmlhttp.send();
 
 
 							<%
-								EventManager eventManager =(EventManager) application.getAttribute("EventManager");
-								int numEvents = eventManager.getEventsNum();
-							 	 String id = request.getParameter("id");
+								 
+							EventManager eventManager =(EventManager) application.getAttribute("EventManager");
+							int numEvents = eventManager.getEventsNum();
+							
+							String homePageNumFromReqsuest = request.getParameter("HomePageNum");
+							 
+							if(homePageNumFromReqsuest != null){
+								session.setAttribute("HomePageNum",homePageNumFromReqsuest);	
+							}
+							
+						 	String id = (String)session.getAttribute("HomePageNum");
+						 	 int pageNum = 0;
+						 	 if(id!= null)
+						  		  pageNum = Integer.parseInt(id);
+						 	 else pageNum = 1;
+						 	 
+						 	 
+						 	 
+						 	 ArrayList<Integer> eventsList = eventManager.getEventsForNthPage(pageNum);
 
-							 	 int pageNum = 0;
-							 	 if(id!= null)
-							  		  pageNum = Integer.parseInt(id);
-							 	 else pageNum = 1;
+						 	  
+						 	 for(int i = 0; i < eventsList.size(); i++){
+						 		 Event event = eventManager.getEvent(eventsList.get(i));
+						 		out.println("<li><a href=\"event.jsp?EventID=" + event.getID() + "\"><h3>" + event.getName() + "</h3></a>" +
+												 " </li>");
 
-							 	 ArrayList<Integer> eventsList = eventManager.getEventsForNthPage(pageNum);
-
-							 	 for(int i = 0; i < eventsList.size(); i++){
-							 		 Event event = eventManager.getEvent(eventsList.get(i));
-							 		out.println("<li><a href=\"event.jsp?id=" + event.getID() + "\"><h3>" + event.getAbout() + "</h3></a>" +
-													 " </li>");
-
-							 		 out.println("<div style=\"height: 250px\">" +
-				     						"<img src=\"images/dj-3.jpg\" alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
-										"</div>");
-							 	 }
+						 		 out.println("<div style=\"height: 250px\">" +
+			     						"<img src=\"images/dj-3.jpg\" alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
+									"</div>");
+						 	 }
 
 							%>
 
@@ -140,14 +151,14 @@ xmlhttp.send();
 
 			  int startPageNum = Math.max(1,pageNum- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 			  int endPageNum = Math.min(numPages,pageNum + ConstantValues.NUM_LEFT_RIGHT_PAGES);
-
+			
 
 			  for(int i = startPageNum; i <= endPageNum; i++){
 				  out.println("<a href=# onclick=loadXMLDoc("+i+")>"+i+" </a>");
 				  //out.println("<a href=\"homePage.jsp?id=" + i + "\">" + i + "</a>");
 			  }		
 
-			%>  
+			%>
 
 			 </h1>
 			</ul>
@@ -170,13 +181,15 @@ xmlhttp.send();
 								
 								
 								Integer number = (Integer)session.getAttribute("UserExists");
-								System.out.println(number);
+							 
 						      	int num  = -1;
 						      	if(number != null) num = number;
 								
 						      	if(num == BaseErrors.IN_CORRECT_USERNAME_OR_PASSWORD){
+						      		out.println("<div id='logIncor'>");
 						      		out.println("<p> incorrect username or password </p>");
 						      		session.setAttribute("UserExists", 0);
+						      		out.println("</div>");
 						      	} 
 								
 								out.println("User Name: <br/>");
@@ -197,8 +210,10 @@ xmlhttp.send();
 									userID = userManager.getUserID(userName, password); 
 									session.setAttribute("UserID", userID); 
 									userName = userManager.getUser(userID).getName();
-								}							 
+								}
+								out.println("<div id='welcome'>");
 								out.println("<p><h2> Welcome " + userName + "</h2></p>");
+								out.println("</div>");
 							}
 						
 						%> 
@@ -228,7 +243,7 @@ xmlhttp.send();
 
 							for(int i = 0; i < topPlaces.size(); i++){
 								Place place = placeManager.getPlace(topPlaces.get(i));
-								out.println("<li><a href=\"place.jsp?id=" + place.getID() + "\"><h3>" + place.getName() + "</h3></a>" +
+								out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID() + "\"><h3>" + place.getName() + "</h3></a>" +
 										placeManager.getRating(place.getID()) + " </li>");
 							}
 						%>

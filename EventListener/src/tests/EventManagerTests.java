@@ -117,7 +117,7 @@ public class EventManagerTests {
 		
 		int id = manager.getEventID("discoo2");
 		 
-		manager.updateInfo( id, 1,"discoo3", "2/19/2014", "mere wamodit", "4.00", "movidaa.jpg");
+		manager.updateInfo( id, "discoo3", "2/19/2014", "mere wamodit", "4.00");
 		 
 		String query = "select * from Event where ID=" + manager.getEventID("discoo3") + ";";
 		result = stmt.executeQuery(query);
@@ -126,7 +126,6 @@ public class EventManagerTests {
 		assertEquals("2/19/2014", result.getString("Time"));
 		assertEquals("mere wamodit",result.getString("About"));
 		assertEquals("4.00",result.getString("Price"));
-		assertEquals("movidaa.jpg", result.getString("Image"));
 		connection.close();
 	} 
 	
@@ -161,7 +160,7 @@ public class EventManagerTests {
 				+ "values(2,"+ id + ");";
 		stmt.executeUpdate(addGoingUsers);
 		
-		ArrayList<Integer> list = manager.getGoingUsers(id);
+		ArrayList<Integer> list = manager.getGoingUsers(id,1);
 		
 		assertEquals(1, (int)list.get(0));
 		assertEquals(2,(int)list.get(1));		
