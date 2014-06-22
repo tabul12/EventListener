@@ -62,8 +62,8 @@ img.right {
 #header {
 	width: 1000px;
 	margin: 0 auto;
-	height: 150px;
-	background: url(images/img02.jpg) repeat-x left top;
+	height: 50px;
+	background:url(images/img02.jpg) repeat-x left top;-->
 }
 
 /* Header */
@@ -114,7 +114,7 @@ img.right {
 	margin: 0 auto;
 	padding: 0;
 	height: 50px;
-	background: url(images/img02.jpg) no-repeat left top;
+	background-color:black; 
 }
 
 #menu ul {

@@ -99,12 +99,9 @@
 					</li>
 					<%
 					
-						String UserIDString =(String) session.getAttribute("UserID");
-						int UserID= -1;
-						if(UserIDString!=null)
-							UserID = Integer.parseInt(UserIDString);
+						Integer UserID =(Integer) session.getAttribute("UserID");
 						int curBandUserID=bandManager.getBand(BandID).getUserID();
-						if(UserID!=curBandUserID)
+						if(UserID==curBandUserID)
 						{
 							out.println("<li>");
 							out.println("<h2>Upload Images</h2>");
@@ -123,7 +120,7 @@
 					    
 					%>
 					<%
-					if(UserID!=curBandUserID)
+					if(UserID==curBandUserID)
 					{
 						out.println("<li>");
 						out.println("<h2>Upload Music</h2>");
@@ -142,7 +139,7 @@
 					}
 					%>
 					<%
-					if(UserID!=curBandUserID)
+					if(UserID==curBandUserID)
 					{
 						out.println("<li>");
 						out.println("<h2>Upload Videos</h2>");

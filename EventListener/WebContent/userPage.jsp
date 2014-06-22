@@ -64,7 +64,7 @@ Released   : 20090303
 						<ul>
 							<%
 								if(user.getImage() != null){
-														out.println("<img src=\""+user.getImage()+ "\" width=\"220\" height=\"220\">");
+														out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
 													}else{
 														out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
 													}
