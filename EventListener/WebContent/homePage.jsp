@@ -172,7 +172,7 @@ xmlhttp.send();
 							Integer userID = (Integer)session.getAttribute("UserID");
 							boolean weShouldDrawLogOut = false;
 							
-							
+							System.out.println(userID + " danj naj ");
 							if(userID == null ) {
 								out.println("<h2>Sign In</h2>");
 								out.println("<ul><li>");
