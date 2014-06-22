@@ -47,7 +47,7 @@ xmlhttp.send();
 <div id="header">
 	<div id="menu">
 		<ul id="main">
-			<li class="current_page_item"><a href="homePage.jsp">Home Page</a></li>
+			<li class="current_page_item"><a href="homePage.jsp?HomePageNum=1">Home Page</a></li>
 		</ul>
 	</div>
 </div>
@@ -102,17 +102,24 @@ xmlhttp.send();
 								 
 							EventManager eventManager =(EventManager) application.getAttribute("EventManager");
 							int numEvents = eventManager.getEventsNum();
+							
+							String homePageNumFromReqsuest = request.getParameter("HomePageNum");
+							 
+							if(homePageNumFromReqsuest != null){
+								session.setAttribute("HomePageNum",homePageNumFromReqsuest);	
+							}
+							
 						 	String id = (String)session.getAttribute("HomePageNum");
-
 						 	 int pageNum = 0;
 						 	 if(id!= null)
 						  		  pageNum = Integer.parseInt(id);
 						 	 else pageNum = 1;
-
+						 	 
+						 	 
+						 	 
 						 	 ArrayList<Integer> eventsList = eventManager.getEventsForNthPage(pageNum);
 
-						 	// System.out.println(eventsList.size() + " eventebis raodenoba");
-						 	 
+						 	  
 						 	 for(int i = 0; i < eventsList.size(); i++){
 						 		 Event event = eventManager.getEvent(eventsList.get(i));
 						 		out.println("<li><a href=\"event.jsp?EventID=" + event.getID() + "\"><h3>" + event.getName() + "</h3></a>" +
@@ -144,15 +151,14 @@ xmlhttp.send();
 
 			  int startPageNum = Math.max(1,pageNum- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 			  int endPageNum = Math.min(numPages,pageNum + ConstantValues.NUM_LEFT_RIGHT_PAGES);
-				
-			  System.out.println(numPages  + " " + pageNum + " " + ConstantValues.NUM_LEFT_RIGHT_PAGES);
+			
 
 			  for(int i = startPageNum; i <= endPageNum; i++){
 				  out.println("<a href=# onclick=loadXMLDoc("+i+")>"+i+" </a>");
 				  //out.println("<a href=\"homePage.jsp?id=" + i + "\">" + i + "</a>");
 			  }		
 
-			%>  
+			%>
 
 			 </h1>
 			</ul>
@@ -175,7 +181,7 @@ xmlhttp.send();
 								
 								
 								Integer number = (Integer)session.getAttribute("UserExists");
-								System.out.println(number);
+							 
 						      	int num  = -1;
 						      	if(number != null) num = number;
 								

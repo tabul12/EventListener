@@ -24,7 +24,7 @@
 <div id="header">
 	<div id="menu">
 		<ul id="main">
-			<li class="current_page_item"><a href="homePage.jsp">Home Page</a></li>
+			<li class="current_page_item"><a href="homePage.jsp?HomePageNum=1">Home Page</a></li>
 		</ul>
 	</div>
 </div>
@@ -84,8 +84,11 @@
 			  	
 			  	out.println("<h2 align=center>Welcome To " + place.getName() + " </h2>" );
 			  	
-			  	out.println("<div class=\"dj\"><img src=\"images/" + place.getProfileImage() + "\" alt=\"\" width=\"510\" height=\"250\" /></div>");
+			  	System.out.print(place.getProfileImage() + "es ixateba ");
+			  	
+			  	out.println("<div class=\"dj\"><img src=\"images/" + placeManager.getProfileImage(placeID) + "\" alt=\"\" width=\"510\" height=\"250\" /></div>");
 			
+			  	
 			%>
 			<div class="post">
 				<h1 class="title"><a href="#">Welcome to Our Website!</a></h1>
@@ -118,14 +121,7 @@
 					
 					if(tmp != null) {
 						pageNum = Integer.parseInt(tmp);
-						session.setAttribute("PlacePageNum", pageNum);
 					}
-					 
-					
-					Integer k = (Integer) session.getAttribute("PlacePageNum");
-					if(k != null){
-						pageNum = k;
-					}  
 					
 					
 					
@@ -133,13 +129,16 @@
 					
 					out.println("<div class =\"column\" style=\"width:40%;Text-align:center;float:left;\">");
 					
-					System.out.println(placeID + " " + pageNum) ;
+					 
 					ArrayList<String> imageList = placeManager.getAllImages(placeID, pageNum);
 					 
 					
 					for(int i = 0; i < imageList.size(); i++){
 						out.println("<div class =\"column\" style=\"width:20%;Text-align:center;float:left;\">");
-						out.println("<p><img src=\"images/"+ imageList.get(i) + "\" height=\"100\" width=\"80\" /></p></b></div> ");	
+						out.println("<p><img src=\"images/"+ imageList.get(i) + "\" height=\"100\" width=\"80\" /></p></b>");
+						out.println("<a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + "&PlacePageNum=" + pageNum + "\"> Set Prof </a>");
+						out.println("</div>");
+						 
 					} 
 					 
 					out.println("</div></p> ");
@@ -188,10 +187,9 @@
 						if(userManager.hasAddedPlace(userID, placeID)){
 							out.println("<div>");
 							out.println("<h2> Update Information   </h2> </br>");
-							out.println("<ul><li>");
-							// out.println(" <a href=\"UpdateEventInfo.jsp\" align=\"right\"/> Update Information     </a>");							
-							
-							out.println(" <a href=\"#\" align=\"right\"/> Update Information     </a>");							
+							out.println("<ul><li>"); // <a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + "&PlacePageNum=" + pageNum + "\">
+							 
+							out.println(" <a href=\"placeUpdateInfo.jsp?PlacePageNum="+ pageNum + "\" align=\"right\"/> Update Information    </a>");							
 							out.println("</li></ul>");
 							out.println("</div> </br>");
 							

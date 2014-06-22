@@ -26,7 +26,7 @@
 <div id="header">
 	<div id="menu">
 		<ul id="main">
-			<li class="current_page_item"><a href="homePage.jsp">Home Page</a></li>
+			<li class="current_page_item"><a href="homePage.jsp?HomePageNum=1">Home Page</a></li>
 		</ul>
 	</div>
 </div>
@@ -43,6 +43,14 @@
 						<ol>
 
 							<% 
+								String tmp = (String)request.getParameter("EventPageNum");
+								System.out.println(tmp + " esaa romelsac xatavs");
+								Integer currentPage = 1;
+								if(tmp != null) { 
+									currentPage = Integer.parseInt(tmp);
+								}
+								
+								int pageNum = currentPage;
 							
 								String stID = request.getParameter("EventID");
 							  
@@ -97,19 +105,34 @@
 						out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID() + "\"><h2>" + place.getName()  +" " +
 								placeManager.getRating(place.getID()) +  "</h2></a> </li>");
 						if(session.getAttribute("UserID") != null){
-							out.println("<p align=center size:30px>");
+							out.println("<p align=center size:30px>");						
 							for(int j = 1; j <= ConstantValues.MAX_SCORE; j++){
-								String str =""; 
+							 	out.println("<a href=\"PlaceAddRatingServlet?name=" + place.getID() + "&value="
+							 			+ j + "&EventPageNum=" + pageNum +"\">" + j +"</a>");
 								
-								System.out.println("<b align=center><a href=\"PlaceAddRatingServlet\" id=" + j + ">" + j +"</a></b>");
 							}
-							out.println("<p>");
+							 
+							if(request.getAttribute("Rated") != null && 
+									(Integer)request.getAttribute("Rated") == BaseErrors.USER_ALREADY_RATED_PLACE) {
+								out.println("<h4> You have aldeary rated this place </h4>");
+								request.setAttribute("Rated", null);
+							}
+							
+							if(request.getAttribute("UserCantRatePlace") != null && 
+									(Integer)request.getAttribute("UserCantRatePlace") == BaseErrors.USER_DOES_NOT_ATTEND_EVENT){
+								out.println("<h4> You should attend event to rate place </h4>");
+								request.setAttribute("UserCantRatePlace", null);
+							}
+								
 						}
 						
 					%>			 
 					
-					<a href="PlaceAddRatingServlet?PlaceID=1?value=5"> kamdkm</a>
+					 
 				 </li>
+				
+				
+
 				
 			</ul>
 			
@@ -155,8 +178,7 @@
 							out.println("<div >");
 							out.println(" <h1> Event About </h1> </br>");
 							out.println("<div class=\"column\">");
-							out.println("<h4 >" +"mdkamdkamdkamdkadnakdnakdnkadkandkandkandkadnkandakn"+
-									"kdnakdnakdnakndkanddk"+ "</h4>");
+							out.println("<h4 >" + event.getAbout() + "</h4>");
 							out.println("</div>");				
 						
 							 
@@ -169,24 +191,12 @@
 							out.println(" <h2> Going Users List </h2> </br>");					 
 							out.println("<p><div style=\"width:250%\";>");
 							
-							String tmp = (String)request.getParameter("EventPageNum");
-							Integer currentPage = 1;
-							if(tmp != null) {
-								currentPage = Integer.parseInt(tmp);
-								session.setAttribute("EventPageNum", currentPage);
-							}
-							
-							Integer pg = (Integer) session.getAttribute("EventPageNum");
-							if(pg != null){
-								currentPage = pg;
-							}
-							
+							 
 							
 							int numGoingUSers = manager.getGoingUsersNum(event.getID());
 							int numPages = numGoingUSers / ConstantValues.NUM_GOING_USERS_PER_PAGE;
 							if(numGoingUSers % ConstantValues.NUM_GOING_USERS_PER_PAGE > 0) numPages++;
-							
-							System.out.println(currentPage);
+							 
 							int startPage = Math.max(1, currentPage - ConstantValues.NUM_LEFT_RIGHT_PAGES);
 							int endPage = Math.min(numPages, currentPage + ConstantValues.NUM_LEFT_RIGHT_PAGES);
 							
@@ -232,8 +242,7 @@
 				<%
 				
 					  	Integer st = (Integer)session.getAttribute("UserID");
-					  	session.setAttribute("UserID", st);
-						
+					  	
 						int userID = 0;
 						if(st != null) userID = st;
 						
@@ -241,9 +250,10 @@
 							out.println("<div>");
 							out.println("<h2> Update Information   </h2> </br>");
 							out.println("<ul><li>");
-							// out.println(" <a href=\"UpdateEventInfo.jsp\" align=\"right\"/> Update Information     </a>");							
 							
-							out.println(" <a href=\"#\" align=\"right\"/> Update Information     </a>");							
+							out.println(" <a href=\"updateEventInfo.jsp?EventPageNum=" + pageNum + "\" align=\"right\"/> Update Info  /   </a>");							
+							
+							out.println(" <a href=\"#\" align=\"right\"/> Change Profile</a>");
 							out.println("</li></ul>");
 							out.println("</div> </br>");
 						}
@@ -251,13 +261,14 @@
 						if(st != null){
 							out.println("<div>");
 							out.println(" <h2> Attend Event   </h2> </br>");
-							out.println("<form action=\"UserAttendsEventServlet\" method=\"post\"> <br/>");
+							out.println("<form action=\"UserAttendsEventServlet?value="+pageNum +"\" method=\"post\"> <br/>");
 							out.println("<ul><li>");
 							Integer attends = (Integer)request.getAttribute("UserAlreadyAttendsEvent");
 							if( attends != null && attends  == BaseErrors.USER_ALREADY_ATTENDS_EVENT ){
 								out.println("<h1> You Have Already Clicked To Attend Event</h1>");
 							}
 							out.println("<ul><li>");
+							out.println("<input type=\"hidden\" name=\"EventPageNum\" value=\"" + pageNum + "\">");
 							out.println(" <input type=\"submit\" value=\"Attend\"> </form>");
 							out.println("</li></ul>");
 							out.println("</div> </br>");
@@ -293,17 +304,31 @@
 						 
 						ArrayList<Integer> bands = manager.getBandsOnEvent(event.getID());
 						
+						if(request.getAttribute("Rated") != null && (Integer)request.getAttribute("Rated") == BaseErrors.USER_ALREADY_RATED_BAND) {
+							out.println("<h4> You have aldeary rated this band </h4>");
+							request.setAttribute("Rated", null);
+						}
+						
+						if(request.getAttribute("UserCantRateBand") != null && 
+								(Integer)request.getAttribute("UserCantRateBand") == BaseErrors.USER_DOES_NOT_ATTEND_EVENT){
+							out.println("<h4> You should attend event to rate place </h4>");
+							System.out.println("watafaa");
+							request.setAttribute("UserCantRateBand", null);
+						}
+						
 						for(int i = 0; i < bands.size(); i++){
 							Band band = bandManager.getBand(bands.get(i));
 							
 							out.println("<li><a href=\"BandProfile.jsp?BandID=" + band.getID() + "\"><h2>" + band.getName()  +" " +
 									bandManager.getRating(band.getID()) +  "</h2></a> </li>");
 							if(session.getAttribute("UserID") != null){
-								out.println("<p align=center size:30px>");
+								out.println("<p align=center size:30px>");						
 								for(int j = 1; j <= ConstantValues.MAX_SCORE; j++){
-									out.println("<b align=center><a href=\"#\" value=" + j + "/>" + j +"</b>");
+								 	out.println("<a href=\"BandAddRatingServlet?name=" + band.getID() + "&value="
+								 			+ j + "&EventPageNum=" + pageNum + "\">" + j +"</a>");									
 								}
-								out.println("<p>");
+								 
+								
 							}
 						}
 						

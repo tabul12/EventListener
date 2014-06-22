@@ -305,7 +305,46 @@ public class BandManager {
 		connection.close();
 		return list;
 	}
+	
+	public int addRating(int userID, int bandID, int eventID, int score) throws SQLException{
+		if(hasAlreadyRated(userID, eventID, bandID)) return BaseErrors.USER_ALREADY_RATED_BAND;
+		 
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		String query = "insert into Band_Rating(UserID,BandID,EventID,Rating) values"
+				+ "(" + userID + "," + bandID + "," + eventID + "," + score +");";
+		
+		System.out.println(query);
+		return changeBase(query);
+		
+	}
 
+	/*
+	 * this method checks whether this user has already rated
+	 * this band on this specified event
+	 */
+	
+	
+	public boolean hasAlreadyRated(int userID,int eventID,int bandID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		String query = "select ID from Band_Rating where BandID="
+				+ bandID + " and UserID=" + userID + " and EventID=" + eventID + ";";
+		
+		System.out.println(query);
+		ResultSet result = stmt.executeQuery(query);
+		 
+		
+		if (result.next()){
+			connection.close();
+			return true;
+		}
+
+		connection.close();
+		return false;
+			
+	}
+	
 	/*
 	 * this method gives us rating for specified Band
 	 */

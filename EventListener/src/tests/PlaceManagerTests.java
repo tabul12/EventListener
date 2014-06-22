@@ -291,4 +291,9 @@ public class PlaceManagerTests {
 		
 	}	
 	
+	@Test
+	public void testGetPlaceImageID(){
+		
+	}
+	
 }

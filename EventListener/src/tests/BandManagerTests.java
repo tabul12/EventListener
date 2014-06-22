@@ -453,6 +453,14 @@ public class BandManagerTests {
 		}
  	}
 	
+	@Test
+	public void testAddRate() throws SQLException{
+		BandManager band = new BandManager(dataSource);
+		assertEquals(BaseErrors.USER_ALREADY_RATED_BAND, band.addRating(1, 3, 1, 4));
+		assertEquals(BaseErrors.USER_ALREADY_RATED_BAND, band.addRating(1, 2, 1, 4));
+		assertEquals(BaseErrors.ALL_DONE, band.addRating(1, 8, 1, 4));
+		assertEquals(BaseErrors.ALL_DONE, band.addRating(1, 12, 1, 4));	 
+	}
 	
 
 }

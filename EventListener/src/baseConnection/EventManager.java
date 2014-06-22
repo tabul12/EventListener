@@ -103,16 +103,27 @@ private BasicDataSource eventDataSource;
 		return changeBase(query);		 
 	}
 	
-	public int userAttendsEvent(int userID,int eventID) throws SQLException{		
+	
+	public boolean userAlreadyAttendsEvent(int userID,int eventID) throws SQLException{
 		String query = "select * from User_Going_Event where UserID=" + userID + " and EventID=" + eventID + ";"; 		
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
 		ResultSet result = stmt.executeQuery(query);
 		if(result.next()){
 			connection.close();
+			return true;
+		}
+		connection.close();
+		return false;
+	}
+	
+	public int userAttendsEvent(int userID,int eventID) throws SQLException{		
+		
+		if(userAlreadyAttendsEvent(userID, eventID)){
 			return BaseErrors.USER_ALREADY_ATTENDS_EVENT;
 		}
-		query = "insert into User_Going_Event(UserID,EventID) values(" + userID + "," + eventID + ");";
+		
+		String query = "insert into User_Going_Event(UserID,EventID) values(" + userID + "," + eventID + ");";
 		return changeBase(query);
 	}
 	
@@ -120,11 +131,10 @@ private BasicDataSource eventDataSource;
 	 * this method updates info about specified event
 	 * it constructs query string and passes it to changeBase method
 	 */
-	public int updateInfo(int eventID,int placeID,String name,String time,String about,String price,String image){
+	public int updateInfo(int eventID,String name,String time,String about,String price){
 		String query = "update Event "
-				+ "set PlaceId=" + placeID + ", Name='" + name + "', Time='" + time + "', About='" + about + "', "
-						+ "Price='" + price + "', Image='" + image + "' "
-								+ "where ID=" + eventID + ";";
+				+ "set  Name='" + name + "', Time='" + time + "', About='" + about + "', "
+						+ "Price='" + price + "' where ID=" + eventID + ";";
 		 
 		return changeBase(query);
 	}
