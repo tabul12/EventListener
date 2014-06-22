@@ -23,7 +23,6 @@
 				int musicPageNum = Integer.parseInt(request.getParameter("page"));
 				ArrayList<String> musicsArray = bandManager.getMusics(BandID,musicPageNum);
 				for (int i = 0; i < musicsArray.size(); i++) {
-					System.out.println(musicsArray.get(i));
 					out.println("<strong><p class='colRed' >" + musicsArray.get(i)
 							+ "</p></strong>");
 					out.println("<audio controls>");
@@ -49,7 +48,6 @@
 							- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 					int endMusicPageNum = Math.min(numMusicPages, musicPageNum
 							+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
-					System.out.println("bla");
 					for (int i = startMusicPageNum; i <= endMusicPageNum; i++) {
 						out.println("<a href=# onclick=loadXMLDoc(" + i + ",'Musics',"
 								+ BandID + ")>" + i + " </a>");

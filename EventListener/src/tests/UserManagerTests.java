@@ -356,7 +356,7 @@ public class UserManagerTests {
 			ID = res.getInt("ID");
 		}
 		int k = manager.updateInfo(ID, "julieta", "vashaymadze",
-				"jvash13@freeuni.edu.ge","5555555555", "yvelazemagaridgeee.jpg", "raisparoli");
+				"jvash13@freeuni.edu.ge","5555555555", "raisparoli");
 		assertEquals(k,BaseErrors.ALL_DONE);
 		ResultSet re = stmt.executeQuery("Select * from User Where ID  ="+ ID +";");
 		if(re.next()){
@@ -388,7 +388,7 @@ public class UserManagerTests {
 			ID = res.getInt("ID");
 		}
 		int k = manager.updateInfo(ID, "jaba", "dvali",
-				"jvash13@freeuni.edu.ge","5555555555", "yvelazemagaridgeee.jpg", "raisparoli");
+				"jvash13@freeuni.edu.ge","5555555555", "raisparoli");
 		assertEquals(k,BaseErrors.ALL_DONE);
 		ResultSet re = stmt.executeQuery("Select * from User Where ID  ="+ ID +";");
 		if(re.next()){

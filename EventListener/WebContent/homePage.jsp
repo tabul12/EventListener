@@ -96,11 +96,7 @@ xmlhttp.send();
 					<li> <p class="byline"><strong>Latest Event List. Enjoy Your Life Man!</strong></p></li>
 				</ul>
 				<div class="entry" >
-
-
-
-							<%
-								 
+							<% 
 							EventManager eventManager =(EventManager) application.getAttribute("EventManager");
 							int numEvents = eventManager.getEventsNum();
 							
@@ -209,7 +205,11 @@ xmlhttp.send();
 								User user = userManager.getUser(userID);
 								
 								out.println("<div id='welcome'>");
-								out.println("<p><h2> Welcome " + user.getUserName() + "</h2></p>");
+
+								
+
+								out.println("<a href='userPage.jsp'><p><h2> Welcome " + user.getUserName() + "</h2></p></a>");
+
 								out.println("</div>");
 							}
 						

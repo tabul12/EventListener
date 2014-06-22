@@ -27,7 +27,6 @@
 									  " height='100'  width='100'"+">");
 					 		 out.println("   </a>");
 					 	 }
-					 	System.out.println(imagesArray.size());
 					%>
 				</div>
 			<ul>
