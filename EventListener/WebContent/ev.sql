@@ -40,7 +40,9 @@ create table Band(
 	Mail text,
 	FOREIGN KEY (UserID) REFERENCES User(ID)	
 );
- 
+ /*
+	select * from Band
+*/
 create table Place(
 	ID int auto_increment not null,
 	primary key(ID),

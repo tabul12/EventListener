@@ -208,7 +208,7 @@ xmlhttp.send();
 									userName = userManager.getUser(userID).getName();
 								}
 								out.println("<div id='welcome'>");
-								out.println("<p><h2> Welcome " + userName + "</h2></p>");
+								out.println("<a href='userPage.jsp'><p><h2> Welcome " + userName + "</h2></p></a>");
 								out.println("</div>");
 							}
 						
