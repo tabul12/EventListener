@@ -11,4 +11,5 @@ public class BaseErrors {
 	public static final int IN_CORRECT_USERNAME_OR_PASSWORD = 38;
 	public static final int CORRECT_USERNAME_AND_PASSWORD = 20;
 	public static final int USER_ALREADY_ATTENDS_EVENT = 41;
+	public static final int USER_DOES_NOT_ATTEND_EVENT = 29;
 }

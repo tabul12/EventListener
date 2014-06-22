@@ -68,7 +68,7 @@ public class PlaceManager {
 				+ "Place_Profile_Image.PlaceID=" + placeID + ";";
 		result = stmt.executeQuery(query);
 		if(result.next()){
-			image = result.getString("Name");
+			image = result.getString("Place_Image.Name");
 		}
 		
 		Place place = new Place(placeID,userID, name, adress, about, image);
@@ -86,6 +86,44 @@ public class PlaceManager {
 				+ "values(" + userID + ",'" + name + "','" + adress + "','" + about +"');";
 		
 		return changeBase(query);
+	}
+	
+	public String getProfileImage(int placeID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+	 
+		
+		String image = ""; 
+		
+		String query = "select Place_Image.Name from Place_Image, Place_Profile_Image ,Place " +""
+				+ "where Place_Profile_Image.Place_ImageID=Place_Image.ID and "
+				+ "Place_Profile_Image.PlaceID=" + placeID + ";";
+		ResultSet result = stmt.executeQuery(query);
+		 
+		if(result.next()){
+			image = result.getString("Place_Image.Name");
+		} 
+		
+		 
+		return image;
+	}
+	
+	/*
+	 * this method takes the name of place image and returns its ID
+	 */
+	
+	public int getPlaceImageID(String imageName) throws SQLException{
+		String query = "select ID from Place_Image where Name='" + imageName + "';";
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();	 
+		ResultSet result = stmt.executeQuery(query);
+		
+		 
+		
+		if(result.next()){
+			int ans = result.getInt("ID");
+			return ans;
+		} else return 0;
 	}
 	
 	/*

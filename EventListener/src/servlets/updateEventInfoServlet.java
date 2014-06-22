@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,21 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import errors.BaseErrors;
 import baseConnection.EventManager;
-import baseConnection.UserManager;
 
 /**
- * Servlet implementation class UserAttendsEventServlet
+ * Servlet implementation class updateEventInfoServlet
  */
-@WebServlet("/UserAttendsEventServlet")
-public class UserAttendsEventServlet extends HttpServlet {
+@WebServlet("/updateEventInfoServlet")
+public class updateEventInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserAttendsEventServlet() {
+    public updateEventInfoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,32 +39,27 @@ public class UserAttendsEventServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession();
+
 		ServletContext context = request.getServletContext();
 		EventManager eventManager = (EventManager) context.getAttribute("EventManager");
-		int userID = (Integer) session.getAttribute("UserID");
-		int eventID = (Integer) session.getAttribute("EventID");
-
-		String pageN = (String) request.getParameter("EventPageNum");
+		HttpSession session = request.getSession();
+		Integer eventID = (Integer)session.getAttribute("EventID");
 		
-		System.out.println(pageN + " kdmakm ");
+		String name = request.getParameter("Name");
+		String about = request.getParameter("About");
+		String price = request.getParameter("Price");
+		String time = request.getParameter("Time");
+		
+		String pageN = request.getParameter("EventPageNum");
 		Integer pageNum = 1;
 		if(pageN != null) pageNum = Integer.parseInt(pageN);
 		request.setAttribute("EventPageNum", pageNum);
 		
+		eventManager.updateInfo(eventID, name, time, about, price);
 		
-		
-		try {
-			if(eventManager.userAttendsEvent(userID, eventID) == BaseErrors.USER_ALREADY_ATTENDS_EVENT){
-				request.setAttribute("UserAlreadyAttendsEvent", BaseErrors.USER_ALREADY_ATTENDS_EVENT);
-			} else request.setAttribute("UserAlreadyAttendsEvent", BaseErrors.ALL_DONE);
-			RequestDispatcher	dispatch = request.getRequestDispatcher("event.jsp");
-			dispatch.forward(request, response);	
-		} catch (SQLException e) {
+		RequestDispatcher dispatch = request.getRequestDispatcher("event.jsp");
+		dispatch.forward(request, response);
 			
-		}
-		
 	}
 
 }
