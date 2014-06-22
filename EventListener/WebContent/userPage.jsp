@@ -31,7 +31,24 @@ Released   : 20090303
 <meta name="Premium Series" content="" />
 <link href="userPageCSS.css" rel="stylesheet" type="text/css"
 	media="screen" />
-
+<script>
+	function loadXMLDocForUser(p, type, BandID) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				document.getElementById(type).innerHTML = xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open("GET", "UpdateOnlyDivForUser" + type + ".jsp?page=" + p
+				+ "&BandID=" + BandID, true);
+		xmlhttp.send();
+	}
+</script>
 
 </head>
 <body>
@@ -47,9 +64,9 @@ Released   : 20090303
 	</div>
 	<%
 		UserManager userManager = (UserManager)application.getAttribute("UserManager");
-			HttpSession sesion = request.getSession();
-			int userID = (Integer)session.getAttribute("UserID");
-			User user = userManager.getUser(userID);
+		HttpSession sesion = request.getSession();
+		int userID = (Integer)session.getAttribute("UserID");
+		User user = userManager.getUser(userID);
 	%>
 	<!-- end header -->
 	<div id="wrapper">
@@ -64,10 +81,10 @@ Released   : 20090303
 						<ul>
 							<%
 								if(user.getImage() != null){
-														out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
-													}else{
-														out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
-													}
+																			out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
+																		}else{
+																			out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+																		}
 							%>
 						</ul>
 					</li>
@@ -112,8 +129,8 @@ Released   : 20090303
 							<li><form action="upload_file.php" method="post"
 									enctype="multipart/form-data">
 									<label for="file">Filename:</label>
-									<input type="file" name="file" id="file" size="14"><br> <input
-											type="submit" name="submit" value="Submit">
+									<input type="file" name="file" id="file" size="14"><br>
+											<input type="submit" name="submit" value="Submit">
 								</form></li>
 						</ul>
 						<h2>Calendar</h2>
@@ -239,8 +256,8 @@ Released   : 20090303
 			</div>
 			<!-- start content -->
 			<div id="content">
-				<div class="image">
-					<div id="myBands">
+				<div class="post" id="MyBands">
+					<div>
 						<h1 align="center">My Bands</h1>
 						<%
 							int numMyBands = userManager.getMyBandsNum(userID);
@@ -287,18 +304,18 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startMyBandsPageNum; i <= endMyBandsPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?MyBandPageID=" + i + "\">"
-											+ i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'MyBands'," + userID + ")>" + i + " </a>");
+									//out.println("<a href=\"userPage.jsp?MyBandPageID=" + i + "\">"
+									//	+ i + "</a>");
 								}
 							%>
 
 						</h1>
 					</ul>
-
-
-					<div id="myPlaces">
+				</div>
+				<div class="post" id="MyPlaces">
+					<div>
 						<h1 align="center">My Places</h1>
 						<%
 							String myPlacePageNumstr = (String) request
@@ -356,7 +373,9 @@ Released   : 20090303
 
 						</h1>
 					</ul>
-					<div id="myEvents">
+				</div>
+				<div class="post" id="MyEvents">
+					<div>
 						<h1 align="center">My Events</h1>
 						<%
 							String myEventPageNumstr = (String) request
@@ -414,7 +433,9 @@ Released   : 20090303
 
 						</h1>
 					</ul>
-					<div id="wishList">
+				</div>
+				<div class="post" id="WishList">
+					<div>
 						<h1 align="center">WishList</h1>
 						<%
 							String wishListPageNumstr = (String) request
@@ -472,7 +493,9 @@ Released   : 20090303
 
 						</h1>
 					</ul>
-					<div id="beenEvents">
+				</div>
+				<div class="post" id="BeenEvents">
+					<div>
 						<h1 align="center">Been Events</h1>
 						<%
 							String beenListPageNumstr = (String) request
@@ -532,71 +555,69 @@ Released   : 20090303
 						</h1>
 					</ul>
 				</div>
-
 			</div>
 
-			<!-- end content -->
-			<!-- start sidebars -->
-			<div id="sidebar2" class="sidebar">
-				<ul>
-					<li>
-						<form id="searchform" method="get" action="#">
-							<div id="bands">
-								<h2>Top Bands</h2>
-								</br>
-								<ol>
+		<!-- end content -->
+		<!-- start sidebars -->
+		<div id="sidebar2" class="sidebar">
+			<ul>
+				<li>
+					<form id="searchform" method="get" action="#">
+						<div id="bands">
+							<h2>Top Bands</h2>
+							</br>
+							<ol>
 
-									<%
-										BandManager bandManager = (BandManager) application
-												.getAttribute("BandManager");
-										ArrayList<Integer> bandsList = bandManager
-												.getTopBands(ConstantValues.NUM_TOP_BANDS);
+								<%
+									BandManager bandManager = (BandManager) application
+											.getAttribute("BandManager");
+									ArrayList<Integer> bandsList = bandManager
+											.getTopBands(ConstantValues.NUM_TOP_BANDS);
 
-										for (int i = 0; i < bandsList.size(); i++) {
-											Band band = bandManager.getBand(bandsList.get(i));
-											out.println("<li><a href=\"BandProfile.jsp?BandID="
-													+ band.getID() + "\"><h3>" + band.getName()
-													+ "</h3></a>" + bandManager.getRating(band.getID())
-													+ " </li>");
-										}
-									%>
-								</ol>
-							</div>
-						</form>
-					</li>
-					<li id="topPlaces">
+									for (int i = 0; i < bandsList.size(); i++) {
+										Band band = bandManager.getBand(bandsList.get(i));
+										out.println("<li><a href=\"BandProfile.jsp?BandID="
+												+ band.getID() + "\"><h3>" + band.getName()
+												+ "</h3></a>" + bandManager.getRating(band.getID())
+												+ " </li>");
+									}
+								%>
+							</ol>
+						</div>
+					</form>
+				</li>
+				<li id="topPlaces">
 
-						<h2>Top Places</h2>
-						<ol>
-							<%
-								PlaceManager placeManager = (PlaceManager) application
-										.getAttribute("PlaceManager");
-								ArrayList<Integer> topPlaces = placeManager
-										.getTopPlaces(ConstantValues.NUM_TOP_PLACES);
+					<h2>Top Places</h2>
+					<ol>
+						<%
+							PlaceManager placeManager = (PlaceManager) application
+									.getAttribute("PlaceManager");
+							ArrayList<Integer> topPlaces = placeManager
+									.getTopPlaces(ConstantValues.NUM_TOP_PLACES);
 
-								for (int i = 0; i < topPlaces.size(); i++) {
-									Place place = placeManager.getPlace(topPlaces.get(i));
-									out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID()
-											+ "\"><h3>" + place.getName() + "</h3></a>"
-											+ placeManager.getRating(place.getID()) + " </li>");
-								}
-							%>
+							for (int i = 0; i < topPlaces.size(); i++) {
+								Place place = placeManager.getPlace(topPlaces.get(i));
+								out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID()
+										+ "\"><h3>" + place.getName() + "</h3></a>"
+										+ placeManager.getRating(place.getID()) + " </li>");
+							}
+						%>
 
-						</ol>
-
-
+					</ol>
 
 
-					</li>
-				</ul>
-			</div>
-			<!-- end sidebars -->
-			<div style="clear: both;">&nbsp;</div>
+
+
+				</li>
+			</ul>
 		</div>
+		
+		<!-- end sidebars -->
+		<div style="clear: both;">&nbsp;</div>
 	</div>
-
-
 	<!-- end page -->
+	</div>
 
 	<div id="footer">
 		<p class="copyright">Design by TMM</p>
