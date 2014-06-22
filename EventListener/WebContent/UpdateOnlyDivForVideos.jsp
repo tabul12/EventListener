@@ -18,12 +18,10 @@
 					     int BandID = Integer.parseInt(request.getParameter("BandID"));
 			       	     BandManager bandManager =(BandManager) application.getAttribute("BandManager");
 						 int numVideos = bandManager.getVideosNumberForBand(BandID); 
-						 System.out.println("num videos "+numVideos);
 						 int videoPageNum = Integer.parseInt(request.getParameter("page"));
 					 	 ArrayList<String> videosArray = bandManager.getVideos(BandID,videoPageNum);
 					 	 for(int i = 0; i<videosArray.size(); i++)
 					 	 {
-					 		System.out.println(videosArray.get(i));
 					 		out.println("<video  width='240' height='200' controls='controls' >");
 					 		out.println("<source src=videos/"+videosArray.get(i)+ " type='video/ogg'>");
 					 		out.println("<source src=videos/"+videosArray.get(i)+ " type='video/mp4'>");
@@ -44,8 +42,7 @@
 
 			  int startVideoPageNum = Math.max(1,videoPageNum- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 			  int endVideoPageNum = Math.min(numVideoPages,videoPageNum + ConstantValues.NUM_LEFT_RIGHT_PAGES);
-			  System.out.println("stvidpageU "+startVideoPageNum);
-			  System.out.println("envidpageU "+endVideoPageNum);
+			
 
 			  for(int i = startVideoPageNum; i <= endVideoPageNum; i++){
 				  out.println("<a href=# onclick=loadXMLDoc("+i+",'Videos',"+BandID+")>"+i+" </a>");

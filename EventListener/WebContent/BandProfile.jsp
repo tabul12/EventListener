@@ -37,7 +37,8 @@
 	<div id="header">
 		<div id="menu">
 			<ul id="main">
-				<li class="current_page_item"><a href="homePage.jsp">Home Page</a></li>
+				<li class="current_page_item"><a href="homePage.jsp?HomePageNum=1">Home
+						Page</a></li>
 			</ul>
 		</div>
 	</div>
@@ -96,6 +97,69 @@
 							</li>
 						</ul>
 					</li>
+					<%
+					
+						String UserIDString =(String) session.getAttribute("UserID");
+						int UserID= -1;
+						if(UserIDString!=null)
+							UserID = Integer.parseInt(UserIDString);
+						int curBandUserID=bandManager.getBand(BandID).getUserID();
+						if(UserID!=curBandUserID)
+						{
+							out.println("<li>");
+							out.println("<h2>Upload Images</h2>");
+							out.println("<form method='POST' action='upload' enctype='multipart/form-data' >");
+							out.println("File:");
+							out.println("<input type='file' name='file' id='file' /> <br/>");
+							String destIM =ConstantValues.PATH_TO_IMAGES;
+							out.println("<input type='hidden' value="+destIM+
+									" name='destination'"+"/>");
+							out.println("<input type='hidden' value="+BandID+" name='BandID'/>");
+							out.println("<input type='hidden' value='bandImages' name='typeFile'/>");
+							out.println("<input type='submit' value='Upload' name='upload' id='upload' "+"/>");
+							out.println("</form>");
+							out.println("</li>");
+						}
+					    
+					%>
+					<%
+					if(UserID!=curBandUserID)
+					{
+						out.println("<li>");
+						out.println("<h2>Upload Music</h2>");
+						out.println("<form method='POST' action='upload' enctype='multipart/form-data' >");
+						out.println("File:");
+						out.println("<input type='file' name='file' id='file' /> <br/>");
+						String destMU = ConstantValues.PATH_TO_MUSICS;
+						out.println("<input type='hidden' value="+destMU+
+								" name='destination'"+"/>");
+						out.println("<input type='hidden' value="+BandID+" name='BandID'/>");
+						out.println("<input type='hidden' value='bandMusics' name='typeFile'/>");
+						
+						out.println("<input type='submit' value='Upload' name='upload' id='upload' "+"/>");
+						out.println("</form>");
+						out.println("</li>");
+					}
+					%>
+					<%
+					if(UserID!=curBandUserID)
+					{
+						out.println("<li>");
+						out.println("<h2>Upload Videos</h2>");
+						out.println("<form method='POST' action='upload' enctype='multipart/form-data' >");
+						out.println("File:");
+						out.println("<input type='file' name='file' id='file' /> <br/>");
+						String destVI = ConstantValues.PATH_TO_VIDEOS;
+						out.println("<input type='hidden' value="+destVI+
+								" name='destination'"+"/>");
+						out.println("<input type='hidden' value="+BandID+" name='BandID'/>");
+						out.println("<input type='hidden' value='bandVideos' name='typeFile'/>");
+						
+						out.println("<input type='submit' value='Upload' name='upload' id='upload' "+"/>");
+						out.println("</form>");
+						out.println("</li>");
+					}
+					%>
 				</ul>
 			</div>
 			<!-- start content -->
@@ -117,7 +181,6 @@
 										+ " height='100' width='100'" + ">");
 								out.println("   </a>");
 							}
-							System.out.println(imagesArray.size());
 						%>
 					</div>
 					<ul>
@@ -134,8 +197,6 @@
 										- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 								int endImagePageNum = Math.min(numImagePages, imagePageNum
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
-								System.out.println(startImagePageNum + "mtavari");
-								System.out.println(endImagePageNum + "mtavari");
 
 								for (int i = startImagePageNum; i <= endImagePageNum; i++) {
 									out.println("<a href=# onclick=loadXMLDoc(" + i + ",'Images',"
@@ -205,7 +266,6 @@
 							ArrayList<String> videosArray = bandManager.getVideos(BandID,
 									videoPageNum);
 							for (int i = 0; i < videosArray.size(); i++) {
-								System.out.println(videosArray.get(i));
 								out.println("<video  width='240' height='200' controls='controls' >");
 								out.println("<source src=videos/" + videosArray.get(i)
 										+ " type='video/ogg'>");
@@ -224,14 +284,10 @@
 
 								if (numVideos % videosPerPage > 0)
 									numVideoPages++;
-								System.out.println("vidoes gverdebis raodenoba " + numVideoPages);
-
 								int startVideoPageNum = Math.max(1, videoPageNum
 										- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 								int endVideoPageNum = Math.min(numVideoPages, videoPageNum
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
-								System.out.println("stvidpage " + startVideoPageNum);
-								System.out.println("envidpage " + endVideoPageNum);
 								for (int i = startVideoPageNum; i <= endVideoPageNum; i++) {
 									out.println("<a href=# onclick=loadXMLDoc(" + i + ",'Videos',"
 											+ BandID + ")>" + i + " </a>");

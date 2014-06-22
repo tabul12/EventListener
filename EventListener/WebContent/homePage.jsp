@@ -95,11 +95,7 @@ xmlhttp.send();
 					<li> <p class="byline"><strong>Latest Event List. Enjoy Your Life Man!</strong></p></li>
 				</ul>
 				<div class="entry" >
-
-
-
-							<%
-								 
+							<% 
 							EventManager eventManager =(EventManager) application.getAttribute("EventManager");
 							int numEvents = eventManager.getEventsNum();
 						 	String id = (String)session.getAttribute("HomePageNum");

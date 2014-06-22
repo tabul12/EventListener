@@ -14,8 +14,8 @@ create table User(
 	MobileNumber varchar(30),
 	Image varchar(30),
 	PRIMARY KEY (ID)
-	
 );
+/*  */
 
 create table Admin(
 	ID int auto_increment not null,
@@ -119,7 +119,9 @@ create table Band_Image(
 	BandID int,
 	foreign key(BandID) references Band(ID)
 );
-
+/*
+	select * from Band_Image
+*/
 
 create table Band_Profile_Image(
 	ID  int auto_increment not null,
@@ -138,7 +140,8 @@ create table Music(
 	Name varchar(50) unique,
 	foreign key(BandID) references Band(ID)	
 );
-/*insert into Music(BandID,Name) values(1,'radiohead5.mp3') */
+/*insert into Music(BandID,Name) values(1,'radiohead5.mp3')
+select * from Music  */
 create table Video(
 	ID int auto_increment not null,
 	Primary key(ID),
@@ -146,7 +149,10 @@ create table Video(
 	Name varchar(50) unique,
 	foreign key(BandID) references Band(ID)	
 );
-/* insert into Video(BandID,Name) values(1,'Maybe.mp4')    */
+/* insert into Video(BandID,Name) values(1,'Maybe.mp4')    
+ select * from Video
+*/
+
 
 create table Place_Image(
 	ID int auto_increment not null,
