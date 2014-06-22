@@ -73,9 +73,15 @@ public class registrationServlet extends HttpServlet {
 				userManager.addUser(firstName, lastName, userName, password, mail, "default.jpg", mobileNumber);
 				RequestDispatcher	dispatch = request.getRequestDispatcher("homePage.jsp");
 				dispatch.forward(request, response);	
-		}
-			 
-		
+				int userID = 1;
+				try {
+					userID = userManager.getUserID(userName, password);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				session.setAttribute("UserID", userID);
+		}	 
 		 
 	}
 

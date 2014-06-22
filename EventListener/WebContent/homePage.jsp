@@ -1,3 +1,4 @@
+<%@page import="objects.User"%>
 <%@page import="errors.BaseErrors"%>
 <%@page import="baseConnection.UserManager"%>
 <%@page import="objects.Place"%>
@@ -172,13 +173,16 @@ xmlhttp.send();
 						<div>
 						<%
 							UserManager userManager = (UserManager)application.getAttribute("UserManager");
-							String name = request.getParameter("FirstName");
+							Integer userID = (Integer)session.getAttribute("UserID");
 							boolean weShouldDrawLogOut = false;
-							if(name == null && session.getAttribute("UserID") == null) {
+							
+							
+							if(userID == null ) {
 								out.println("<h2>Sign In</h2>");
 								out.println("<ul><li>");
 								out.println("<form action=\"LoginServlet\" method=\"post\"> <br/>");
 								
+								/// wata faaq
 								
 								Integer number = (Integer)session.getAttribute("UserExists");
 							 
@@ -202,17 +206,10 @@ xmlhttp.send();
 							}
 							else {
 								weShouldDrawLogOut = true;
-								String userName = request.getParameter("UserName"); 
-								String password = request.getParameter("Password");
-								int userID = 0;
-								if(userName == null) userID = (Integer)session.getAttribute("UserID");
-								else {
-									userID = userManager.getUserID(userName, password); 
-									session.setAttribute("UserID", userID); 
-									userName = userManager.getUser(userID).getName();
-								}
+								User user = userManager.getUser(userID);
+								
 								out.println("<div id='welcome'>");
-								out.println("<p><h2> Welcome " + userName + "</h2></p>");
+								out.println("<p><h2> Welcome " + user.getUserName() + "</h2></p>");
 								out.println("</div>");
 							}
 						
