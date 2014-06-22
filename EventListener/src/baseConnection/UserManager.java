@@ -8,17 +8,18 @@ import java.util.ArrayList;
 
 import objects.User;
 import errors.BaseErrors;
+
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import errors.BaseErrors;
 
 public class UserManager {
 	private BasicDataSource eventDataSource;
-	private static final int numBandsPerPage = 10;
-	private static final int numEventsPerPage = 10;
-	private static final int numPlacesPerPage = 10;
-	private static final int numBeenPlacesPerPage = 10;
-	private static final int numWishlistBandsPerPage = 10;
+	private static final int numBandsPerPage = errors.ConstantValues.NUM_MY_BAND_ON_PER_PAGE;
+	private static final int numEventsPerPage = errors.ConstantValues.NUM_MY_EVENT_ON_PER_PAGE;
+	private static final int numPlacesPerPage = errors.ConstantValues.NUM_MY_PLACE_ON_PER_PAGE;
+	private static final int numBeenPlacesPerPage = errors.ConstantValues.NUM_BEEN_PLACE_ON_PER_PAGE;
+	private static final int numWishlistBandsPerPage = errors.ConstantValues.NUM_WISHLIST_ON_PER_PAGE;
 
 	public UserManager(BasicDataSource eventDataSource) {
 		this.eventDataSource = eventDataSource;
@@ -416,14 +417,19 @@ public class UserManager {
 	 */
 
 	public int updateInfo(int ID, String firstName, String lastName,
-			String mail, String mobileNumber, String image, String password) {
+			String mail, String mobileNumber, String password) {
 		String query = "UPDATE User SET FirstName='" + firstName
 				+ "',LastName ='" + lastName + "', Mail ='" + mail
-				+ "', MobileNumber ='" + mobileNumber + "', Image ='" + image
-				+ "', Password  ='" + password + "' where ID =" + ID + ";";
+				+ "', MobileNumber ='" + mobileNumber + "', Password  ='" + password + "' where ID =" + ID + ";";
 		return changeBase(query);
 	}
-
+	
+	public int changeProfilePicture(int ID,String image ) {
+		String query = "UPDATE User SET Image='" + image
+				+ "', where ID =" + ID + ";";
+		return changeBase(query);
+	}
+	
 	/***
 	 * administratori sjis users
 	 * 
@@ -473,6 +479,72 @@ public class UserManager {
 			return false;
 		}
 	}
+	
+	public int getMyBandsNum(int userID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select count(ID) from Band where UserID="+ userID +";";		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		int ans = 0;
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();
+		return ans;
+	}
+	
+	public int getMyEventsNum(int userID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select count(ID) from Event where UserID="+ userID +";";		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		int ans = 0;
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();
+		return ans;
+	}
+	
+	public int getMyPlacesNum(int userID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select count(ID) from Place where UserID="+ userID +";";		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		int ans = 0;
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();
+		return ans;
+	}
+	
+	public int getBeenOnEventsNum(int userID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select count(ID) from User_Going_Event where UserID="+ userID +";";		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		int ans = 0;
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();
+		return ans;
+	}
+	
+	public int getWhishlistNum(int userID) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select count(ID) from User_Band_Wishlist where UserID="+ userID +";";		 
+		ResultSet result = stmt.executeQuery(query);
+		
+		int ans = 0;
+		if(result.next()) ans = result.getInt("count(ID)");
+		connection.close();
+		return ans;
+	}
+	
 
 	/***
 	 * axorcielebs bazashi cvlilebebs gadacemuli querys mixedvit
