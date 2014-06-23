@@ -18,18 +18,11 @@
 			<%
 			    int userID = Integer.parseInt(request.getParameter("UserID"));
   	            UserManager userManager =(UserManager) application.getAttribute("UserManager");
-				
+  	            Integer myBandPageNum = Integer.parseInt(request.getParameter("page"));
+  	            
   	            int numMyBands = userManager.getMyBandsNum(userID);
 				int myBandsPerPage = ConstantValues.NUM_MY_BAND_ON_PER_PAGE;
 				int numMyBandPages = numMyBands / myBandsPerPage;
-				String myBandPageNumStr = (String) request
-						.getParameter("MyBandPageID");
-				Integer myBandPageNum;
-				if (myBandPageNumStr == null) {
-					myBandPageNum = 1;
-				} else {
-					myBandPageNum = Integer.parseInt(myBandPageNumStr);
-				}
 				ArrayList<Integer> addedBands = new ArrayList<Integer>();
 				addedBands = userManager.addedBands(userID, myBandPageNum);
 				for (int i = 0; i < addedBands.size(); i++) {

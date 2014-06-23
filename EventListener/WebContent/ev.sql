@@ -66,6 +66,9 @@ create table Event(
 	foreign key(UserID) references User(ID),
 	foreign key(PlaceID) references Place(ID)	
 );
+/*
+select * from Event
+*/
 
 create table Genre(
 	ID int auto_increment not null,
@@ -84,7 +87,7 @@ create table User_Band_Wishlist(
 	foreign key(UserID) references User(ID),
 	foreign key(BandID) references Band(ID)
 );
-
+/*select * from User_Band_Wishlist*/
 create table User_Going_Event(
 	ID int auto_increment not null,
 	primary key(ID),
@@ -93,6 +96,7 @@ create table User_Going_Event(
 	foreign key(UserID) references User(ID),
 	foreign key(EventID) references Event(ID)
 );
+/* select * from User_Going_Event*/
  
 
 create table Band_On_Event(
@@ -103,7 +107,7 @@ create table Band_On_Event(
 	foreign key(EventID) references Event(ID),
 	foreign key(BandID) references Band(ID)
 );
-
+/*select * from Band_On_Event*/
 
 create table Band_Plays_Genre(
 	ID  int auto_increment not null,

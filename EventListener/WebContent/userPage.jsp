@@ -32,7 +32,7 @@ Released   : 20090303
 <link href="userPageCSS.css" rel="stylesheet" type="text/css"
 	media="screen" />
 <script>
-	function loadXMLDocForUser(p, type, BandID) {
+	function loadXMLDocForUser(p, type, UserID) {
 		var xmlhttp;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp = new XMLHttpRequest();
@@ -45,7 +45,7 @@ Released   : 20090303
 			}
 		}
 		xmlhttp.open("GET", "UpdateOnlyDivForUser" + type + ".jsp?page=" + p
-				+ "&BandID=" + BandID, true);
+				+ "&UserID=" + UserID, true);
 		xmlhttp.send();
 	}
 </script>
@@ -64,9 +64,9 @@ Released   : 20090303
 	</div>
 	<%
 		UserManager userManager = (UserManager)application.getAttribute("UserManager");
-		HttpSession sesion = request.getSession();
-		int userID = (Integer)session.getAttribute("UserID");
-		User user = userManager.getUser(userID);
+			HttpSession sesion = request.getSession();
+			int userID = (Integer)session.getAttribute("UserID");
+			User user = userManager.getUser(userID);
 	%>
 	<!-- end header -->
 	<div id="wrapper">
@@ -81,10 +81,10 @@ Released   : 20090303
 						<ul>
 							<%
 								if(user.getImage() != null){
-																			out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
-																		}else{
-																			out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
-																		}
+						        	out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
+								}else{
+									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+								}
 							%>
 						</ul>
 					</li>
@@ -302,6 +302,7 @@ Released   : 20090303
 										- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 								int endMyBandsPageNum = Math.min(numMyBandPages, myBandPageNum
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
+								System.out.println(userID + "   user id");
 
 								for (int i = startMyBandsPageNum; i <= endMyBandsPageNum; i++) {
 									out.println("<a href=# onclick=loadXMLDocForUser(" + i
@@ -364,10 +365,8 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startMyPlacesPageNum; i <= endMyPlacesPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?MyPlacePageID=" + i + "\">"
-											+ i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'MyPlaces'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
@@ -394,11 +393,11 @@ Released   : 20090303
 										.getAttribute("EventManager");
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != "") {
-									out.println("<img src=\"" + event.getImage()
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src=images/" + event.getImage()
+											+ " height='120' width='120' />");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
-								}
+									out.println("<img src=images/default.jpg  height='120' width='120' />");								}
+								System.out.println(event.getImage());
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
 								out.println("<span> <a href=\"event.jsp?EventID="
@@ -424,10 +423,8 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startMyEventsPageNum; i <= endMyEventsPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?MyEventPageID=" + i + "\">"
-											+ i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'MyEvents'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
@@ -484,10 +481,8 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startWishListPageNum; i <= endWishListPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?wishListPageID=" + i
-											+ "\">" + i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'WishList'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
@@ -500,6 +495,7 @@ Released   : 20090303
 						<%
 							String beenListPageNumstr = (String) request
 									.getParameter("BeenListPageID");
+							System.out.println(beenListPageNumstr + "  been");
 							Integer beenListPageNum;
 							if (beenListPageNumstr == null) {
 								beenListPageNum = 1;
@@ -508,18 +504,18 @@ Released   : 20090303
 							}
 							ArrayList<Integer> beenList = new ArrayList<Integer>();
 							beenList = userManager.beenList(userID, beenListPageNum);
+							System.out.println(beenList.size() + "    esaaa zoma masivis");
 							for (int i = 0; i < beenList.size(); i++) {
 								int k = beenList.get(i);
 								EventManager eventManager = (EventManager) application
 										.getAttribute("EventManager");
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != null) {
-									out.println("<img src=\"" + event.getImage()
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src=images/" + event.getImage()
+											+ " height='120'   width='120' " + "/>");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+									out.println("<img src=images/default.jpg height='120'   width='120' />");
 								}
-								out.println("<img src=\"images/mukia.JPG\" height=\"120\" width=\"120\" />");
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
 								out.println("<span> <a href=\"event.jsp?EventID="
@@ -541,14 +537,12 @@ Released   : 20090303
 
 								int startBeenListPageNum = Math.max(1, beenListPageNum
 										- ConstantValues.NUM_LEFT_RIGHT_PAGES);
-								int endBeenListPageNum = Math.min(numWishListPages, beenListPageNum
+								int endBeenListPageNum = Math.min(numBeenListPages, beenListPageNum
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startBeenListPageNum; i <= endBeenListPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?BeenListPageID=" + i
-											+ "\">" + i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'BeenEvents'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
@@ -557,66 +551,66 @@ Released   : 20090303
 				</div>
 			</div>
 
-		<!-- end content -->
-		<!-- start sidebars -->
-		<div id="sidebar2" class="sidebar">
-			<ul>
-				<li>
-					<form id="searchform" method="get" action="#">
-						<div id="bands">
-							<h2>Top Bands</h2>
-							</br>
-							<ol>
+			<!-- end content -->
+			<!-- start sidebars -->
+			<div id="sidebar2" class="sidebar">
+				<ul>
+					<li>
+						<form id="searchform" method="get" action="#">
+							<div id="bands">
+								<h2>Top Bands</h2>
+								</br>
+								<ol>
 
-								<%
-									BandManager bandManager = (BandManager) application
-											.getAttribute("BandManager");
-									ArrayList<Integer> bandsList = bandManager
-											.getTopBands(ConstantValues.NUM_TOP_BANDS);
+									<%
+										BandManager bandManager = (BandManager) application
+												.getAttribute("BandManager");
+										ArrayList<Integer> bandsList = bandManager
+												.getTopBands(ConstantValues.NUM_TOP_BANDS);
 
-									for (int i = 0; i < bandsList.size(); i++) {
-										Band band = bandManager.getBand(bandsList.get(i));
-										out.println("<li><a href=\"BandProfile.jsp?BandID="
-												+ band.getID() + "\"><h3>" + band.getName()
-												+ "</h3></a>" + bandManager.getRating(band.getID())
-												+ " </li>");
-									}
-								%>
-							</ol>
-						</div>
-					</form>
-				</li>
-				<li id="topPlaces">
+										for (int i = 0; i < bandsList.size(); i++) {
+											Band band = bandManager.getBand(bandsList.get(i));
+											out.println("<li><a href=\"BandProfile.jsp?BandID="
+													+ band.getID() + "\"><h3>" + band.getName()
+													+ "</h3></a>" + bandManager.getRating(band.getID())
+													+ " </li>");
+										}
+									%>
+								</ol>
+							</div>
+						</form>
+					</li>
+					<li id="topPlaces">
 
-					<h2>Top Places</h2>
-					<ol>
-						<%
-							PlaceManager placeManager = (PlaceManager) application
-									.getAttribute("PlaceManager");
-							ArrayList<Integer> topPlaces = placeManager
-									.getTopPlaces(ConstantValues.NUM_TOP_PLACES);
+						<h2>Top Places</h2>
+						<ol>
+							<%
+								PlaceManager placeManager = (PlaceManager) application
+										.getAttribute("PlaceManager");
+								ArrayList<Integer> topPlaces = placeManager
+										.getTopPlaces(ConstantValues.NUM_TOP_PLACES);
 
-							for (int i = 0; i < topPlaces.size(); i++) {
-								Place place = placeManager.getPlace(topPlaces.get(i));
-								out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID()
-										+ "\"><h3>" + place.getName() + "</h3></a>"
-										+ placeManager.getRating(place.getID()) + " </li>");
-							}
-						%>
+								for (int i = 0; i < topPlaces.size(); i++) {
+									Place place = placeManager.getPlace(topPlaces.get(i));
+									out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID()
+											+ "\"><h3>" + place.getName() + "</h3></a>"
+											+ placeManager.getRating(place.getID()) + " </li>");
+								}
+							%>
 
-					</ol>
-
-
+						</ol>
 
 
-				</li>
-			</ul>
+
+
+					</li>
+				</ul>
+			</div>
+
+			<!-- end sidebars -->
+			<div style="clear: both;">&nbsp;</div>
 		</div>
-		
-		<!-- end sidebars -->
-		<div style="clear: both;">&nbsp;</div>
-	</div>
-	<!-- end page -->
+		<!-- end page -->
 	</div>
 
 	<div id="footer">
