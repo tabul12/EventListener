@@ -123,7 +123,13 @@
 						pageNum = Integer.parseInt(tmp);
 					}
 					
+					Integer st = (Integer)session.getAttribute("UserID");
 					
+					int userID = 0;
+					if(st != null) userID = st;
+					
+					UserManager userManager = (UserManager)application.getAttribute("UserManager");
+					boolean hasAddedThis = userManager.hasAddedPlace(userID, placeID);
 					
 					out.println("<p><div style=\"width:250%\";>");
 					
@@ -136,9 +142,10 @@
 					for(int i = 0; i < imageList.size(); i++){
 						out.println("<div class =\"column\" style=\"width:20%;Text-align:center;float:left;\">");
 						out.println("<p><img src=\"images/"+ imageList.get(i) + "\" height=\"100\" width=\"80\" /></p></b>");
-						out.println("<a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + "&PlacePageNum=" + pageNum + "\"> Set Prof </a>");
-						out.println("</div>");
-						 
+						if(hasAddedThis)
+						out.println("<a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + 
+						"&PlacePageNum=" + pageNum + "\"> Set Prof </a>");
+						out.println("</div>");						 
 					} 
 					 
 					out.println("</div></p> ");
@@ -176,15 +183,14 @@
 			<ul>			
 				<li id = "topPlaces">
 				<%
-						Integer st = (Integer)session.getAttribute("UserID");
-						
-						int userID = 0;
-						if(st != null) userID = st;
+
+
 						
 						
 						
-						UserManager userManager = (UserManager)application.getAttribute("UserManager");
-						if(userManager.hasAddedPlace(userID, placeID)){
+						 
+						if(hasAddedThis){
+							hasAddedThis = true;
 							out.println("<div>");
 							out.println("<h2> Update Information   </h2> </br>");
 							out.println("<ul><li>"); // <a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + "&PlacePageNum=" + pageNum + "\">

@@ -162,6 +162,28 @@ public class PlaceManager {
 		
 	}
 	
+	public int getImageID(String imageName) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select ID from Place_Image " + 
+					 " where Name='" + imageName + "';";
+		
+		ResultSet result = stmt.executeQuery(query);
+		
+		int  id = 0;
+		if(result.next())
+			id = result.getInt("ID");	
+		 
+		connection.close();
+		return id;
+	}
+	
+	public int addProfileImage(int placeID,int imageID){
+		String query = "insert into Place_Profile_image(Place_ImageID,PlaceID) values("+imageID+"," + placeID +");";
+		return changeBase(query);
+	}
+	
 	/*
 	 * this method adds new image for specified place
 	 * it constructs query string and passes to changeBase

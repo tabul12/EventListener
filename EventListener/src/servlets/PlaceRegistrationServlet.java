@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -47,6 +48,23 @@ public class PlaceRegistrationServlet extends HttpServlet {
 		String adress = request.getParameter("Adress");
 		int userID = (Integer)session.getAttribute("UserID");
 		placeManager.addPlace(userID, placeName, adress, about);
+		int placeID = 0;
+		try {
+			placeID = placeManager.getPlaceID(placeName);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(placeID + " __am places emateba surati");
+		int imageID = 0;
+		try {
+			imageID = placeManager.getImageID("default.jpg");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		placeManager.addProfileImage(placeID, imageID);
 		RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
 		dispatch.forward(request, response);
 	}

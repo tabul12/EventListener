@@ -15,18 +15,27 @@
 				<div class="entry">
 					<!-- aq daiwereba image------------------------------------------------------>
 					<%
-					     int BandID = Integer.parseInt(request.getParameter("BandID"));
-		       	         BandManager bandManager =(BandManager) application.getAttribute("BandManager");
+						 BandManager bandManager = (BandManager)application.getAttribute("BandManager");
+						 Integer UserID =(Integer) session.getAttribute("UserID");
+						 int BandID = Integer.parseInt(request.getParameter("BandID"));
+						 Integer curBandUserID=bandManager.getBand(BandID).getUserID();
+						 boolean hasAdded = (UserID == curBandUserID);
+					     
 						 int numImages = bandManager.getImagesNumberForBand(BandID); 
 						 int imagePageNum = Integer.parseInt(request.getParameter("page"));
 					 	 ArrayList<String> imagesArray = bandManager.getImages(BandID, imagePageNum);
 					 	 for(int i = 0; i<imagesArray.size(); i++)
 					 	 {
-					 		 out.println("<a href =images/"+imagesArray.get(i)+">  ");
-					 		 out.println("<img src=images/"+imagesArray.get(i)+
-									  " height='100'  width='100'"+">");
-					 		 out.println("   </a>");
-					 	 }
+					 		out.println("<a href =images/" + imagesArray.get(i) + ">  ");
+							out.println("<img src=images/" + imagesArray.get(i)
+									+ " height='100' width='100'" + "/>");
+							
+							out.println("</a>");
+							if(hasAdded)
+								out.println("<a href=\"updateBandProfileServlet?name=" + imagesArray.get(i) + 
+										"&BandPageNum=" + imagePageNum + "&BandID=" + BandID +"\"> Set Prof </a>");
+							 
+						}
 					%>
 				</div>
 			<ul>

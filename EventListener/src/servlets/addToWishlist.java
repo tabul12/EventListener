@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,19 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import baseConnection.BandManager;
+import baseConnection.UserManager;
 
 /**
- * Servlet implementation class BandRegistrationServlet
+ * Servlet implementation class addToWishlist
  */
-@WebServlet("/BandRegistrationServlet")
-public class BandRegistrationServlet extends HttpServlet {
+@WebServlet("/addToWishlist")
+public class addToWishlist extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BandRegistrationServlet() {
+    public addToWishlist() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,32 +32,26 @@ public class BandRegistrationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		System.out.println("  add to wishlist servlet aqamde movida");
+		String userst = request.getParameter("UserID");
+		String bandst = request.getParameter("BandID");
+		
+		int userID = Integer.parseInt(userst);
+		int bandID = Integer.parseInt(bandst);
+		
 		ServletContext context = request.getServletContext();
-		
-		BandManager bandManager = (BandManager) context.getAttribute("BandManager");
-		String bandName = request.getParameter("BandName");
-		String mail = request.getParameter("Mail");
-		String about = request.getParameter("About");		
-		int userID = (Integer)session.getAttribute("UserID");
-		bandManager.addBand(userID, bandName, about, mail);
-		RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
-		int bandID = 0;
-		try {
-			bandID = bandManager.getBandID(bandName);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		bandManager.addProfileImage(bandID, 1);
+		UserManager manager = (UserManager) context.getAttribute("UserManager");
+		manager.addInWishList(userID, bandID);
+		System.out.println(userID + " user and band " + bandID); 
+		request.setAttribute("BandID", bandID);
+		RequestDispatcher dispatch = request.getRequestDispatcher("BandProfile.jsp");
 		dispatch.forward(request, response);
 	}
 

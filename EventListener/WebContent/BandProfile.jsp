@@ -47,6 +47,7 @@
 		<!-- start page -->
 		<div id="page">
 			<%
+				Integer UserID =(Integer) session.getAttribute("UserID");
 				int BandID = Integer.parseInt(request.getParameter("BandID"));
 				BandManager bandManager = (BandManager) application
 						.getAttribute("BandManager");
@@ -60,12 +61,12 @@
 								out.println(band.getName());
 							%>
 						</h2> <%
- 	String BandImageName = "default.jpg";
- 	if (bandManager.getProfileImage(BandID) != null)
- 		BandImageName = bandManager.getProfileImage(BandID);
- 	out.println("<img src=images/" + BandImageName
- 			+ " height='200' width='220'" + ">");
- %>
+								 	String BandImageName = "default.jpg";
+								 	if (bandManager.getProfileImage(BandID) != null)
+								 		BandImageName = bandManager.getProfileImage(BandID);
+								 	out.println("<img src=images/" + BandImageName
+								 			+ " height='200' width='220'" + ">");
+ 								%>
 					</li>
 					<li>
 						<h2>Raiting</h2>
@@ -76,6 +77,27 @@
 								%>
 							</li>
 						</ul>
+					</li>
+					<li>
+						 
+						 
+								<%
+								if(UserID != null){
+									out.println("<div>");
+									out.println(" <h2> Add To Wishlist   </h2> </br>");
+									out.println("<form action=\"addToWishlist\" method=\"post\"> <br/>");
+									out.println("<ul><li>");					
+									 
+									out.println("<input type=\"hidden\" name=\"BandID\" value=\"" + band.getID() + "\">");
+									out.println("<input type=\"hidden\" name=\"UserID\" value=\"" + UserID + "\">");
+									
+									out.println(" <input type=\"submit\" value=\"Add\"> </form>");
+									 
+									out.println("</div>");
+									
+								}
+								%>
+							 
 					</li>
 					<li>
 						<h2>about</h2>
@@ -99,8 +121,9 @@
 					</li>
 					<%
 					
-						Integer UserID =(Integer) session.getAttribute("UserID");
-						int curBandUserID=bandManager.getBand(BandID).getUserID();
+						 
+						Integer curBandUserID=bandManager.getBand(BandID).getUserID();
+						boolean hasAdded = (UserID == curBandUserID);
 						if(UserID==curBandUserID)
 						{
 							out.println("<li>");
@@ -167,18 +190,31 @@
 					</h2>
 					<div class="entry">
 						<!-- aq daiwereba image------------------------------------------------------>
+						<p>
 						<%
 							int numImages = bandManager.getImagesNumberForBand(BandID);
 							int imagePageNum = 1;
+							
 							ArrayList<String> imagesArray = bandManager.getImages(BandID,
 									imagePageNum);
-							for (int i = 0; i < imagesArray.size(); i++) {
+							
+							for (int i = 0; i < imagesArray.size(); i++) {								
+								 
+								
 								out.println("<a href =images/" + imagesArray.get(i) + ">  ");
 								out.println("<img src=images/" + imagesArray.get(i)
-										+ " height='100' width='100'" + ">");
-								out.println("   </a>");
+										+ " height='100' width='100'/>");
+								
+								out.println("</a>");
+								if(hasAdded)
+									out.println("<a href=\"updateBandProfileServlet?name=" + imagesArray.get(i) + 
+										 	"&BandPageNum=" + 1 + "&BandID=" + BandID +"\"> Set Prof </a>"); 
+								 
+								 
 							}
+							
 						%>
+						</p>
 					</div>
 					<ul>
 						<h1 align="center">

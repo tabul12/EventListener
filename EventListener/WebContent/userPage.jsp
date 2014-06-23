@@ -31,7 +31,24 @@ Released   : 20090303
 <meta name="Premium Series" content="" />
 <link href="userPageCSS.css" rel="stylesheet" type="text/css"
 	media="screen" />
-
+<script>
+	function loadXMLDocForUser(p, type, UserID) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				document.getElementById(type).innerHTML = xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open("GET", "UpdateOnlyDivForUser" + type + ".jsp?page=" + p
+				+ "&UserID=" + UserID, true);
+		xmlhttp.send();
+	}
+</script>
 
 </head>
 <body>
@@ -64,10 +81,10 @@ Released   : 20090303
 						<ul>
 							<%
 								if(user.getImage() != null){
-														out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
-													}else{
-														out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
-													}
+						        	out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
+								}else{
+									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+								}
 							%>
 						</ul>
 					</li>
@@ -112,8 +129,8 @@ Released   : 20090303
 							<li><form action="upload_file.php" method="post"
 									enctype="multipart/form-data">
 									<label for="file">Filename:</label>
-									<input type="file" name="file" id="file" size="14"><br> <input
-											type="submit" name="submit" value="Submit">
+									<input type="file" name="file" id="file" size="14"><br>
+											<input type="submit" name="submit" value="Submit">
 								</form></li>
 						</ul>
 						<h2>Calendar</h2>
@@ -239,8 +256,8 @@ Released   : 20090303
 			</div>
 			<!-- start content -->
 			<div id="content">
-				<div class="image">
-					<div id="myBands">
+				<div class="post" id="MyBands">
+					<div>
 						<h1 align="center">My Bands</h1>
 						<%
 							int numMyBands = userManager.getMyBandsNum(userID);
@@ -285,20 +302,21 @@ Released   : 20090303
 										- ConstantValues.NUM_LEFT_RIGHT_PAGES);
 								int endMyBandsPageNum = Math.min(numMyBandPages, myBandPageNum
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
+								System.out.println(userID + "   user id");
 
 								for (int i = startMyBandsPageNum; i <= endMyBandsPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?MyBandPageID=" + i + "\">"
-											+ i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'MyBands'," + userID + ")>" + i + " </a>");
+									//out.println("<a href=\"userPage.jsp?MyBandPageID=" + i + "\">"
+									//	+ i + "</a>");
 								}
 							%>
 
 						</h1>
 					</ul>
-
-
-					<div id="myPlaces">
+				</div>
+				<div class="post" id="MyPlaces">
+					<div>
 						<h1 align="center">My Places</h1>
 						<%
 							String myPlacePageNumstr = (String) request
@@ -347,16 +365,16 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startMyPlacesPageNum; i <= endMyPlacesPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?MyPlacePageID=" + i + "\">"
-											+ i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'MyPlaces'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
 						</h1>
 					</ul>
-					<div id="myEvents">
+				</div>
+				<div class="post" id="MyEvents">
+					<div>
 						<h1 align="center">My Events</h1>
 						<%
 							String myEventPageNumstr = (String) request
@@ -375,11 +393,11 @@ Released   : 20090303
 										.getAttribute("EventManager");
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != "") {
-									out.println("<img src=\"" + event.getImage()
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src=images/" + event.getImage()
+											+ " height='120' width='120' />");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
-								}
+									out.println("<img src=images/default.jpg  height='120' width='120' />");								}
+								System.out.println(event.getImage());
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
 								out.println("<span> <a href=\"event.jsp?EventID="
@@ -405,16 +423,16 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startMyEventsPageNum; i <= endMyEventsPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?MyEventPageID=" + i + "\">"
-											+ i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'MyEvents'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
 						</h1>
 					</ul>
-					<div id="wishList">
+				</div>
+				<div class="post" id="WishList">
+					<div>
 						<h1 align="center">WishList</h1>
 						<%
 							String wishListPageNumstr = (String) request
@@ -463,20 +481,21 @@ Released   : 20090303
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startWishListPageNum; i <= endWishListPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?wishListPageID=" + i
-											+ "\">" + i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'WishList'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
 						</h1>
 					</ul>
-					<div id="beenEvents">
+				</div>
+				<div class="post" id="BeenEvents">
+					<div>
 						<h1 align="center">Been Events</h1>
 						<%
 							String beenListPageNumstr = (String) request
 									.getParameter("BeenListPageID");
+							System.out.println(beenListPageNumstr + "  been");
 							Integer beenListPageNum;
 							if (beenListPageNumstr == null) {
 								beenListPageNum = 1;
@@ -485,18 +504,18 @@ Released   : 20090303
 							}
 							ArrayList<Integer> beenList = new ArrayList<Integer>();
 							beenList = userManager.beenList(userID, beenListPageNum);
+							System.out.println(beenList.size() + "    esaaa zoma masivis");
 							for (int i = 0; i < beenList.size(); i++) {
 								int k = beenList.get(i);
 								EventManager eventManager = (EventManager) application
 										.getAttribute("EventManager");
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != null) {
-									out.println("<img src=\"" + event.getImage()
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src=images/" + event.getImage()
+											+ " height='120'   width='120' " + "/>");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+									out.println("<img src=images/default.jpg height='120'   width='120' />");
 								}
-								out.println("<img src=\"images/mukia.JPG\" height=\"120\" width=\"120\" />");
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
 								out.println("<span> <a href=\"event.jsp?EventID="
@@ -518,21 +537,18 @@ Released   : 20090303
 
 								int startBeenListPageNum = Math.max(1, beenListPageNum
 										- ConstantValues.NUM_LEFT_RIGHT_PAGES);
-								int endBeenListPageNum = Math.min(numWishListPages, beenListPageNum
+								int endBeenListPageNum = Math.min(numBeenListPages, beenListPageNum
 										+ ConstantValues.NUM_LEFT_RIGHT_PAGES);
 
 								for (int i = startBeenListPageNum; i <= endBeenListPageNum; i++) {
-									//out.println("<a href=# onclick=loadXMLDoc(" + i + ")>" + i
-									//		+ " </a>");
-									out.println("<a href=\"userPage.jsp?BeenListPageID=" + i
-											+ "\">" + i + "</a>");
+									out.println("<a href=# onclick=loadXMLDocForUser(" + i
+											+ ",'BeenEvents'," + userID + ")>" + i + " </a>");
 								}
 							%>
 
 						</h1>
 					</ul>
 				</div>
-
 			</div>
 
 			<!-- end content -->
@@ -583,20 +599,16 @@ Released   : 20090303
 							%>
 
 						</ol>
-
-
-
-
+						
 					</li>
 				</ul>
 			</div>
+
 			<!-- end sidebars -->
 			<div style="clear: both;">&nbsp;</div>
 		</div>
+		<!-- end page -->
 	</div>
-
-
-	<!-- end page -->
 
 	<div id="footer">
 		<p class="copyright">Design by TMM</p>
