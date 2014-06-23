@@ -17,7 +17,9 @@
 <%
 	UserManager userManager = (UserManager) application
 			.getAttribute("UserManager");
-	User user = userManager.getUser(83);
+	HttpSession sesion = request.getSession();
+	int userID = (Integer) session.getAttribute("UserID");
+	User user = userManager.getUser(userID);
 %>
 <body>
 	<section class="container">
@@ -53,7 +55,6 @@
 					Mobile
 				</p>
 				<p>
-				
 				<p>
 					<%
 						out.println("<input type=\"text\" name=\"Password\" value=\""

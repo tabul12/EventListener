@@ -14,8 +14,8 @@ create table User(
 	MobileNumber varchar(30),
 	Image varchar(30),
 	PRIMARY KEY (ID)
+	
 );
-/*  */
 
 create table Admin(
 	ID int auto_increment not null,
@@ -40,9 +40,7 @@ create table Band(
 	Mail text,
 	FOREIGN KEY (UserID) REFERENCES User(ID)	
 );
- /*
-	select * from Band
-*/
+ 
 create table Place(
 	ID int auto_increment not null,
 	primary key(ID),
@@ -66,9 +64,6 @@ create table Event(
 	foreign key(UserID) references User(ID),
 	foreign key(PlaceID) references Place(ID)	
 );
-/*
-select * from Event
-*/
 
 create table Genre(
 	ID int auto_increment not null,
@@ -87,7 +82,7 @@ create table User_Band_Wishlist(
 	foreign key(UserID) references User(ID),
 	foreign key(BandID) references Band(ID)
 );
-/*select * from User_Band_Wishlist*/
+
 create table User_Going_Event(
 	ID int auto_increment not null,
 	primary key(ID),
@@ -96,7 +91,6 @@ create table User_Going_Event(
 	foreign key(UserID) references User(ID),
 	foreign key(EventID) references Event(ID)
 );
-/* select * from User_Going_Event*/
  
 
 create table Band_On_Event(
@@ -107,7 +101,7 @@ create table Band_On_Event(
 	foreign key(EventID) references Event(ID),
 	foreign key(BandID) references Band(ID)
 );
-/*select * from Band_On_Event*/
+
 
 create table Band_Plays_Genre(
 	ID  int auto_increment not null,
@@ -125,9 +119,7 @@ create table Band_Image(
 	BandID int,
 	foreign key(BandID) references Band(ID)
 );
-/*
-	select * from Band_Image
-*/
+
 
 create table Band_Profile_Image(
 	ID  int auto_increment not null,
@@ -146,8 +138,7 @@ create table Music(
 	Name varchar(50) unique,
 	foreign key(BandID) references Band(ID)	
 );
-/*insert into Music(BandID,Name) values(1,'radiohead5.mp3')
-select * from Music  */
+
 create table Video(
 	ID int auto_increment not null,
 	Primary key(ID),
@@ -155,9 +146,6 @@ create table Video(
 	Name varchar(50) unique,
 	foreign key(BandID) references Band(ID)	
 );
-/* insert into Video(BandID,Name) values(1,'Maybe.mp4')    
- select * from Video
-*/
 
 
 create table Place_Image(
@@ -172,10 +160,9 @@ create table Place_Image(
 create table Place_Profile_Image(
 	ID int auto_increment not null,
 	primary key(ID),
-	Place_ImageID int,
-	PlaceID int,
-	foreign key(PlaceID) references Place(ID),
-	foreign key(Place_ImageID) references Place_Image(ID)
+	Name varchar(50),
+	PlaceID int unique,
+	foreign key(PlaceID) references Place(ID)
 );
 
 
@@ -235,73 +222,3 @@ DELIMITER ;
 
   
  
- 
-
-/*
-
-
-select count(ID) from Event;
-
-
-
-/*select * from Event where ID=1;
-    
-/*
-insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image) 
-	values('mamuka','sakhelashvili','bolean','ramtamtam','msakh12@edu.ge','+995598465565','selfshot.jpg');
-		 
-insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image)
-	values('misha','maghriani','cuncula','qurdtanvijeqi','mmagh2@edu.ge','+995123456','bijoo.jpg');
-		 
-insert into User(FirstName,LastName,UserName,Password,Mail,MobileNumber,Image)
-	values('tornike','abuladze','choki','zxc','tabul@edu.ge','+995598735770','gogodakera.jpg');
-             
-
-
-/*select * from Place_Profile_Image;
-/*
-
-insert into Place(UserID,Name,Adress,About)
-	values(2,'ss','zastava','xinkali'); 
-
-
-insert into Place(UserID,Name,Adress,About)
-	values(3,'jimi','vake','xinkali'); 
-
-insert into Place_Image(Name,PlaceID)
-	values('magaria.jpg',1);
-
-insert into Band_Image(Name,BandID)
-	values('radiohead2.jpg',1);
-
-
-insert into Place_Profile_Image(Place_ImageID,PlaceID)
-	values(2,1);
-
-
-insert into Place_Profile_Image(Place_ImageID,PlaceID)
-	values(1,2);
-
-update Place_Profile_Image
-set Place_ImageID=1 where PlaceID=1;
-
-
-
-		 
-
-
-/*select * from Place_Image;
- 
- 
-/*
-delete from User 
-where ID = 2;
-
-
-
-SELECT * FROM Band 
-where ID > 3 
-order BY ID desc  LIMIT 2,2;*/
-
-
-  

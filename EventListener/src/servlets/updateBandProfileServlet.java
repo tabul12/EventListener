@@ -12,19 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import baseConnection.BandManager;
 import baseConnection.PlaceManager;
 
 /**
- * Servlet implementation class BandRegistrationServlet
+ * Servlet implementation class updateBandProfileServlet
  */
-@WebServlet("/PlaceRegistrationServlet")
-public class PlaceRegistrationServlet extends HttpServlet {
+@WebServlet("/updateBandProfileServlet")
+public class updateBandProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PlaceRegistrationServlet() {
+    public updateBandProfileServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,31 +34,40 @@ public class PlaceRegistrationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
 		ServletContext context = request.getServletContext();
-		PlaceManager placeManager = (PlaceManager) context.getAttribute("PlaceManager");
-		String placeName = request.getParameter("PlaceName");
-		String about = request.getParameter("About");	
-		String adress = request.getParameter("Adress");
-		int userID = (Integer)session.getAttribute("UserID");
-		placeManager.addPlace(userID, placeName, adress, about);
-		int placeID = 0;
+		BandManager bandManager = (BandManager) context.getAttribute("BandManager");
+		 
+		
+		String st = request.getParameter("BandID");
+		Integer bandID = Integer.parseInt(st);
+			
+		String name = request.getParameter("name");
+		
+		
+		System.out.println(" aqamde movida ");
+		
+		int imageID = 0;
 		try {
-			placeID = placeManager.getPlaceID(placeName);
+			imageID = bandManager.getImageID(name);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String image = "default.jpg";
-		placeManager.addProfileImage(placeID, image);
-		RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
+		
+		System.out.println(bandID + " " + imageID);
+		 
+		bandManager.updateProfileImage(bandID, imageID);
+		 
+		
+		
+		RequestDispatcher dispatch = request.getRequestDispatcher("BandProfile.jsp");
 		dispatch.forward(request, response);
 	}
 

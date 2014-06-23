@@ -52,15 +52,19 @@ public class EventRegistrationServlet extends HttpServlet {
 		String year = request.getParameter("Year");
 		String time = day + "-"+ month +"-" +year; 
 		String price = request.getParameter("Price");
-		String about = request.getParameter("About");	
-		String image = request.getParameter("Image");	
+		String about = request.getParameter("About");		
 		int userID = (Integer)session.getAttribute("UserID");
 		Integer placeID;
 		try {		
 			placeID = placeManager.getPlaceID(placeName);
-			eventManager.addEvent(userID, placeID, eventName,time,about,price,image);
-			RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
-			dispatch.forward(request, response);
+			if(placeID == 0){
+				RequestDispatcher dispatch = request.getRequestDispatcher("eventRegister.jsp?id=33");
+				dispatch.forward(request, response);
+			}else{
+				eventManager.addEvent(userID, placeID, eventName,time,about,price,"default.jgp");
+				RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
+				dispatch.forward(request, response);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

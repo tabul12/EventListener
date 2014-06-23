@@ -37,6 +37,7 @@ public class logout extends HttpServlet {
 	 */
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 System.out.println("yuyyy");
 		 
 		HttpSession session = request.getSession();
 		session.setAttribute("UserID", null);

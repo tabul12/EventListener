@@ -85,6 +85,46 @@ public class BandManager {
 		return BaseErrors.ALL_DONE;
 
 	}
+	
+	/*
+	 * this method gets band name and returns
+	 * this band ID
+	 */
+	
+	public int getBandID(String bandName) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select ID from Band " + 
+					 " where Name='" + bandName + "';";
+		
+		ResultSet result = stmt.executeQuery(query);
+		
+		int  id = 0;
+		if(result.next())
+			id = result.getInt("ID");	
+		 
+		connection.close();
+		return id;
+	}
+	
+	
+	public int getImageID(String imageName) throws SQLException{
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		
+		String query = "select ID from Band_Image " + 
+					 " where Name='" + imageName + "';";
+		
+		ResultSet result = stmt.executeQuery(query);
+		
+		int  id = 0;
+		if(result.next())
+			id = result.getInt("ID");	
+		 
+		connection.close();
+		return id;
+	}
 
 	/**
 	 * adds Band into database, return true if adding complete succesfully else
@@ -156,6 +196,12 @@ public class BandManager {
 				+ ",'" + Name + "')";
 		return changeBase(query);
 	}
+	
+
+	public int addProfileImage(int bandID,int imageID){
+		String query = "insert into Band_Profile_Image(Band_ImageID,BandID) values("+imageID + "," + bandID +");";
+		return changeBase(query);
+	}
 
 	/**
 	 * updates profile image
@@ -167,6 +213,7 @@ public class BandManager {
 	public int updateProfileImage(int BandID, int Band_ImageID) {
 		String query = "UPDATE Band_Profile_Image SET Band_ImageID="
 				+ Band_ImageID + " where BandID=" + BandID;
+		System.out.println(query + " aqamde movida " );
 		return changeBase(query);
 	}
 

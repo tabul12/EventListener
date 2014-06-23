@@ -10,21 +10,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import baseConnection.PlaceManager;
+import errors.BaseErrors;
+import baseConnection.UserManager;
 
 /**
- * Servlet implementation class BandRegistrationServlet
+ * Servlet implementation class addWishlistServlet
  */
-@WebServlet("/PlaceRegistrationServlet")
-public class PlaceRegistrationServlet extends HttpServlet {
+@WebServlet("/addWishlistServlet")
+public class addWishlistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PlaceRegistrationServlet() {
+    public addWishlistServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,31 +33,36 @@ public class PlaceRegistrationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		
+		String bandst = request.getParameter("BandID");
+		String userst = request.getParameter("UserID");
+		int bandID = Integer.parseInt(bandst);
+		int userID = Integer.parseInt(userst);
+		
 		ServletContext context = request.getServletContext();
-		PlaceManager placeManager = (PlaceManager) context.getAttribute("PlaceManager");
-		String placeName = request.getParameter("PlaceName");
-		String about = request.getParameter("About");	
-		String adress = request.getParameter("Adress");
-		int userID = (Integer)session.getAttribute("UserID");
-		placeManager.addPlace(userID, placeName, adress, about);
-		int placeID = 0;
+		UserManager userManager = (UserManager) context.getAttribute("UserManager");
+		
+		boolean alreadyAdded = false;
 		try {
-			placeID = placeManager.getPlaceID(placeName);
+			alreadyAdded = userManager.alreadyAddedToWishlist(userID, bandID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String image = "default.jpg";
-		placeManager.addProfileImage(placeID, image);
-		RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
+		
+		if(alreadyAdded){
+			request.setAttribute("AlreadyAddedToWishlist", BaseErrors.ALREADY_ADDED_TO_WISHLIST);
+			
+		} else userManager.addInWishList(userID, bandID);
+		
+		RequestDispatcher	dispatch = request.getRequestDispatcher("BandProfile.jsp");
 		dispatch.forward(request, response);
 	}
 
