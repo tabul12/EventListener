@@ -55,16 +55,8 @@ public class PlaceRegistrationServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(placeID + " __am places emateba surati");
-		int imageID = 0;
-		try {
-			imageID = placeManager.getImageID("default.jpg");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		placeManager.addProfileImage(placeID, imageID);
+		String image = "default.jpg";
+		placeManager.addProfileImage(placeID, image);
 		RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
 		dispatch.forward(request, response);
 	}

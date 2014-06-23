@@ -20,51 +20,48 @@ import baseConnection.PlaceManager;
 @WebServlet("/updatePlaceProfileServlet")
 public class updatePlaceProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public updatePlaceProfileServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public updatePlaceProfileServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		ServletContext context = request.getServletContext();
-		PlaceManager placeManager = (PlaceManager) context.getAttribute("PlaceManager");
+		PlaceManager placeManager = (PlaceManager) context
+				.getAttribute("PlaceManager");
 		HttpSession session = request.getSession();
-		Integer placeID = (Integer)session.getAttribute("PlaceID");
-		
+		Integer placeID = (Integer) session.getAttribute("PlaceID");
+
 		String name = request.getParameter("name");
-		
+
 		String pageN = request.getParameter("PlacePageNum");
 		Integer pageNum = 1;
-		if(pageN != null) pageNum = Integer.parseInt(pageN);
+		if (pageN != null)
+			pageNum = Integer.parseInt(pageN);
 		request.setAttribute("PlacePageNum", pageNum);
-		 
-		int imageID = 0;
-		try {
-			imageID = placeManager.getPlaceImageID(name);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		 
-		placeManager.changeProfileImage(placeID, imageID);
-		 
 		
-		RequestDispatcher dispatch = request.getRequestDispatcher("place.jsp");
+		if(name != null){
+			placeManager.changeProfileImage(placeID, name);
+		}
+		RequestDispatcher dispatch = request.getRequestDispatcher("place.jsp?PlaceID="+placeID);
 		dispatch.forward(request, response);
 	}
 

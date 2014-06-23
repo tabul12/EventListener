@@ -58,9 +58,14 @@ public class EventRegistrationServlet extends HttpServlet {
 		Integer placeID;
 		try {		
 			placeID = placeManager.getPlaceID(placeName);
-			eventManager.addEvent(userID, placeID, eventName,time,about,price,image);
-			RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
-			dispatch.forward(request, response);
+			if(placeID == 0){
+				RequestDispatcher dispatch = request.getRequestDispatcher("eventRegister.jsp?id=33");
+				dispatch.forward(request, response);
+			}else{
+				eventManager.addEvent(userID, placeID, eventName,time,about,price,image);
+				RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
+				dispatch.forward(request, response);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -143,8 +143,8 @@ public class PlaceManagerTests {
 		
 		stmt.executeUpdate(query);
 		
-		assertEquals(manager.changeProfileImage(manager.getPlaceID("sss"),2),BaseErrors.ALL_DONE);
-		assertEquals(manager.changeProfileImage(manager.getPlaceID("jimi"),1),BaseErrors.ALL_DONE);
+		assertEquals(manager.changeProfileImage(manager.getPlaceID("sss"),"jpg"),BaseErrors.ALL_DONE);
+		assertEquals(manager.changeProfileImage(manager.getPlaceID("jimi"),"neb"),BaseErrors.ALL_DONE);
 		
 		connection.close();
 	}			

@@ -16,6 +16,15 @@
       <h1>Add event </h1>
       <form action="EventRegistrationServlet" method="post">
         <p><input id="txt" type="text" name="EventName"  placeholder="Event Name" required></p>
+     	<%
+     	String req = request.getParameter("id");
+     	if(req != null){
+     		int cor= Integer.parseInt(req);
+     		if(cor == 33){
+     			out.println("<p>NO SUCH PLACE</p>");
+     		}
+     	}
+     	%>
         <p><input id="txt" type="text" name="Place"  placeholder="Place" required></p>
 		
         <p>
@@ -24,7 +33,6 @@
         <input id="year" type="text" name="Year"  placeholder="Year" required>
         </p>
         <p><input id="txt" type="text" name="Price"  placeholder="Price" required></p>
-        <p><input id="txt"type="text" name="Image"  placeholder="Image" required></p>
         <p><textarea  name="About"  placeholder="About" rows="4" cols="26"></textarea></p>
         <p class="submit"><input type="submit" name="commit" value="Add"></p>
       </form>

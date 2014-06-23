@@ -63,12 +63,11 @@ public class PlaceManager {
 			about = result.getString("About");			
 		}
 		
-		query = "select Place_Image.Name from Place_Image, Place_Profile_Image ,Place " +""
-				+ "where Place_Profile_Image.Place_ImageID=Place_Image.ID and "
-				+ "Place_Profile_Image.PlaceID=" + placeID + ";";
+		query = "select Name from Place_Profile_Image " 
+				+ "where PlaceID=" + placeID + ";";
 		result = stmt.executeQuery(query);
 		if(result.next()){
-			image = result.getString("Place_Image.Name");
+			image = result.getString("Name");
 		}
 		
 		Place place = new Place(placeID,userID, name, adress, about, image);
@@ -88,6 +87,14 @@ public class PlaceManager {
 		return changeBase(query);
 	}
 	
+	public int addProfileImage(int placeID, String image){
+		String query = "insert into Place_Profile_Image(PlaceID,Name)"
+				+ "values(" + placeID + ",'" + image + "');";
+		return changeBase(query);
+	}
+	
+
+	
 	public String getProfileImage(int placeID) throws SQLException{
 		Connection connection = eventDataSource.getConnection();
 		Statement stmt = connection.createStatement();
@@ -95,13 +102,12 @@ public class PlaceManager {
 		
 		String image = ""; 
 		
-		String query = "select Place_Image.Name from Place_Image, Place_Profile_Image ,Place " +""
-				+ "where Place_Profile_Image.Place_ImageID=Place_Image.ID and "
-				+ "Place_Profile_Image.PlaceID=" + placeID + ";";
+		String query = "select Name from Place_Profile_Image " 
+				+ "where PlaceID=" + placeID + ";";
 		ResultSet result = stmt.executeQuery(query);
 		 
 		if(result.next()){
-			image = result.getString("Place_Image.Name");
+			image = result.getString("Name");
 		} 
 		
 		 
@@ -179,10 +185,7 @@ public class PlaceManager {
 		return id;
 	}
 	
-	public int addProfileImage(int placeID,int imageID){
-		String query = "insert into Place_Profile_image(Place_ImageID,PlaceID) values("+imageID+"," + placeID +");";
-		return changeBase(query);
-	}
+
 	
 	/*
 	 * this method adds new image for specified place
@@ -214,11 +217,11 @@ public class PlaceManager {
 	 * this method changes profile image of specified place
 	 * it constructs query string and passes to changeBase method
 	 */
-	public int changeProfileImage(int placeID,int imageID)
+	public int changeProfileImage(int placeID,String image)
 	{	
 		
 		String query = "update Place_Profile_Image " + 
-						"set Place_ImageID=" + imageID + " where PlaceID=" + placeID + ";";		
+						"set Name='" + image + "' where PlaceID=" + placeID + ";";		
 		 return changeBase(query);
 		
 	}
