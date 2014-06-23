@@ -101,6 +101,7 @@
 					</div>
 						
 					<%
+						
 						out.println("<br/> <h1> Check And Rate Place  </h1>");
 						out.println("<li><a href=\"place.jsp?PlaceID=" + place.getID() + "\"><h2>" + place.getName()  +" " +
 								placeManager.getRating(place.getID()) +  "</h2></a> </li>");
@@ -149,6 +150,7 @@
 				out.println("<h1 class=\"title\" align=\"center\"> Welcome to Event " + event.getName() + "</h1> </br>");
 				out.println("<img src=images/"+ event.getImage() + " height=250 width=510"+">");
 				 
+				System.out.println(event.getImage());
 			 	
 				%>
 			   
@@ -296,6 +298,25 @@
 						out.println(" <h2> Event Address  </h2> </br>");
 						out.println("<p > <h4 align=\"center\">" + place.getAdress() + "<h4></p>" );
 						out.println("</div> </br>");
+						
+						
+						boolean hasAdded = userManager.hasAddedEvent(userID, eventID);
+						
+						if(hasAdded){
+							out.println("<form action=\"addBandOnEvent\" method=\"post\">");
+							out.println("<div align=center>");
+							out.println("<h2> Add Band On Event</h2>");
+							out.println("<p><input  name=\"BandName\"  placeholder=\"BandName\" rows=\"3\" cols=\"24\">");
+        					out.println("<input type=\"submit\" name=\"commit\" value=\"Add\"></p>");
+							out.println("</div>");
+							out.println("</form>");
+							if(request.getAttribute("NoSuchBand") != null && 
+									(Integer)request.getAttribute("NoSuchBand") == BaseErrors.NO_SUCH_BAND)
+								out.println("<h4> No such Band in DataBase</h4>");
+							if(request.getAttribute("ThisBandIsAlreadyAdded") != null
+								&& (Integer)request.getAttribute("ThisBandIsAlreadyAdded") == BaseErrors.THIS_BAND_IS_ALREADY_ADDED)
+								out.println("<h4> This band is already added to this event</h4>");
+						}
 						
 						
 						out.println("<div>");

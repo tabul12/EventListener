@@ -13,4 +13,6 @@ public class BaseErrors {
 	public static final int USER_ALREADY_ATTENDS_EVENT = 41;
 	public static final int USER_DOES_NOT_ATTEND_EVENT = 29;
 	public static final int ALREADY_ADDED_TO_WISHLIST = 23;
+	public static final int NO_SUCH_BAND = 404;
+	public static final int THIS_BAND_IS_ALREADY_ADDED = 100;
 }

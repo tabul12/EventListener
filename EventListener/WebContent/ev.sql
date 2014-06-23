@@ -220,5 +220,7 @@ END;
 $$
 DELIMITER ; 
 
-  
- 
+
+
+select * from Band_Image;
+insert into Band_Image(Name) value('default.jpg');

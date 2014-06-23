@@ -128,6 +128,14 @@ private BasicDataSource eventDataSource;
 	}
 	
 	/*
+	 * this method adds new band to specified event
+	 */
+	public int addBand(int eventID,int bandID){
+		String query = "insert into Band_On_Event(EventID,BandID) values(" + eventID + "," + bandID + ");";		 
+		return changeBase(query);
+	}
+	
+	/*
 	 * this method updates info about specified event
 	 * it constructs query string and passes it to changeBase method
 	 */
@@ -181,7 +189,24 @@ private BasicDataSource eventDataSource;
 		return getList(query, "BandID");
 	}
 	
-
+	/*
+	 * this method checks whether this band is already
+	 * added to this event
+	 */
+	
+	public boolean bandIsAlreadyAdded(int bandID,int eventID) throws SQLException{
+		String query = "select ID from Band_On_Event " +
+				"where EventID=" + eventID + " and  BandID=" + bandID + ";";
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		  
+		boolean is = result.next();
+		connection.close();
+		return is;
+	}
+	
+	
 	
 	/*
 	 * this method return boolean about 
