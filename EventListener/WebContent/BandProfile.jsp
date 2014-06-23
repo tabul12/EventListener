@@ -84,7 +84,7 @@
 						 
 								<%
 								if(UserID != null){
-									out.println("<div>");
+									out.println("<div>"); 
 									out.println(" <h2> Add To Wishlist tralala  </h2> </br>");
 									out.println("<form action=\"addWishlistServlet\" method=\"post\">");
 									out.println("<ul><li>"); 			
@@ -93,11 +93,11 @@
 									out.println("<input type=\"hidden\" name=\"UserID\" value=\"" + UserID + "\">");
 									
 									out.println(" <input type=\"submit\" value=\"Add\"> </form>");
-									String stAdded = (String)request.getAttribute("AlreadyAddedToWishlist");
+									Integer stAdded = (Integer)request.getAttribute("AlreadyAddedToWishlist");
 									int added = 0;
-									if(stAdded != null) added = Integer.parseInt(stAdded);
+									if(stAdded != null) added = stAdded;
 									
-									if(added == 23){
+									if(added == BaseErrors.ALREADY_ADDED_TO_WISHLIST){
 										out.println("<h4> You have already added this band to wishlis</h4>");
 									}
 									out.println("</div>");
