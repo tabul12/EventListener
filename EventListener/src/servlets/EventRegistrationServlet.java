@@ -61,7 +61,7 @@ public class EventRegistrationServlet extends HttpServlet {
 				RequestDispatcher dispatch = request.getRequestDispatcher("eventRegister.jsp?id=33");
 				dispatch.forward(request, response);
 			}else{
-				eventManager.addEvent(userID, placeID, eventName,time,about,price,"default.jgp");
+				eventManager.addEvent(userID, placeID, eventName,time,about,price,"default.jpg");
 				RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
 				dispatch.forward(request, response);
 			}

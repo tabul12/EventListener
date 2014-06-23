@@ -27,7 +27,7 @@
 							.getAttribute("PlaceManager");
 					Place place = placeManager.getPlace(k);
 					if (place.getProfileImage() != "") {
-						out.println("<img src=\"" + place.getProfileImage()
+						out.println("<img src=\"images/" + place.getProfileImage()
 								+ "\" height=\"120\" width=\"120\" />");
 					} else {
 						out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");

@@ -51,7 +51,7 @@ public class updateBandProfileServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		
 		
-		System.out.println(" aqamde movida ");
+		System.out.println(" aqamde movida vaaaxs");
 		
 		int imageID = 0;
 		try {

@@ -335,7 +335,7 @@ Released   : 20090303
 										.getAttribute("PlaceManager");
 								Place place = placeManager.getPlace(k);
 								if (place.getProfileImage() != "") {
-									out.println("<img src=\"" + place.getProfileImage()
+									out.println("<img src=\"images/" + place.getProfileImage()
 											+ "\" height=\"120\" width=\"120\" />");
 								} else {
 									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
@@ -394,9 +394,11 @@ Released   : 20090303
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != "") {
 									out.println("<img src=images/" + event.getImage()
-											+ " height='120' width='120' />");
+										+  " height='120' width='120' >");
+									System.out.println(event.getImage()+ "swkejiej");
 								} else {
-									out.println("<img src=images/default.jpg  height='120' width='120' />");								}
+									out.println("<img src=images/default.jpg  height='120' width='120' />");
+									}
 								System.out.println(event.getImage());
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
