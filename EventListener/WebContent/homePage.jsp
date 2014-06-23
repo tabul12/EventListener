@@ -63,7 +63,6 @@ xmlhttp.send();
 						<h2 >Top Bands</h2>
 						</br>
 						<ol>
-
 							<% 
 								BandManager bandManager = (BandManager)application.getAttribute("BandManager");
 								ArrayList<Integer> bandsList = bandManager.getTopBands(ConstantValues.NUM_TOP_BANDS);

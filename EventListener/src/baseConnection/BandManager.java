@@ -408,6 +408,28 @@ public class BandManager {
 				+ bandID + ";";
 		return countNUmber(query);
 	}
+	/**
+	 * 
+	 * @param BandID
+	 * @return list of fans, who has this band in their whishlist
+	 * @throws SQLException 
+	 */
+	public ArrayList<Integer> getFansArrayForBand(int BandID) throws SQLException
+	{
+		ArrayList<Integer> answ = new ArrayList<>();
+		String query = "select UserID from User_Band_Wishlist where BandID="+ BandID;
+
+		Connection connection = eventDataSource.getConnection();
+		Statement stmt = connection.createStatement();
+
+		ResultSet result = stmt.executeQuery(query);
+
+		while (result.next()) {
+			answ.add(result.getInt("UserID"));
+		}
+		connection.close();
+		return answ;		
+	}
 	
 
 }
