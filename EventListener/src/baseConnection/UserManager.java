@@ -172,7 +172,7 @@ public class UserManager {
 				+ numBeenPlacesPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
 		while (res.next()) {
-			int eventID = res.getInt("User_Going_EventEventID");
+			int eventID = res.getInt("EventID");
 			list.add(eventID);
 		}
 		con.close();

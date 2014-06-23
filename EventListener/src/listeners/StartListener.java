@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebListener;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
+import sendMail.SendEmail;
 import baseConnection.BandManager;
 import baseConnection.EventConnectionPool;
 import baseConnection.EventManager;
@@ -40,12 +41,13 @@ public class StartListener implements ServletContextListener {
 			BandManager bManager = new BandManager(dataSource);
 			PlaceManager pManager =  new PlaceManager(dataSource);
 			EventManager eManager = new EventManager(dataSource);
+			sendMail.SendEmail  SendMail = new SendEmail();
 			ServletContext context = arg0.getServletContext();
 			context.setAttribute("UserManager", uManager);
 			context.setAttribute("BandManager", bManager);
 			context.setAttribute("PlaceManager", pManager);
 			context.setAttribute("EventManager", eManager);
-			
+			context.setAttribute("SendEmail", SendMail);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
