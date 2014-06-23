@@ -285,6 +285,7 @@ public class UserManager {
 		String query = "select ID from Event where " + "UserID  = " + userID
 				+ " LIMIT " + num + "," + numEventsPerPage + ";";
 		ResultSet res = stmt.executeQuery(query);
+		
 		while (res.next()) {
 			int eventID = res.getInt("ID");
 			list.add(eventID);
@@ -293,6 +294,23 @@ public class UserManager {
 		return list;
 	}
 	
+	public boolean alreadyAddedToWishlist(int userID,int bandID) throws SQLException{
+		 
+		
+		Connection con = eventDataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "select ID from User_Band_Wishlist where UserID=" + userID + " and BandID=" + bandID + ";";
+		ResultSet res = stmt.executeQuery(query);
+		System.out.println(query + "   esaa wishlist");
+		if(res.next()){
+			con.close();
+		
+			return true;
+		}
+		
+		con.close();
+		return false;
+	}
 	/***
 	 * amatebs bands useris wishlistshi
 	 * 

@@ -12,4 +12,5 @@ public class BaseErrors {
 	public static final int CORRECT_USERNAME_AND_PASSWORD = 20;
 	public static final int USER_ALREADY_ATTENDS_EVENT = 41;
 	public static final int USER_DOES_NOT_ATTEND_EVENT = 29;
+	public static final int ALREADY_ADDED_TO_WISHLIST = 23;
 }

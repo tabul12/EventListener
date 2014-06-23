@@ -1,3 +1,4 @@
+<%@page import="errors.BaseErrors"%>
 <%@page import="objects.Place"%>
 <%@page import="baseConnection.PlaceManager"%>
 <%@page import="errors.ConstantValues"%>
@@ -84,15 +85,21 @@
 								<%
 								if(UserID != null){
 									out.println("<div>");
-									out.println(" <h2> Add To Wishlist   </h2> </br>");
-									out.println("<form action=\"addToWishlist\" method=\"post\"> <br/>");
-									out.println("<ul><li>");					
+									out.println(" <h2> Add To Wishlist tralala  </h2> </br>");
+									out.println("<form action=\"addWishlistServlet\" method=\"post\">");
+									out.println("<ul><li>"); 			
 									 
 									out.println("<input type=\"hidden\" name=\"BandID\" value=\"" + band.getID() + "\">");
 									out.println("<input type=\"hidden\" name=\"UserID\" value=\"" + UserID + "\">");
 									
 									out.println(" <input type=\"submit\" value=\"Add\"> </form>");
-									 
+									String stAdded = (String)request.getAttribute("AlreadyAddedToWishlist");
+									int added = 0;
+									if(stAdded != null) added = Integer.parseInt(stAdded);
+									
+									if(added == 23){
+										out.println("<h4> You have already added this band to wishlis</h4>");
+									}
 									out.println("</div>");
 									
 								}
