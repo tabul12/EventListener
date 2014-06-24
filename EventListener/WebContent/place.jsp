@@ -17,7 +17,24 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Event Listener</title>
 <link href="homePageCSS.css" rel="stylesheet" type="text/css" media="screen" />
- 
+ <script>
+	function loadXMLDocForPlaces(p,PlaceID) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				document.getElementById("PlaceImages").innerHTML = xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open("GET", "UpdateOnlyDivForPlaceImages.jsp?PlacePageNum=" + p
+				+ "&PlaceID=" + PlaceID, true);
+		xmlhttp.send();
+	}
+</script>
 </head>
 <body>
 <!-- start header -->
@@ -104,8 +121,7 @@
 						out.println("<div >");
 						out.println(" <h1> Event About </h1> </br>");
 						out.println("<div class=\"column\">");
-						out.println("<h4 >" + place.getAbout() +
-									"ndakdnakndkankndkadnkankdanknadkndkand   mdaknkandkandkandkankd"+ "</h4>");
+						out.println("<h4 >" + place.getAbout() + "</h4>");
 						out.println("</div>");
 						out.println("</div>");
 				%>
@@ -116,6 +132,9 @@
 					out.println(" <h2> " + place.getName() +"'s Images </h2> </br>");					 
 					out.println("<p><div style=\"width:250%\";>");
 					
+				%>
+					<div id ="PlaceImages">
+				<%
 					String tmp = (String)request.getParameter("PlacePageNum");
 					Integer pageNum = 1;
 					
@@ -163,15 +182,15 @@
 					out.println("<div>");
 					out.println("<h1 align=\"center\" > ");
 					for(int i = startPage; i <= endPage; i++){
-						  out.println("<a href=\"place.jsp?PlacePageNum=" + i + "\">" + i + "</a>");
+						  out.println("<a href=# onclick=loadXMLDocForPlaces(" + i + ","
+									+ placeID + ")>" + i + " </a>");
 					}	
 					out.println("</h1>");
 					out.println("</div>");
 					out.println("</p>");
 				
-					
-				
 				%>
+				</div>
 				</ul>
 			</div>
 		  	 
@@ -184,11 +203,6 @@
 				<li id = "topPlaces">
 				<%
 
-
-						
-						
-						
-						 
 						if(hasAddedThis){
 							hasAddedThis = true;
 							out.println("<div>");
@@ -199,13 +213,18 @@
 							out.println("</li></ul>");
 							out.println("</div> </br>");
 							
-							out.println("<div>");
-							out.println("<h2> Add Image   </h2> </br>"); 
-							out.println("<form action=\"#\" method=\"post\"> <br/>");						 
-							out.println("<ul><li>");
-							out.println(" <input type=\"submit\" value=\"Add Image...\"> </form>");
-							out.println("</li></ul>");						 
-							out.println("</div>");
+		
+							out.println("<h2> Upload Image   </h2> </br>"); 
+							out.println("<form method='POST' action='upload' enctype='multipart/form-data' >");
+							out.println("File:");
+							out.println("<input type='file' name='file' id='file' /> <br/>");
+							String destIM =ConstantValues.PATH_TO_IMAGES;
+							out.println("<input type='hidden' value="+destIM+" name='destination'"+"/>");
+							out.println("<input type='hidden' value="+placeID+" name='PlaceID'/>");
+							out.println("<input type='hidden' value='placeImages' name='typeFile'/>");
+							out.println("<input type='submit' value='Upload' name='upload' id='upload' "+"/>");
+							out.println("</form>");
+							out.println("</li>");
 						}
 						
 						place = placeManager.getPlace(placeID);
@@ -218,11 +237,7 @@
 						out.println("<h2> Place Adress   </h2> </br>");
 						out.println("<h3 align=center> " + place.getAdress() + "</h3>");
 						out.println("</div>");
-						
-						
 						 
-						 
-						
 						
 						
 				%>

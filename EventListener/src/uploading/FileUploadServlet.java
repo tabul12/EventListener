@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import baseConnection.BandManager;
+import baseConnection.PlaceManager;
 
 
 /**
@@ -113,6 +114,14 @@ public class FileUploadServlet extends HttpServlet {
 			BandManager bandManager=(BandManager) context.getAttribute("BandManager");
 			System.out.println(bandManager.addVideo(BandID, fileName)+" videoos shecdomaaaa");
 			forw ="BandProfile.jsp?BandID="+BandID;
+	    }
+	    if(typeFile.equals("placeImages")){
+	    	String placeID = request.getParameter("PlaceID");
+	    	int PlaceID = Integer.parseInt(placeID);
+	    	ServletContext context = getServletContext();
+	    	PlaceManager placeManager = (PlaceManager) context.getAttribute("PlaceManager");
+	    	placeManager.addImage(PlaceID, fileName);
+	    	forw ="place.jsp?PlaceID="+PlaceID;
 	    }
 	    response.getWriter().println("<p>File Uploaded<p>");
 	    response.getWriter().println("<a href='"+forw+"' "+">Click Here To Go Back</a>");
