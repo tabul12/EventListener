@@ -20,9 +20,12 @@ private BasicDataSource eventDataSource;
 		this.eventDataSource = connectionPool;
 	}
 
-	/*
-	 * this method constructs and returns event object
+	/**
+	 *  this method constructs and returns event object
 	 * on specified ID
+	 * @param eventID
+	 * @return event
+	 * @throws SQLException
 	 */
 	public Event getEvent(int eventID) throws SQLException{
 		Connection connection = null;
@@ -65,10 +68,13 @@ private BasicDataSource eventDataSource;
 	
 	 
 	
-	/*
+	/**
 	 * this method returns The ID of the event
 	 * we pass it image Name of this event because
 	 * image Name is unic
+	 * @param eventName
+	 * @return
+	 * @throws SQLException
 	 */
 	public int getEventID(String eventName) throws SQLException{
 		String query = "select ID from Event where Name='" + eventName + "';";
@@ -121,9 +127,16 @@ private BasicDataSource eventDataSource;
 		 
 		return ans;
 	}
-	/*
-	 * this method adds new event
-	 * it constructs query string and passes to changeBase method
+	/**
+	 *  this method adds new band to specified event
+	 * @param userID
+	 * @param placeID
+	 * @param name
+	 * @param time
+	 * @param about
+	 * @param price
+	 * @param image
+	 * @return constant
 	 */
 	public int addEvent(int userID,int placeID,String name,String time,String about,String price,String image){
 		 
@@ -134,7 +147,13 @@ private BasicDataSource eventDataSource;
 		return changeBase(query);		 
 	}
 	
-	
+	/**
+	 * 
+	 * @param userID
+	 * @param eventID
+	 * @return true if already attends
+	 * @throws SQLException
+	 */
 	public boolean userAlreadyAttendsEvent(int userID,int eventID) throws SQLException{
 		String query = "select * from User_Going_Event where UserID=" + userID + " and EventID=" + eventID + ";"; 		
 		
@@ -158,7 +177,13 @@ private BasicDataSource eventDataSource;
 		 
 		return rest;
 	}
-	
+	/**
+	 * registers user on to event
+	 * @param userID
+	 * @param eventID
+	 * @return constant
+	 * @throws SQLException
+	 */
 	public int userAttendsEvent(int userID,int eventID) throws SQLException{		
 		
 		if(userAlreadyAttendsEvent(userID, eventID)){
@@ -169,17 +194,26 @@ private BasicDataSource eventDataSource;
 		return changeBase(query);
 	}
 	
-	/*
-	 * this method adds new band to specified event
+	/**
+	 *  this method adds new band to specified event
+	 * @param eventID
+	 * @param bandID
+	 * @return constant from constantvalues
 	 */
 	public int addBand(int eventID,int bandID){
 		String query = "insert into Band_On_Event(EventID,BandID) values(" + eventID + "," + bandID + ");";		 
 		return changeBase(query);
 	}
 	
-	/*
+	/**
 	 * this method updates info about specified event
 	 * it constructs query string and passes it to changeBase method
+	 * @param eventID
+	 * @param name
+	 * @param time
+	 * @param about
+	 * @param price
+	 * @return constant from constantValues
 	 */
 	public int updateInfo(int eventID,String name,String time,String about,String price){
 		String query = "update Event "
@@ -189,9 +223,12 @@ private BasicDataSource eventDataSource;
 		return changeBase(query);
 	}
 	
-	/*
+	/**
 	 * this method returns number of going users on 
 	 * specified event
+	 * @param eventID
+	 * @return  number of going users
+	 * @throws SQLException
 	 */
 	public int getGoingUsersNum(int eventID) throws SQLException{
 		String query = "select count(ID) from User_Going_Event where EventID='" + eventID + "';";
@@ -216,9 +253,13 @@ private BasicDataSource eventDataSource;
 		return ans;
 	}
 	
-	/*
+	/**
 	 * this method returns list of ID of users, who goes on this 
 	 * event 
+	 * @param eventID
+	 * @param pageNum
+	 * @return list of going users
+	 * @throws SQLException
 	 */
 	public ArrayList<Integer> getGoingUsers(int eventID,int pageNum) throws SQLException{
 		String query = "select UserID from User_Going_Event "
@@ -228,9 +269,12 @@ private BasicDataSource eventDataSource;
 		return getList(query,"UserID");
 	}
 	
-	/*
+	/**
 	 * this method returns list of bands
 	 * which plays on this event
+	 * @param eventID
+	 * @return list of bands on this event
+	 * @throws SQLException
 	 */
 	public ArrayList<Integer> getBandsOnEvent(int eventID) throws SQLException{
 		String query = "select BandID from Band_On_Event" +
@@ -239,11 +283,15 @@ private BasicDataSource eventDataSource;
 		return getList(query, "BandID");
 	}
 	
-	/*
-	 * this method checks whether this band is already
-	 * added to this event
-	 */
 	
+	/**
+	 * * this method checks whether this band is already
+	 * added to this event
+	 * @param bandID
+	 * @param eventID
+	 * @return true if already added
+	 * @throws SQLException
+	 */
 	public boolean bandIsAlreadyAdded(int bandID,int eventID) throws SQLException{
 		String query = "select ID from Band_On_Event " +
 				"where EventID=" + eventID + " and  BandID=" + bandID + ";";
@@ -270,9 +318,13 @@ private BasicDataSource eventDataSource;
 	}
 	
 	
-	/*
+	/**
 	 * this method return boolean about 
 	 * this userd has added this event or not
+	 * @param userID
+	 * @param eventID
+	 * @return true if has added false aotherwise
+	 * @throws SQLException
 	 */
 	public boolean hasAdded(int userID,int eventID) throws SQLException{
 		String query = "select ID from Event " +
@@ -296,9 +348,11 @@ private BasicDataSource eventDataSource;
 		return is;
 	}
 	
-	/*
+	/**
 	 * this method gets query string
 	 * and executes it
+	 * @param query
+	 * @return constants from constantvalues
 	 */
 	public int changeBase(String query){
 		Connection connection = null;
@@ -335,23 +389,37 @@ private BasicDataSource eventDataSource;
 		return BaseErrors.ALL_DONE;
 	}
 	
-	/*
+	/**
 	 * this method returns latest num count events
 	 * from newer to older
+	 * @param num
+	 * @return list of Id of latest events
+	 * @throws SQLException
 	 */
 	public ArrayList<Integer> getLatestEvents(int num) throws SQLException{
 		String query = "select ID from Event order by ID desc limit " + num + ";";
 		
 		return getList(query,"ID");
 	}
-	
+	/**
+	 * 
+	 * @param pageNum
+	 * @return list of events ID's form per page 
+	 * @throws SQLException
+	 */
 	public ArrayList<Integer> getEventsForNthPage(int pageNum) throws SQLException{
 		String query = "select ID from Event order by ID desc limit " + 
 				(pageNum - 1)*ConstantValues.NUM_EVENT_ON_PER_PAGE + "," + ConstantValues.NUM_EVENT_ON_PER_PAGE + ";";
 		 
 		return getList(query,"ID");
 	}
-	
+	/**
+	 * 
+	 * @param query
+	 * @param column
+	 * @return list of strings 
+	 * @throws SQLException
+	 */
 	public ArrayList<Integer> getList(String query,String column) throws SQLException{
 		Connection connection = null;
 		ArrayList<Integer> list = null;

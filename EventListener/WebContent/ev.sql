@@ -21,14 +21,14 @@ create table Admin(
 	ID int auto_increment not null,
 	primary key(ID),
 	UserID int,
-	FOREIGN KEY (UserID) REFERENCES User(ID)	
+	FOREIGN KEY (UserID) REFERENCES User(ID) ON DELETE CASCADE	
 );
 
 create table Punished(
 	ID int auto_increment not null,
 	primary key(ID),
 	UserID int,
-	FOREIGN KEY (UserID) REFERENCES User(ID)		
+	FOREIGN KEY (UserID) REFERENCES User(ID) ON DELETE CASCADE
 );
 
 create table Band(
@@ -38,7 +38,7 @@ create table Band(
 	Name varchar(30) unique,
 	About text,
 	Mail text,
-	FOREIGN KEY (UserID) REFERENCES User(ID)	
+	FOREIGN KEY (UserID) REFERENCES User(ID)	 ON DELETE CASCADE
 );
  
 create table Place(
@@ -48,7 +48,7 @@ create table Place(
 	Name varchar(30) unique,
 	Adress varchar(30),
 	About text,
-	foreign key(UserID) references User(ID)
+	foreign key(UserID) references User(ID) ON DELETE CASCADE
 );
 
 create table Event(
@@ -61,8 +61,8 @@ create table Event(
 	About text,
 	Price varchar(10),
 	Image varchar(30),
-	foreign key(UserID) references User(ID),
-	foreign key(PlaceID) references Place(ID)	
+	foreign key(UserID) references User(ID) ON DELETE CASCADE,
+	foreign key(PlaceID) references Place(ID)	ON DELETE CASCADE
 );
 
 create table Genre(
@@ -79,8 +79,8 @@ create table User_Band_Wishlist(
 	primary key(ID),
 	UserID int,
 	BandID int,
-	foreign key(UserID) references User(ID),
-	foreign key(BandID) references Band(ID)
+	foreign key(UserID) references User(ID) ON DELETE CASCADE,
+	foreign key(BandID) references Band(ID) ON DELETE CASCADE
 );
 
 create table User_Going_Event(
@@ -88,8 +88,8 @@ create table User_Going_Event(
 	primary key(ID),
 	UserID int,
 	EventID int,
-	foreign key(UserID) references User(ID),
-	foreign key(EventID) references Event(ID)
+	foreign key(UserID) references User(ID) ON DELETE CASCADE ,
+	foreign key(EventID) references Event(ID) ON DELETE CASCADE
 );
  
 
@@ -98,8 +98,8 @@ create table Band_On_Event(
 	primary key(ID),
 	EventID int,
 	BandID int,
-	foreign key(EventID) references Event(ID),
-	foreign key(BandID) references Band(ID)
+	foreign key(EventID) references Event(ID) ON DELETE CASCADE,
+	foreign key(BandID) references Band(ID) ON DELETE CASCADE
 );
 
 
@@ -108,8 +108,8 @@ create table Band_Plays_Genre(
 	primary key(ID),
 	BandID int,
 	GenreID int,
-	foreign key(BandID) references Band(ID),
-	foreign key(GenreID) references Genre(ID)
+	foreign key(BandID) references Band(ID) ON DELETE CASCADE,
+	foreign key(GenreID) references Genre(ID) ON DELETE CASCADE
 );
 
 create table Band_Image(
@@ -117,7 +117,7 @@ create table Band_Image(
 	primary key(ID),
 	Name varchar(30) unique,
 	BandID int,
-	foreign key(BandID) references Band(ID)
+	foreign key(BandID) references Band(ID) ON DELETE CASCADE
 );
 
 
@@ -126,8 +126,8 @@ create table Band_Profile_Image(
 	primary key(ID),
 	Band_ImageID int,
 	BandID int,
-	foreign key(BandID) references Band(ID),
-	foreign key(Band_ImageID) references Band_Image(ID)
+	foreign key(BandID) references Band(ID) ON DELETE CASCADE ,
+	foreign key(Band_ImageID) references Band_Image(ID) ON DELETE CASCADE
 );
 
 
@@ -136,7 +136,7 @@ create table Music(
 	primary key(ID),
 	BandID int,
 	Name varchar(50) unique,
-	foreign key(BandID) references Band(ID)	
+	foreign key(BandID) references Band(ID)	 ON DELETE CASCADE
 );
 
 create table Video(
@@ -144,7 +144,7 @@ create table Video(
 	Primary key(ID),
 	BandID int,
 	Name varchar(50) unique,
-	foreign key(BandID) references Band(ID)	
+	foreign key(BandID) references Band(ID)	 ON DELETE CASCADE
 );
 
 
@@ -153,7 +153,7 @@ create table Place_Image(
 	primary key(ID),
 	Name varchar(50) unique,
 	PlaceID int,
-	foreign key(PlaceID) references Place(ID)
+	foreign key(PlaceID) references Place(ID) ON DELETE CASCADE
 );
 
 
@@ -162,7 +162,7 @@ create table Place_Profile_Image(
 	primary key(ID),
 	Name varchar(50),
 	PlaceID int unique,
-	foreign key(PlaceID) references Place(ID)
+	foreign key(PlaceID) references Place(ID) ON DELETE CASCADE
 );
 
 
@@ -173,9 +173,9 @@ create table Band_Rating(
 	BandID int,
 	EventID int,
 	Rating int,
-	foreign key(UserID) references User(ID),
-	foreign key(BandID) references Band(ID),
-	foreign key(EventID) references Event(ID)
+	foreign key(UserID) references User(ID) ON DELETE CASCADE,
+	foreign key(BandID) references Band(ID) ON DELETE CASCADE,
+	foreign key(EventID) references Event(ID) ON DELETE CASCADE
 );
 
 
@@ -186,9 +186,9 @@ create table Place_Rating(
 	PlaceID int,
 	EventID int,
 	Rating int,
-	foreign key(UserID) references User(ID),
-	foreign key(PlaceID) references Place(ID),
-	foreign key(EventID) references Event(ID)
+	foreign key(UserID) references User(ID) ON DELETE CASCADE,
+	foreign key(PlaceID) references Place(ID) ON DELETE CASCADE,
+	foreign key(EventID) references Event(ID) ON DELETE CASCADE
 );
 
 
@@ -219,8 +219,8 @@ return num;
 END;
 $$
 DELIMITER ; 
+ 
 insert into Band_Image(Name) value('default.jpg');
-
 
 /*
 use ev;
