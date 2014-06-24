@@ -13,7 +13,6 @@ public class Event {
 	
 	public Event(int ID,int userID,int placeID,String name,String time,String about,String price,
 			String image){
-		
 		this.ID = ID;
 		this.userID = userID;
 		this.placeID = placeID;

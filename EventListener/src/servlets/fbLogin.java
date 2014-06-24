@@ -39,7 +39,6 @@ public class fbLogin extends HttpServlet {
         String lastname = request.getParameter("lastname");
         String email = request.getParameter("email");
         String userName = request.getParameter("id");
-        
        
         
         ServletContext context = request.getServletContext();
