@@ -1,4 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/baseConnection/EventConnectionPool.java=UTF-8
+encoding//src/objects/Band.java=UTF-8
+encoding//src/objects/Event.java=UTF-8
+encoding//src/objects/Place.java=UTF-8
+encoding//src/objects/User.java=UTF-8
 encoding//src/servlets/addBandOnEvent.java=UTF-8
+encoding//src/servlets/fbLogin.java=UTF-8
 encoding//src/tests/BandManagerTests.java=UTF-8

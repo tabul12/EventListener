@@ -10,6 +10,70 @@
   <link rel="stylesheet" href="registerCSS.css">
   <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
+
+					<!-- Place this asynchronous JavaScript just before your </body> tag -->
+			<script type="text/javascript">
+				(function() {
+					var po = document.createElement('script');
+					po.type = 'text/javascript';
+					po.async = true;
+					po.src = 'https://apis.google.com/js/client:plusone.js';
+					var s = document.getElementsByTagName('script')[0];
+					s.parentNode.insertBefore(po, s);
+				})();
+			</script>
+			
+			<script type="text/javascript">
+				scopes = [ "https://www.googleapis.com/auth/plus.me",
+						"https://www.googleapis.com/auth/userinfo.email" ];
+				
+				function signinCallback(authResult) {
+					if (authResult['status']['signed_in']) {
+						gapi.client.load('plus', 'v1');
+						var request = gapi.client.plus.people.get({
+							'userId' : 'me'
+						});
+						
+						
+						var name = 'semi';
+						//name = resp.name.givenName;
+						 
+						var mail;
+						request.execute(function(resp) {			 
+							console.log('name ' + resp.name.givenName);
+							console.log('Image URL: ' + resp.image.url);
+							console.log('Profile URL: ' + resp.url);
+							 
+							
+							gapi.client.load('oauth2', 'v2', function() {
+								gapi.client.oauth2.userinfo.get().execute(function(response) {
+									console.log('user email :'+ response.email);
+									window.location.replace("fbLogin?email=" + response.email + "&name=" + resp.name.givenName +"&lastname=" + 
+										resp.name.familyName + "&id=" + resp.id);
+								})
+							});
+						});
+						
+						 
+						
+						
+						 
+						
+						document.getElementById('signinButton').setAttribute('style',
+								'display: none');
+					} else {
+						// Update the app to reflect a signed out user
+						// Possible error values:
+						//   "user_signed_out" - User is signed-out
+						//   "access_denied" - User denied access to your app
+						//   "immediate_failed" - Could not automatically log in the user
+						console.log('Sign-in state: ' + authResult['error']);
+					}
+				}
+			
+			</script>
+
+ 
 <body >
  
  <script>
@@ -31,8 +95,7 @@
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
+      document.getElementById('status').innerHTML = '';
     }
   }
 
@@ -120,12 +183,23 @@
        	
         <p class="submit"><input type="submit" name="commit" value="Sign Up"></p>
       </form>
-     		 <p align=center>
-					<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+     		 	
+     		 	 <p>
+				<span id="signinButton"> <span class="g-signin"
+					data-callback="signinCallback"
+					data-clientid="451986216825-dp9tb8b54iotm832n20h0smqaidtr1ld.apps.googleusercontent.com"
+					data-cookiepolicy="single_host_origin"
+					data-requestvisibleactions="http://schemas.google.com/AddActivity"
+					data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"> </span>
+				</span>  
+				</p>
+				
+     		 	<p>
+					<fb:login-button size="large" scope="public_profile,email" onlogin="checkLoginState();">
 					</fb:login-button>
-					
-				<div id="status"></div>
-			</p>
+				</p>
+			 
+				 
     </div>
   </section>
 
