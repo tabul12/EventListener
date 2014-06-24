@@ -19,8 +19,8 @@ public class ConstantValues {
 	public static final int NUMBER_OF_VIDEOS_PER_PAGE_FOR_BAND_PROFILE = 2; 
 	public static final int NUMBER_OF_IMAGES_PER_PAGE_FOR_BAND_PROFILE = 2;
 	public static final int NUMBER_OF_MUSICS_PER_PAGE_FOR_BAND_PROFILE = 2;
-	public static final String PATH_TO_IMAGES = "C:/EventListenerBase/images/";
-	public static final String PATH_TO_VIDEOS = "C:/EventListenerBase/videos/";
-	public static final String PATH_TO_MUSICS = "C:/EventListenerBase/musics/";
+	public static final String PATH_TO_IMAGES = "C:/EventBase/images/";
+	public static final String PATH_TO_VIDEOS = "C:/EventBase/videos/";
+	public static final String PATH_TO_MUSICS = "C:/EventBase/musics/";
 	
 }

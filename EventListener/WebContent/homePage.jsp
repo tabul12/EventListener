@@ -44,6 +44,12 @@ xmlhttp.send();
 </script>
 </head>
 <body>
+	
+	 
+
+	 
+	 
+
 <!-- start header -->
 <div id="header">
 	<div id="menu">
@@ -214,14 +220,14 @@ xmlhttp.send();
 
 								
 
-								out.println("<a href='userPage.jsp'><p><h2> Welcome " + user.getUserName() + "</h2></p></a>");
+								out.println("<a href='userPage.jsp'><p><h2> Welcome " + user.getName() + "</h2></p></a>");
 
 								out.println("</div>");
 							}
 						
 						%> 
 
-							</div>
+							</div>		 
 					
 				</li>
 

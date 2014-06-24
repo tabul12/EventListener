@@ -179,6 +179,27 @@ public class UserManager {
 		return list;
 	}
 
+	
+	/*
+	 * this method checks whether user with facebook/google
+	 * has already log in our website
+	 * returns -1 if there is no such user else returns ID;
+	 */
+	public int getVIPUserID(String userName) throws SQLException{
+		Connection con = eventDataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "select ID from User where UserName=" + userName + ";";
+		ResultSet res = stmt.executeQuery(query);
+		if (res.next()) {
+			int ret = res.getInt("ID"); 
+			con.close();
+			return ret;
+		} else {
+			con.close();
+			return -1;
+		}
+	}
+	
 	/***
 	 * abrunebs useris ID is username is da passwordis mixedvit sachiroa
 	 * daloginebisas

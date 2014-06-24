@@ -6,10 +6,7 @@ import java.sql.*;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
-import objects.Band;
-import sun.jdbc.odbc.ee.DataSource;
-import sun.org.mozilla.javascript.internal.ast.NewExpression;
-
+import objects.Band; 
 public class EventConnectionPool {
 	private String driver = EventDBInfo.MYSQL_DRIVER;
 	private String url = EventDBInfo.MYSQL_DATABASE_SERVER;

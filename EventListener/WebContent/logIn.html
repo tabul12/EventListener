@@ -1,18 +1,11 @@
-<%@page import="errors.BaseErrors"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en"> <!--<![endif]-->
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Login Form</title>
-  <link rel="stylesheet" href="registerCSS.css">
-  <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
 </head>
-<body >
- 
- <script>
+<body>
+<script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -47,7 +40,7 @@
 
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '709906935736081',
+    appId      : '{your-app-id}',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
@@ -86,8 +79,6 @@
   function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-    	window.location.replace("fbLogin?name=" + response.first_name +"&lastname=" + 
-				response.last_name + "&email=" + response.email + "&id=" + response.id);
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
@@ -95,40 +86,17 @@
   }
 </script>
 
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
 
-				     						 
-  <section class="container">
-    <div class="login">
-     
-      <h1>Sign Up </h1>
-      <%  
-      	Integer number = (Integer)session.getAttribute("UserNameAlreadyUsed");
-      	int num  = -1;
-      	if(number != null) num = number;
-      	
-    	if(num == BaseErrors.USER_NAME_ALREADY_USED) {
-    		out.println("<h5> This UserName already used. Choose another</h5>");
-    	}
-    %> 
-      <form method="post" action="registrationServlet" type="text/css">
-        <p><input type="text" name="FirstName"   placeholder="FirstName"></p>
-        <p><input type="text" name="LastName"  placeholder="LastName"></p>
-        <p><input type="text" name="UserName"  placeholder="UserName"></p>
-        <p><input type="password" name="Password"  placeholder="Password"></p>
-        <p><input type="text" name="Mail"  placeholder="Mail"></p>
-        <p><input type="text" name="MobileNumber"  placeholder="MobileNumber"></p>
-       	
-        <p class="submit"><input type="submit" name="commit" value="Sign Up"></p>
-      </form>
-     		 <p align=center>
-					<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-					</fb:login-button>
-					
-				<div id="status"></div>
-			</p>
-    </div>
-  </section>
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
 
-   
+<div id="status">
+</div>
+
 </body>
 </html>

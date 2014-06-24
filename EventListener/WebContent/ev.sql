@@ -220,6 +220,8 @@ END;
 $$
 DELIMITER ; 
 
+/*
+use ev;
 
 select * from Video;
 select * from Band_Image;
