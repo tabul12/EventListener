@@ -16,4 +16,5 @@ public class BaseErrors {
 	public static final int NO_SUCH_BAND = 404;
 	public static final int THIS_BAND_IS_ALREADY_ADDED = 100;
 	public static final int NO_SUCH_USER = -1;
+	public static final int CONNECTION_ClOSE_EXCEPTION = 38;
 }

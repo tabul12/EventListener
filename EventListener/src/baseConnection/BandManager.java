@@ -7,6 +7,15 @@ import objects.Band;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
  
+
+
+
+
+
+
+
+
+
 import errors.BaseErrors;
 import errors.ConstantValues;
 
@@ -30,25 +39,39 @@ public class BandManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Band getBand(int id) throws SQLException {
+	public Band getBand(int id){
 		int ID = 0;
 		int UserID = 0;
 		String Name = null;
 		String About = null;
 		String Mail = null;
-		Connection con = eventDataSource.getConnection();
-		java.sql.Statement stm = con.createStatement();
-		String query = "select * from Band where ID=" + id;
-		ResultSet rest = stm.executeQuery(query);
-		while (rest.next()) {
-			ID = rest.getInt("ID");
-			UserID = rest.getInt("UserID");
-			Name = rest.getString("Name");
-			About = rest.getString("About");
-			Mail = rest.getString("Mail");
+		Connection con = null; 
+		Band band = null;
+		try {
+			
+			con = eventDataSource.getConnection();
+			java.sql.Statement stm = con.createStatement();
+			String query = "select * from Band where ID=" + id;
+			ResultSet rest = stm.executeQuery(query);
+			while (rest.next()) {
+				ID = rest.getInt("ID");
+				UserID = rest.getInt("UserID");
+				Name = rest.getString("Name");
+				About = rest.getString("About");
+				Mail = rest.getString("Mail");
+			}
+			band = new Band(ID, UserID, Name, About, Mail);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		Band band = new Band(ID, UserID, Name, About, Mail);
-		con.close();
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return band;
 	}
 
@@ -59,7 +82,7 @@ public class BandManager {
 	 * @return code of error
 	 */
 	private int changeBase(String query) {
-		Connection con;
+		Connection con = null;
 		try {
 			con = eventDataSource.getConnection();
 			try {
@@ -67,17 +90,22 @@ public class BandManager {
 				try {
 					stm.executeUpdate(query);
 				} catch (Exception e) {
-					con.close();
 					return BaseErrors.UNABLE_EXECUTE;
 				}
-				con.close();
 			} catch (Exception e) {
-				con.close();
 				return BaseErrors.UNABLE_CREATE_STATEMENT;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			return BaseErrors.UNABLE_CONNECTION;
+		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				return BaseErrors.CONNECTION_ClOSE_EXCEPTION;
+			}
 		}
 		return BaseErrors.ALL_DONE;
 
@@ -88,38 +116,62 @@ public class BandManager {
 	 * this band ID
 	 */
 	
-	public int getBandID(String bandName) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select ID from Band " + 
-					 " where Name='" + bandName + "';";
-		
-		ResultSet result = stmt.executeQuery(query);
-		
+	public int getBandID(String bandName){
+		Connection connection =null;
 		int  id = 0;
-		if(result.next())
-			id = result.getInt("ID");	
-		 
-		connection.close();
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select ID from Band " + 
+						 " where Name='" + bandName + "';";
+			
+			ResultSet result = stmt.executeQuery(query);
+			
+	
+			if(result.next())
+				id = result.getInt("ID");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+			}
+			
+		}
 		return id;
 	}
 	
 	
-	public int getImageID(String imageName) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select ID from Band_Image " + 
-					 " where Name='" + imageName + "';";
-		
-		ResultSet result = stmt.executeQuery(query);
-		
+	public int getImageID(String imageName){
+		Connection  connection = null;
 		int  id = 0;
-		if(result.next())
-			id = result.getInt("ID");	
-		 
-		connection.close();
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select ID from Band_Image " + 
+						 " where Name='" + imageName + "';";
+			
+			ResultSet result = stmt.executeQuery(query);
+			
+			
+			if(result.next())
+				id = result.getInt("ID");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				return id;
+			}
+		}
 		return id;
 	}
 
@@ -189,6 +241,7 @@ public class BandManager {
 	 * @return code of error
 	 */
 	public int addVideo(int BandID, String Name) {
+		System.out.println("movidaaaa ");
 		String query = "insert into Video(BandID,Name) " + "values(" + BandID
 				+ ",'" + Name + "')";
 		return changeBase(query);
@@ -210,13 +263,16 @@ public class BandManager {
 	public int updateProfileImage(int BandID, int Band_ImageID) {
 		String query = "UPDATE Band_Profile_Image SET Band_ImageID="
 				+ Band_ImageID + " where BandID=" + BandID;
-		System.out.println(query + " aqamde movida " );
 		return changeBase(query);
 	}
-
+	/**
+	 * saerto metodi sami ramis wamosagebad
+	 * @param query
+	 * @return
+	 */
 	private ArrayList<String> getImagesAndVideosAndMusics(String query) {
 		ArrayList<String> ans = new ArrayList<>();
-		Connection con;
+		Connection con =null;
 		try {
 			con = eventDataSource.getConnection();
 			try {
@@ -227,10 +283,8 @@ public class BandManager {
 						String name = res.getString("Name");
 						ans.add(name);
 					}
-					con.close();
 				} catch (Exception e) {
 					System.err.println("eror code " + BaseErrors.UNABLE_EXECUTE);
-					con.close();
 					return null;
 				}
 			} catch (SQLException e) {
@@ -243,6 +297,14 @@ public class BandManager {
 			System.err.println("eror code " + BaseErrors.UNABLE_CONNECTION);
 			return null;
 		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return ans;
 	}
 
@@ -254,10 +316,7 @@ public class BandManager {
 	 */
 	public ArrayList<String> getVideos(int BandID, int pageNumber) {
 		String query = "select * from Video where BandID=" + BandID + " limit "
-				+ (pageNumber - 1)
-				* ConstantValues.NUMBER_OF_VIDEOS_PER_PAGE_FOR_BAND_PROFILE
-				+ ","
-				+ ConstantValues.NUMBER_OF_VIDEOS_PER_PAGE_FOR_BAND_PROFILE;
+				+ (pageNumber - 1)* ConstantValues.NUMBER_OF_VIDEOS_PER_PAGE_FOR_BAND_PROFILE+ ","+ ConstantValues.NUMBER_OF_VIDEOS_PER_PAGE_FOR_BAND_PROFILE;
 		return getImagesAndVideosAndMusics(query);
 	}
 
@@ -269,9 +328,7 @@ public class BandManager {
 	 */
 	public ArrayList<String> getImages(int BandID, int pageNumber) {
 		String query = "select * from Band_Image where BandID=" + BandID
-				+ " limit " + (pageNumber - 1)
-				* ConstantValues.NUMBER_OF_IMAGES_PER_PAGE_FOR_BAND_PROFILE
-				+ ","
+				+ " limit " + (pageNumber - 1)* ConstantValues.NUMBER_OF_IMAGES_PER_PAGE_FOR_BAND_PROFILE+ ","
 				+ ConstantValues.NUMBER_OF_IMAGES_PER_PAGE_FOR_BAND_PROFILE;
 		return getImagesAndVideosAndMusics(query);
 	}
@@ -285,8 +342,7 @@ public class BandManager {
 	{
 		String query = "select * from Music where BandID=" + BandID
 				+ " limit " + (pageNumber - 1)
-				* ConstantValues.NUMBER_OF_MUSICS_PER_PAGE_FOR_BAND_PROFILE
-				+ ","
+				* ConstantValues.NUMBER_OF_MUSICS_PER_PAGE_FOR_BAND_PROFILE+ ","
 				+ ConstantValues.NUMBER_OF_MUSICS_PER_PAGE_FOR_BAND_PROFILE;
 		return getImagesAndVideosAndMusics(query);
 	}
@@ -302,8 +358,9 @@ public class BandManager {
 		String query = "select Name from Band_Image,Band_Profile_Image where "
 				+ "Band_Profile_Image.Band_ImageID=Band_Image.ID and Band_Image.BandID="
 				+ BandID;
+		Connection con = null;
 		try {
-			Connection con = eventDataSource.getConnection();
+			con = eventDataSource.getConnection();
 			try {
 				Statement stm = con.createStatement();
 				try {
@@ -311,53 +368,76 @@ public class BandManager {
 					while (res.next()) {
 						ans = res.getString("Name");
 					}
-					con.close();
 				} catch (Exception e) {
 					System.err.println("eror code " + BaseErrors.UNABLE_EXECUTE);
-					con.close();
 					return ans;
 				}
 			} catch (SQLException e) {
 				System.err.println("eror code "
 						+ BaseErrors.UNABLE_CREATE_STATEMENT);
-				con.close();
 				return ans;
 			}
 		} catch (SQLException e) {
 			System.err.println("eror code " + BaseErrors.UNABLE_CONNECTION);
 			return ans;
 		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		return ans;
 	}
-
-	public ArrayList<Integer> getTopBands(int num) throws SQLException {
+	/**
+	 * abrunebs top bendebs
+	 * @param num
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<Integer> getTopBands(int num){
 		String query = "select ID,bandAverageRating(ID) from Band"
 				+ " order by bandAverageRating(ID) desc limit " + num + ";";
-
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-
-		ResultSet result = stmt.executeQuery(query);
-
+		Connection connection = null;
 		ArrayList<Integer> list = new ArrayList<Integer>();
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
 
-		while (result.next()) {
-			list.add(result.getInt("ID"));
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				list.add(result.getInt("ID"));
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-
-		connection.close();
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return list;
 	}
-	
+	/**
+	 * amatebs raitingebs
+	 * @param userID
+	 * @param bandID
+	 * @param eventID
+	 * @param score
+	 * @return
+	 * @throws SQLException
+	 */
 	public int addRating(int userID, int bandID, int eventID, int score) throws SQLException{
 		if(hasAlreadyRated(userID, eventID, bandID)) return BaseErrors.USER_ALREADY_RATED_BAND;
-		 
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
 		String query = "insert into Band_Rating(UserID,BandID,EventID,Rating) values"
 				+ "(" + userID + "," + bandID + "," + eventID + "," + score +");";
-		
 		System.out.println(query);
 		return changeBase(query);
 		
@@ -368,51 +448,97 @@ public class BandManager {
 	 * this band on this specified event
 	 */
 	
-	
+	/**
+	 * 
+	 * @param userID
+	 * @param eventID
+	 * @param bandID
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean hasAlreadyRated(int userID,int eventID,int bandID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		String query = "select ID from Band_Rating where BandID="
-				+ bandID + " and UserID=" + userID + " and EventID=" + eventID + ";";
-		
-		System.out.println(query);
-		ResultSet result = stmt.executeQuery(query);
-		 
-		
-		if (result.next()){
-			connection.close();
-			return true;
-		}
-
-		connection.close();
-		return false;
+		Connection connection =null; 
+		try {
+			connection= eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			String query = "select ID from Band_Rating where BandID="
+					+ bandID + " and UserID=" + userID + " and EventID=" + eventID + ";";
 			
+			System.out.println(query);
+			ResultSet result = stmt.executeQuery(query);
+			if (result.next()){
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			connection.close();
+		}
+		return false;	
 	}
 	
 	/*
 	 * this method gives us rating for specified Band
 	 */
-	public double getRating(int bandID) throws SQLException {
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		String query = "select avg(Rating)" + "from Band_Rating where BandID="
-				+ bandID + ";";
-
-		ResultSet result = stmt.executeQuery(query);
+	/**
+	 * 
+	 * @param bandID
+	 * @return' s rating of band
+	 * @throws SQLException
+	 */
+	public double getRating(int bandID){
 		double ans = 0.0;
-		if (result.next())
-			ans = result.getDouble("avg(Rating)");
-		connection.close();
+		Connection connection = null;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			String query = "select avg(Rating)" + "from Band_Rating where BandID="
+					+ bandID + ";";
+
+			ResultSet result = stmt.executeQuery(query);
+			if (result.next())
+				ans = result.getDouble("avg(Rating)");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} 
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return ans;
 	}
-	private int countNUmber(String query) throws SQLException
+	/**
+	 * raodenobis dasatvleli metodi
+	 * romelsac iyenebs sxva public metodebi
+	 * @param query
+	 * @return
+	 * @throws SQLException
+	 */
+	private int countNUmber(String query)
 	{
 		int ans = 0;
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		Connection connection = null;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			if(result.next()) ans = result.getInt("count(ID)");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return ans;
 	}
 	/**
@@ -462,16 +588,23 @@ public class BandManager {
 	{
 		ArrayList<Integer> answ = new ArrayList<>();
 		String query = "select UserID from User_Band_Wishlist where BandID="+ BandID;
+		Connection connection = null;
+		try {
+			connection= eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
 
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);
 
-		ResultSet result = stmt.executeQuery(query);
-
-		while (result.next()) {
-			answ.add(result.getInt("UserID"));
+			while (result.next()) {
+				answ.add(result.getInt("UserID"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		connection.close();
+		finally{
+			if(connection !=null)
+			connection.close();			
+		}
 		return answ;		
 	}
 	

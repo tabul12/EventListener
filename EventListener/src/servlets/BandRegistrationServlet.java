@@ -49,12 +49,7 @@ public class BandRegistrationServlet extends HttpServlet {
 		String about = request.getParameter("About");		
 		int userID = (Integer)session.getAttribute("UserID");
 		int ban = 0;
-		try {
-			ban = bandManager.getBandID(bandName);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		ban = bandManager.getBandID(bandName);
 		if(ban > 0){
 			RequestDispatcher dispatch = request.getRequestDispatcher("bandRegister.jsp?id=34");
 			dispatch.forward(request, response);
@@ -62,13 +57,7 @@ public class BandRegistrationServlet extends HttpServlet {
 			bandManager.addBand(userID, bandName, about, mail);
 			RequestDispatcher dispatch = request.getRequestDispatcher("userPage.jsp");
 			int bandID = 0;
-			try {
-				bandID = bandManager.getBandID(bandName);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			bandID = bandManager.getBandID(bandName);
 			bandManager.addProfileImage(bandID, 1);
 			dispatch.forward(request, response);
 		}
