@@ -25,14 +25,7 @@ private BasicDataSource eventDataSource;
 	 * on specified ID
 	 */
 	public Event getEvent(int eventID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select * from Event where Event.ID=" + eventID + ";";
-		
-		ResultSet result = stmt.executeQuery(query);
-		
-		 
+		Connection connection = null;
 		int userID = 0;
 		int placeID = 0;
 		String name = "";
@@ -40,19 +33,33 @@ private BasicDataSource eventDataSource;
 		String about = "";
 		String price = "";
 		String image = "";
-		
-		if(result.next()){
-			userID = result.getInt("UserID");
-			placeID = result.getInt("PlaceID");
-			name = result.getString("Name");
-			time = result.getString("Time");
-			about = result.getString("About");
-			price = result.getString("Price");
-			image = result.getString("Image");
+		Event event = null;
+		try {
+			connection=eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select * from Event where Event.ID=" + eventID + ";";
+			
+			ResultSet result = stmt.executeQuery(query);
+			
+			if(result.next()){
+				userID = result.getInt("UserID");
+				placeID = result.getInt("PlaceID");
+				name = result.getString("Name");
+				time = result.getString("Time");
+				about = result.getString("About");
+				price = result.getString("Price");
+				image = result.getString("Image");
+				event = new Event(eventID, userID, placeID, name, time, about, price, image);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		
-		connection.close();
-		Event event = new Event(eventID, userID, placeID, name, time, about, price, image);
+		finally{
+			if(connection!= null)
+			connection.close();
+		}
 		return event;
 	}
 	
@@ -65,29 +72,53 @@ private BasicDataSource eventDataSource;
 	 */
 	public int getEventID(String eventName) throws SQLException{
 		String query = "select ID from Event where Name='" + eventName + "';";
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		 
+		Connection connection = null;
 		int ans = 0;
-		
-		if(result.next()) ans = result.getInt("ID");
-		
-		connection.close();
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			 
+			 
+			if(result.next()) ans = result.getInt("ID");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null){
+				connection.close();
+			}
+		}
+		  
 		
 		return ans;
 	}
-	
+	/**
+	 * this method returns number of events in database
+	 * @return
+	 * @throws SQLException
+	 */
 	public int getEventsNum() throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select count(ID) from Event;";		 
-		ResultSet result = stmt.executeQuery(query);
-		
+		Connection connection = null;
 		int ans = 0;
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		
+		try{
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select count(ID) from Event;";		 
+			ResultSet result = stmt.executeQuery(query);
+			
+			 
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch(SQLException e){
+			
+		} finally{
+			if(connection != null)
+			connection.close();
+		}
+		 
+		 
 		return ans;
 	}
 	/*
@@ -106,15 +137,26 @@ private BasicDataSource eventDataSource;
 	
 	public boolean userAlreadyAttendsEvent(int userID,int eventID) throws SQLException{
 		String query = "select * from User_Going_Event where UserID=" + userID + " and EventID=" + eventID + ";"; 		
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		if(result.next()){
-			connection.close();
-			return true;
+		
+		Connection connection = null;
+		boolean rest = false;
+		
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			if(result.next()){
+				rest = true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally{
+			if(connection != null) 
+				connection.close();
 		}
-		connection.close();
-		return false;
+		 
+		 
+		return rest;
 	}
 	
 	public int userAttendsEvent(int userID,int eventID) throws SQLException{		
@@ -153,15 +195,23 @@ private BasicDataSource eventDataSource;
 	 */
 	public int getGoingUsersNum(int eventID) throws SQLException{
 		String query = "select count(ID) from User_Going_Event where EventID='" + eventID + "';";
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		 
+		Connection connection = null;
+		
 		int ans = 0;
 		
-		if(result.next()) ans = result.getInt("count(ID)");
-		
-		connection.close();
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);		
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			if(connection != null)
+				connection.close();
+		}
 		
 		return ans;
 	}
@@ -197,12 +247,25 @@ private BasicDataSource eventDataSource;
 	public boolean bandIsAlreadyAdded(int bandID,int eventID) throws SQLException{
 		String query = "select ID from Band_On_Event " +
 				"where EventID=" + eventID + " and  BandID=" + bandID + ";";
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		  
-		boolean is = result.next();
-		connection.close();
+		
+		Connection connection = null;
+		boolean is = false;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			  
+			is = result.next();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			if(connection != null){
+				connection.close();
+			}
+		} 
+		 
 		return is;
 	}
 	
@@ -214,12 +277,22 @@ private BasicDataSource eventDataSource;
 	public boolean hasAdded(int userID,int eventID) throws SQLException{
 		String query = "select ID from Event " +
 						"where UserID=" + userID + " and  ID=" + eventID + ";";
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
+		
+		Connection connection = null;
+		boolean is = false;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);			 
+			is = result.next();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null)
+				connection.close();
+		}
 		 
-		boolean is = result.next();
-		connection.close();
+		 
 		return is;
 	}
 	
@@ -238,16 +311,26 @@ private BasicDataSource eventDataSource;
 				try {
 					stmt.executeUpdate(query);
 				} catch (Exception e) {
-					connection.close();
+					 
 					return BaseErrors.UNABLE_EXECUTE;
 				}		
-				connection.close();
+				 
 			} catch (Exception e) {
-				connection.close();
+				 
 				return BaseErrors.UNABLE_CREATE_STATEMENT;
 			}
 		} catch (SQLException e){
 			return BaseErrors.UNABLE_CONNECTION;
+		}
+		finally{
+			if(connection != null){
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		return BaseErrors.ALL_DONE;
 	}
@@ -270,17 +353,29 @@ private BasicDataSource eventDataSource;
 	}
 	
 	public ArrayList<Integer> getList(String query,String column) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		
-		while(result.next()){
-			list.add(result.getInt(column));
+		Connection connection = null;
+		ArrayList<Integer> list = null;
+		try {
+			
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			
+			list = new ArrayList<Integer>();
+			
+			while(result.next()){
+				list.add(result.getInt(column));
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally{
+			if(connection != null){
+				connection.close();
+			}
 		}
-		
-		connection.close();
+		 
+		 
 		
 		return list;
 	}
