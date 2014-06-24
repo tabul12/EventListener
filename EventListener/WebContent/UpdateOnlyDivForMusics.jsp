@@ -26,9 +26,9 @@
 					out.println("<strong><p class='colRed' >" + musicsArray.get(i)
 							+ "</p></strong>");
 					out.println("<audio controls>");
-					out.println("<source src='musics/" + musicsArray.get(i)
+					out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 							+ "' type='video/ogg'>");
-					out.println("<source src='musics/" + musicsArray.get(i)
+					out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 							+ "'  type='video/mp4'>");
 					out.println("</audio>");
 				}

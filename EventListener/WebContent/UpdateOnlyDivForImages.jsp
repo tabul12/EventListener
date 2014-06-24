@@ -26,9 +26,9 @@
 					 	 ArrayList<String> imagesArray = bandManager.getImages(BandID, imagePageNum);
 					 	 for(int i = 0; i<imagesArray.size(); i++)
 					 	 {
-					 		out.println("<a href =images/" + imagesArray.get(i) + ">  ");
-							out.println("<img src=images/" + imagesArray.get(i)
-									+ " height='100' width='100'" + "/>");
+					 		out.println("<a href ='ImageLoader?FileName=" + imagesArray.get(i) + "'>  ");
+							out.println("<img src='ImageLoader?FileName=" + imagesArray.get(i)
+									+ "' height='100' width='100'" + "/>");
 							
 							out.println("</a>");
 							if(hasAdded)

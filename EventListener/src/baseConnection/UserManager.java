@@ -444,7 +444,8 @@ public class UserManager {
 	
 	public int changeProfilePicture(int ID,String image ) {
 		String query = "UPDATE User SET Image='" + image
-				+ "', where ID =" + ID + ";";
+				+ "' where ID =" + ID + ";";
+		System.out.println(query+"   esaa qveri");
 		return changeBase(query);
 	}
 	

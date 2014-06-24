@@ -207,7 +207,6 @@ private BasicDataSource eventDataSource;
 	}
 	
 	
-	
 	/*
 	 * this method return boolean about 
 	 * this userd has added this event or not
@@ -284,6 +283,18 @@ private BasicDataSource eventDataSource;
 		connection.close();
 		
 		return list;
+	}
+	/**
+	 * 
+	 * @param UserID
+	 * @param image
+	 * @return eror index, which is in the eror package
+	 */
+	public int changeProfilePicture(int EventID,String image)
+	{
+		String query = "UPDATE Event SET Image='" + image
+				+ "' where ID =" + EventID + ";";
+		return changeBase(query);
 	}
 	
 	

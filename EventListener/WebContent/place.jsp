@@ -86,7 +86,7 @@
 			  	
 			  	System.out.print(place.getProfileImage() + "es ixateba ");
 			  	
-			  	out.println("<div class=\"dj\"><img src=\"images/" + placeManager.getProfileImage(placeID) + "\" alt=\"\" width=\"510\" height=\"250\" /></div>");
+			  	out.println("<div class=\"dj\"><img src='ImageLoader?FileName=" + placeManager.getProfileImage(placeID) + "' alt=\"\" width=\"510\" height=\"250\" /></div>");
 			
 			  	
 			%>
@@ -141,7 +141,7 @@
 					
 					for(int i = 0; i < imageList.size(); i++){
 						out.println("<div class =\"column\" style=\"width:20%;Text-align:center;float:left;\">");
-						out.println("<p><img src=\"images/"+ imageList.get(i) + "\" height=\"100\" width=\"80\" /></p></b>");
+						out.println("<p><img src='ImageLoader?FileName="+ imageList.get(i) + "' height=\"100\" width=\"80\" /></p></b>");
 						if(hasAddedThis)
 						out.println("<a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + 
 						"&PlacePageNum=" + pageNum + "\"> Set Prof </a>");

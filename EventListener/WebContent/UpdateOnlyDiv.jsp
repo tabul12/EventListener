@@ -13,7 +13,7 @@
 <body>
 <!-- start content -->
 		<div id="content">
-			<div class="dj"><img src="images/dj-3.jpg" alt="" width="510" height="250" /></div>
+			<div class="dj"><img src="ImageLoader?FileName=dj-3.jpg" alt="" width="510" height="250" /></div>
 			<div class="post">
 				<h1 class="title"><a href="#">Welcome to Our Website!</a></h1>
 
@@ -47,10 +47,17 @@
 							 		
 							 		out.println("<li><a href=\"event.jsp?EventID=" + event.getID() + "\"><h3>" + event.getName() + "</h3></a>" +
 													 " </li>");
-
-							 		 out.println("<div style=\"height: 250px\">" +
-				     						"<img src=\"images/dj-3.jpg\" alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
+							 		if(!event.getImage().equals("default.jpg"))
+							 		{
+							 			out.println("<div style=\"height: 250px\">" +
+					     						"<img src='ImageLoader?FileName="+event.getImage()+"' alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
+											"</div>");
+							 		}
+							 		else{
+							 		out.println("<div style=\"height: 250px\">" +
+				     						"<img src='ImageLoader?FileName=dj-3.jpg' alt=\" \" style=\"width: 100%;max-height: 100%\" />"+
 										"</div>");
+							 		}
 							 	 }
 
 							%>

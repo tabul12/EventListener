@@ -31,10 +31,10 @@
 							.getAttribute("BandManager");
 					Band band = bandManager.getBand(k);
 					if (bandManager.getProfileImage(k) != null) {
-						out.println("<img src=\"" + bandManager.getProfileImage(k)
-								+ "\" height=\"120\" width=\"120\" />");
+						out.println("<img src='ImageLoader?FileName=" + bandManager.getProfileImage(k)
+								+ "' height=\"120\" width=\"120\" />");
 					} else {
-						out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+						out.println("<img src='ImageLoader?FileName=default.jpg' height=\"120\" width=\"120\" />");
 					}
 					out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 							+ (i * 123) + "px;\">");

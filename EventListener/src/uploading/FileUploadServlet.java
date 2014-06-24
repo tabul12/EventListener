@@ -111,7 +111,7 @@ public class FileUploadServlet extends HttpServlet {
 	    	int BandID = Integer.parseInt(bandID);
 			ServletContext context = getServletContext();
 			BandManager bandManager=(BandManager) context.getAttribute("BandManager");
-			bandManager.addVideo(BandID, fileName);
+			System.out.println(bandManager.addVideo(BandID, fileName)+" videoos shecdomaaaa");
 			forw ="BandProfile.jsp?BandID="+BandID;
 	    }
 	    response.getWriter().println("<p>File Uploaded<p>");

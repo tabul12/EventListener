@@ -65,7 +65,7 @@ Released   : 20090303
 	<%
 		UserManager userManager = (UserManager)application.getAttribute("UserManager");
 			HttpSession sesion = request.getSession();
-			int userID = (Integer)session.getAttribute("UserID");
+			int userID = (Integer)sesion.getAttribute("UserID");
 			User user = userManager.getUser(userID);
 	%>
 	<!-- end header -->
@@ -81,9 +81,9 @@ Released   : 20090303
 						<ul>
 							<%
 								if(user.getImage() != null){
-						        	out.println("<img src=\"images/"+user.getImage()+ "\" width=\"220\" height=\"220\">");
+						        	out.println("<img src='ImageLoader?FileName="+user.getImage()+ "' width=\"220\" height=\"220\">");
 								}else{
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=default.jpg' height=\"120\" width=\"120\" />");
 								}
 							%>
 						</ul>
@@ -126,10 +126,11 @@ Released   : 20090303
 						<h2>Change profile picture</h2>
 						<ul>
 
-							<li><form action="upload_file.php" method="post"
+							<li><form action="ChangeProfilePicture" method="post"
 									enctype="multipart/form-data">
 									<label for="file">Filename:</label>
-									<input type="file" name="file" id="file" size="14"><br>
+									<input type="file" name="file" id="file" size="14"/><br>
+									<input type="hidden" value="UserProfile" name="typeProfile"/>
 											<input type="submit" name="submit" value="Submit">
 								</form></li>
 						</ul>
@@ -279,10 +280,10 @@ Released   : 20090303
 										.getAttribute("BandManager");
 								Band band = bandManager.getBand(k);
 								if (bandManager.getProfileImage(k) != null) {
-									out.println("<img src=\"" + bandManager.getProfileImage(k)
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=" + bandManager.getProfileImage(k)
+											+ "' height=\"120\" width=\"120\" />");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=default.jpg' height=\"120\" width=\"120\" />");
 								}
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
@@ -335,10 +336,10 @@ Released   : 20090303
 										.getAttribute("PlaceManager");
 								Place place = placeManager.getPlace(k);
 								if (place.getProfileImage() != "") {
-									out.println("<img src=\"images/" + place.getProfileImage()
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=" + place.getProfileImage()
+											+ "' height=\"120\" width=\"120\" />");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=default.jpg' height=\"120\" width=\"120\" />");
 								}
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
@@ -393,11 +394,11 @@ Released   : 20090303
 										.getAttribute("EventManager");
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != "") {
-									out.println("<img src=images/" + event.getImage()
-										+  " height='120' width='120' >");
+									out.println("<img src='ImageLoader?FileName=" + event.getImage()
+										+  "' height='120' width='120' >");
 									System.out.println(event.getImage()+ "swkejiej");
 								} else {
-									out.println("<img src=images/default.jpg  height='120' width='120' />");
+									out.println("<img src='ImageLoader?FileName=default.jpg'  height='120' width='120' />");
 									}
 								System.out.println(event.getImage());
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
@@ -453,10 +454,10 @@ Released   : 20090303
 										.getAttribute("BandManager");
 								Band band = bandManager.getBand(k);
 								if (bandManager.getProfileImage(k) != null) {
-									out.println("<img src=\"" + bandManager.getProfileImage(k)
-											+ "\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=" + bandManager.getProfileImage(k)
+											+ "' height=\"120\" width=\"120\" />");
 								} else {
-									out.println("<img src=\"images/default.jpg\" height=\"120\" width=\"120\" />");
+									out.println("<img src='ImageLoader?FileName=default.jpg' height=\"120\" width=\"120\" />");
 								}
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");
@@ -513,10 +514,10 @@ Released   : 20090303
 										.getAttribute("EventManager");
 								Event event = eventManager.getEvent(k);
 								if (event.getImage() != null) {
-									out.println("<img src=images/" + event.getImage()
-											+ " height='120'   width='120' " + "/>");
+									out.println("<img src='ImageLoader?FileName=" + event.getImage()
+											+ "' height='120'   width='120' " + "/>");
 								} else {
-									out.println("<img src=images/default.jpg height='120'   width='120' />");
+									out.println("<img src='ImageLoader?FileName=default.jpg' height='120'   width='120' />");
 								}
 								out.println("<h2 id=\"textImage\" style=\"position:absolute;margin-top: -35px; margin-left:"
 										+ (i * 123) + "px;\">");

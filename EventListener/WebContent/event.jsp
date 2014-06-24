@@ -148,7 +148,7 @@
 				 
 				event = manager.getEvent(eventID);
 				out.println("<h1 class=\"title\" align=\"center\"> Welcome to Event " + event.getName() + "</h1> </br>");
-				out.println("<img src=images/"+ event.getImage() + " height=250 width=510"+">");
+				out.println("<img src='ImageLoader?FileName="+ event.getImage() + "' height=250 width=510"+">");
 				 
 				System.out.println(event.getImage());
 			 	
@@ -208,7 +208,7 @@
 								User user = userManager.getUser(userList.get(i));
 								out.println("<div class =\"column\" style=\"width:20%;Text-align:center;float:left;\">");
 								out.println("<b> <p> " + user.getUserName() +" </p> <p>");
-								out.println("<img src=\"images/"+ user.getImage() + "\" height=\"100\" width=\"80\" /></p></b></div> ");	
+								out.println("<img src='ImageLoader?FileName="+ user.getImage() + "' height=\"100\" width=\"80\" /></p></b></div> ");	
 								
 							}
 							out.println("</div></p> ");
@@ -253,9 +253,18 @@
 							out.println("<h2> Update Information   </h2> </br>");
 							out.println("<ul><li>");
 							
-							out.println(" <a href=\"updateEventInfo.jsp?EventPageNum=" + pageNum + "\" align=\"right\"/> Update Info  /   </a>");							
+							out.println(" <a href=\"updateEventInfo.jsp?EventPageNum=" + pageNum + "\" align=\"right\"/> Update Info  </a>");							
+							out.println("<li><form action='ChangeProfilePicture' method='post' enctype='multipart/form-data' >");
+							out.println("<label for='file'><p>Update Picture</p></label>");
+							out.println("<input type='file' name='file' id='file' size='14' "+"/>"+"<br>");		
+							out.println("<input type='hidden' value='EventProfile' name='typeProfile'>");	
+							out.println("<input type='hidden' value="+eventID+" name='EventID'>");
+							out.println("<input type='submit' name='submit' value='Submit'>");		
+							out.println("</form></li>");				
+								
 							
-							out.println(" <a href=\"#\" align=\"right\"/> Change Profile</a>");
+							
+							//out.println(" <a href=\"#\" align=\"right\"/> Change Profile</a>");
 							out.println("</li></ul>");
 							out.println("</div> </br>");
 						}

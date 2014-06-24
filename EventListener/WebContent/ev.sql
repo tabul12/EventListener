@@ -221,6 +221,9 @@ $$
 DELIMITER ; 
 
 
-
+select * from Video;
 select * from Band_Image;
+select * from User;
+select * from Event;
 insert into Band_Image(Name) value('default.jpg');
+select * from User_Band_Wishlist

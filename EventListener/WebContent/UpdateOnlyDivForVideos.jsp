@@ -23,8 +23,8 @@
 					 	 for(int i = 0; i<videosArray.size(); i++)
 					 	 {
 					 		out.println("<video  width='240' height='200' controls='controls' >");
-					 		out.println("<source src=videos/"+videosArray.get(i)+ " type='video/ogg'>");
-					 		out.println("<source src=videos/"+videosArray.get(i)+ " type='video/mp4'>");
+					 		out.println("<source src='VideoLoader?FileName="+videosArray.get(i)+ "' type='video/ogg'>");
+					 		out.println("<source src='VideoLoader?FileName="+videosArray.get(i)+ "' type='video/mp4'>");
 					 		out.println("</video>");
 					 	 }
 					%>

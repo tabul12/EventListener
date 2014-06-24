@@ -65,8 +65,8 @@
 								 	String BandImageName = "default.jpg";
 								 	if (bandManager.getProfileImage(BandID) != null)
 								 		BandImageName = bandManager.getProfileImage(BandID);
-								 	out.println("<img src=images/" + BandImageName
-								 			+ " height='200' width='220'" + ">");
+								 	out.println("<img src='ImageLoader?FileName=" + BandImageName
+								 			+ "' height='200' width='220'" + ">");
  								%>
 					</li>
 					<li>
@@ -208,9 +208,9 @@
 							for (int i = 0; i < imagesArray.size(); i++) {								
 								 
 								
-								out.println("<a href =images/" + imagesArray.get(i) + ">  ");
-								out.println("<img src=images/" + imagesArray.get(i)
-										+ " height='100' width='100'/>");
+								out.println("<a href ='ImageLoader?FileName=" + imagesArray.get(i) + "'>  ");
+								out.println("<img src='ImageLoader?FileName=" + imagesArray.get(i)
+										+ "' height='100' width='100'/>");
 								
 								out.println("</a>");
 								if(hasAdded)
@@ -263,9 +263,9 @@
 								out.println("<strong><p class='colRed' >" + musicsArray.get(i)
 										+ "</p></strong>");
 								out.println("<audio controls>");
-								out.println("<source src='musics/" + musicsArray.get(i)
+								out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 										+ "' type='video/ogg'>");
-								out.println("<source src='musics/" + musicsArray.get(i)
+								out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 										+ "' type='video/mp4'>");
 								out.println("</audio>");
 							}
@@ -307,10 +307,10 @@
 									videoPageNum);
 							for (int i = 0; i < videosArray.size(); i++) {
 								out.println("<video  width='240' height='200' controls='controls' >");
-								out.println("<source src=videos/" + videosArray.get(i)
-										+ " type='video/ogg'>");
-								out.println("<source src=videos/" + videosArray.get(i)
-										+ " type='video/mp4'>");
+								out.println("<source src='VideoLoader?FileName=" + videosArray.get(i)
+										+ "' type='video/ogg'>");
+								out.println("<source src='VideoLoader?FileName=" + videosArray.get(i)
+										+ "' type='video/mp4'>");
 								out.println("</video>");
 							}
 						%>
