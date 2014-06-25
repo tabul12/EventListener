@@ -269,6 +269,8 @@
 							out.println("</div> </br>");
 						}
 						
+						 
+						
 						if(st != null){
 							out.println("<div>");
 							out.println(" <h2> Attend Event   </h2> </br>");
@@ -283,6 +285,14 @@
 							out.println(" <input type=\"submit\" value=\"Attend\"> </form>");
 							out.println("</li></ul>");
 							out.println("</div> </br>");
+						}
+						
+						if(userID != 0 && userManager.isAdmin(userID)){
+							out.println("<div>");
+							out.println("<h2> Delete&Punish This User   </h2> </br>");	
+							out.println("<p align=center> <a href=\"deleteEvent?EventID=" + eventID + 
+									"\" > Punish&Delete </a></p>");
+							out.println("</div>");
 						}
 						
 						out.println("<div>");

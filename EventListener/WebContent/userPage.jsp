@@ -76,7 +76,7 @@ Released   : 20090303
 				<ul>
 					<li>
 						<%
-							out.println( "<h2>" + user.getUserName() + "</h2>");
+							out.println( "<h2>" + user.getName() + "</h2>");
 						%>
 						<ul>
 							<%

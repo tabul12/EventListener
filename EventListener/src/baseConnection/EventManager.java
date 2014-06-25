@@ -460,6 +460,24 @@ private BasicDataSource eventDataSource;
 		return changeBase(query);
 	}
 	
-	
+	public int getAuthorID(int eventID) throws SQLException{
+		String query = "select UserID from Event where ID=" + eventID + ";";
+		
+		Connection connection = null;
+		int userID = 0;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);			 
+			if(result.next()) userID = result.getInt("UserID");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null)
+				connection.close();
+		}
+		
+		return userID;
+	}
 	
 }

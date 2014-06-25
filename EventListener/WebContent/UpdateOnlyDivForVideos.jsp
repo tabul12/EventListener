@@ -15,9 +15,13 @@
 				<div class="entry">
 					<!-- aq daiwereba video -------------------------------------------------->
 					<%
-					     int BandID = Integer.parseInt(request.getParameter("BandID"));
-			       	     BandManager bandManager =(BandManager) application.getAttribute("BandManager");
-						 int numVideos = bandManager.getVideosNumberForBand(BandID); 
+						 BandManager bandManager = (BandManager)application.getAttribute("BandManager");
+						 Integer UserID =(Integer) session.getAttribute("UserID");
+						 int BandID = Integer.parseInt(request.getParameter("BandID"));
+						 Integer curBandUserID=bandManager.getBand(BandID).getUserID();
+						 boolean hasAdded = (UserID == curBandUserID);
+					  
+			       	     int numVideos = bandManager.getVideosNumberForBand(BandID); 
 						 int videoPageNum = Integer.parseInt(request.getParameter("page"));
 					 	 ArrayList<String> videosArray = bandManager.getVideos(BandID,videoPageNum);
 					 	 for(int i = 0; i<videosArray.size(); i++)
@@ -26,6 +30,7 @@
 					 		out.println("<source src='VideoLoader?FileName="+videosArray.get(i)+ "' type='video/ogg'>");
 					 		out.println("<source src='VideoLoader?FileName="+videosArray.get(i)+ "' type='video/mp4'>");
 					 		out.println("</video>");
+					 		 if(hasAdded)
 					 		out.println("<a href=\"DeleteVideoForBand?Path="+ConstantValues.PATH_TO_VIDEOS+"&FileName="+videosArray.get(i)+
 								 	"&BandID=" + BandID +"\"> DEL </a>");
 					 	 }

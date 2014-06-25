@@ -1,3 +1,4 @@
+<%@page import="baseConnection.UserManager"%>
 <%@page import="errors.BaseErrors"%>
 <%@page import="objects.Place"%>
 <%@page import="baseConnection.PlaceManager"%>
@@ -272,6 +273,7 @@
 								out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 										+ "' type='video/mp4'>");
 								out.println("</audio>");
+								 if(hasAdded)
 								out.println("<a href=\"DeleteMusicForBand?Path="+ConstantValues.PATH_TO_MUSICS+"&FileName="+musicsArray.get(i)+
 									 	"&BandID=" + BandID +"\"> DEL </a>");
 							}
@@ -318,6 +320,7 @@
 								out.println("<source src='VideoLoader?FileName=" + videosArray.get(i)
 										+ "' type='video/mp4'>");
 								out.println("</video>");
+								 if(hasAdded)
 								out.println("<a href=\"DeleteVideoForBand?Path="+ConstantValues.PATH_TO_VIDEOS+"&FileName="+videosArray.get(i)+
 									 	"&BandID=" + BandID +"\"> DEL </a>");
 							}
@@ -351,10 +354,24 @@
 			<div id="sidebar2" class="sidebar">
 				<ul>
 					<li>
+					<%
+					UserManager userManager = (UserManager)application.getAttribute("UserManager");
+					
+					System.out.println(UserID + " bandis profilze");
+					
+					if(UserID != null && userManager.isAdmin(UserID)){
+						out.println("<div>");
+						out.println("<h2> Delete&Punish This User   </h2> </br>");	
+						out.println("<p align=center> <a href=\"deleteBand?BandID=" + BandID + 
+								"\" > Punish&Delete </a></p>");
+						out.println("</div>");
+					}
+					%>
 						<h2>Top Bands</h2>
 						<ol>
 
 							<%
+							
 								ArrayList<Integer> bandsList = bandManager
 										.getTopBands(ConstantValues.NUM_TOP_BANDS);
 

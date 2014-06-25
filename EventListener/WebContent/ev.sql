@@ -220,7 +220,9 @@ END;
 $$
 DELIMITER ; 
  
-insert into Band_Image(Name) value('default.jpg');
+insert into User(FirstName,LastName,UserName,PAssword,Mail,MobileNumber,Image) 
+	values('misha','maghriani','mmagh','12','mag','312','dada.jpg');
+
 
 /*
 use ev;
@@ -230,4 +232,3 @@ select * from Band_Image;
 select * from User;
 select * from Event;
 select * from User_Band_Wishlist
-Delete  from Band_Image where Name='default.jpg';

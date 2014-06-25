@@ -20,7 +20,7 @@
 			}
 			String placeID = (String) request.getParameter("PlaceID");
 			int PlaceID = Integer.parseInt(placeID);
-			Integer st = (Integer) session.getAttribute("UserID");
+			Integer st = (Integer)session.getAttribute("UserID");
 
 			int userID = 0;
 			if (st != null)

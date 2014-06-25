@@ -177,6 +177,14 @@ xmlhttp.send();
 						<%
 							UserManager userManager = (UserManager)application.getAttribute("UserManager");
 							Integer userID = (Integer)session.getAttribute("UserID");
+							 
+							 
+							
+							if(userID != null && userManager.isPunished(userID)){
+								session.setAttribute("UserID", null);
+								userID = null;
+							}
+							
 							boolean weShouldDrawLogOut = false;
 							
 							System.out.println(userID + " danj naj ");

@@ -17,10 +17,16 @@
 		<div class="entry">
 			<!-- aq daiwereba music ------------------------------------------------------>
 			<%
-				int BandID = Integer.parseInt(request.getParameter("BandID"));
-				BandManager bandManager = (BandManager) application.getAttribute("BandManager");
+				
+				 BandManager bandManager = (BandManager)application.getAttribute("BandManager");
+				 Integer UserID =(Integer) session.getAttribute("UserID");
+				 int BandID = Integer.parseInt(request.getParameter("BandID"));
+				 Integer curBandUserID=bandManager.getBand(BandID).getUserID();
+				 boolean hasAdded = (UserID == curBandUserID);
+				 
 				int numMusics = bandManager.getMusicsNumberForBand(BandID); 
 				int musicPageNum = Integer.parseInt(request.getParameter("page"));
+				 
 				ArrayList<String> musicsArray = bandManager.getMusics(BandID,musicPageNum);
 				for (int i = 0; i < musicsArray.size(); i++) {
 					out.println("<strong><p class='colRed' >" + musicsArray.get(i)
@@ -31,6 +37,7 @@
 					out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 							+ "'  type='video/mp4'>");
 					out.println("</audio>");
+					 if(hasAdded)
 					out.println("<a href=\"DeleteMusicForBand?Path="+ConstantValues.PATH_TO_MUSICS+"&FileName="+musicsArray.get(i)+
 						 	"&BandID=" + BandID +"\"> DEL </a>");
 				}

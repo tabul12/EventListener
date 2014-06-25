@@ -213,6 +213,8 @@
 							out.println("</li></ul>");
 							out.println("</div> </br>");
 							
+							 
+							
 		
 							out.println("<h2> Upload Image   </h2> </br>"); 
 							out.println("<form method='POST' action='upload' enctype='multipart/form-data' >");
@@ -225,6 +227,14 @@
 							out.println("<input type='submit' value='Upload' name='upload' id='upload' "+"/>");
 							out.println("</form>");
 							out.println("</li>");
+						}
+				
+						if(userID != 0 && userManager.isAdmin(userID)){
+							out.println("<div>");
+							out.println("<h2> Delete&Punish This User   </h2> </br>");	
+							out.println("<p align=center> <a href=\"deletePlace?PlaceID=" + placeID + 
+									"\" > Punish&Delete </a></p>");
+							out.println("</div>");
 						}
 						
 						place = placeManager.getPlace(placeID);

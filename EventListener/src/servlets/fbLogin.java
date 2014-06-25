@@ -58,6 +58,7 @@ public class fbLogin extends HttpServlet {
         	userManager.addUser(name, lastname, userName, "", email, "default.jpg", "");
         	try {
 				int userID = userManager.getVIPUserID(userName);
+				
 				session.setAttribute("UserID", userID);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

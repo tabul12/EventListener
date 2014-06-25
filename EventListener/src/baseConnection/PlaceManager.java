@@ -521,5 +521,24 @@ public class PlaceManager {
 		return BaseErrors.ALL_DONE;
 	} 
 	
+	public int getAuthorID(int placeID) throws SQLException{
+		String query = "select UserID from Place where ID=" + placeID + ";";
+		
+		Connection connection = null;
+		int userID = 0;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);			 
+			if(result.next()) userID = result.getInt("UserID");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null)
+				connection.close();
+		}
+		
+		return userID;
+	}
 	
 }

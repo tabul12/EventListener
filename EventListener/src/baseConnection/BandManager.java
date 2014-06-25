@@ -16,6 +16,7 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 
 
+
 import errors.BaseErrors;
 import errors.ConstantValues;
 
@@ -638,5 +639,24 @@ public class BandManager {
 		return changeBase(query);	
 	}
 	
+	public int getAuthorID(int bandID) throws SQLException{
+		String query = "select UserID from Place where ID=" + bandID + ";";
+		
+		Connection connection = null;
+		int userID = 0;
+		try {
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			ResultSet result = stmt.executeQuery(query);			 
+			if(result.next()) userID = result.getInt("UserID");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null)
+				connection.close();
+		}
+		
+		return userID;
+	}
 
 }
