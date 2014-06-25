@@ -60,12 +60,7 @@ public class addBandOnEvent extends HttpServlet {
 		Integer eventID = (Integer) session.getAttribute("EventID");
 		if(eventID == null) eventID = 0;
 		int bandID = 0;
-		try {
-			 bandID = bandManager.getBandID(bandName);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		bandID = bandManager.getBandID(bandName);
 		
 		boolean thisBandIsAlreadyAdded = false;
 		

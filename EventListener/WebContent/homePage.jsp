@@ -44,11 +44,6 @@ xmlhttp.send();
 </script>
 </head>
 <body>
-	
-	 
-
-	 
-	 
 
 <!-- start header -->
 <div id="header">

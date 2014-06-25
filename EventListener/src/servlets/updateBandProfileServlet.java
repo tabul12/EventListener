@@ -54,12 +54,7 @@ public class updateBandProfileServlet extends HttpServlet {
 		System.out.println(" aqamde movida vaaaxs");
 		
 		int imageID = 0;
-		try {
-			imageID = bandManager.getImageID(name);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		imageID = bandManager.getImageID(name);
 		
 		System.out.println(bandID + " " + imageID);
 		 
