@@ -221,8 +221,9 @@ $$
 DELIMITER ; 
  
 insert into User(FirstName,LastName,UserName,PAssword,Mail,MobileNumber,Image) 
-	values('misha','maghriani','mmagh','12','mag','312','dada.jpg');
-
+	values('misha','maghriani','mmagh','12','mag','312','default.jpg');
+insert into Admin(UserID) value( 1);
+insert into Band_Image(Name) values('default.jpg');
 
 /*
 use ev;

@@ -44,6 +44,8 @@
 					out.println("<a href=\"updatePlaceProfileServlet?name="
 							+ imageList.get(i) + "&PlacePageNum=" + pageNum
 							+ "\"> Set Prof </a>");
+				out.println("<a href=\"DeleteImageForPlace?Path="+ConstantValues.PATH_TO_IMAGES+"&FileName="+imageList.get(i)+
+					 	"&PlaceID=" + placeID +"\"> DEL </a>");
 				out.println("</div>");
 			}
 

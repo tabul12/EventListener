@@ -2,6 +2,7 @@ package deletingFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,40 +13,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import baseConnection.BandManager;
+import baseConnection.PlaceManager;
 
 /**
- * Servlet implementation class DeleteVideoForBand
+ * Servlet implementation class DeleteImageForPlace
  */
-@WebServlet("/DeleteVideoForBand")
-public class DeleteVideoForBand extends HttpServlet {
+@WebServlet("/DeleteImageForPlace")
+public class DeleteImageForPlace extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteVideoForBand() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		ServletContext context = request.getServletContext();
-		BandManager bandManager = (BandManager) context.getAttribute("BandManager");
+		PlaceManager placeManager = (PlaceManager) context.getAttribute("PlaceManager");
+		 
 		
-		String st = request.getParameter("BandID");
-		Integer bandID = Integer.parseInt(st);
+		String st = request.getParameter("PlaceID");
+		Integer placeID = Integer.parseInt(st);
 		String Path = request.getParameter("Path");
 		String FileName = request.getParameter("FileName");
-		System.out.println(Path+FileName+" esaa videos misamarti");
-		//vtvlit rom default is nomeri 1 ia
-		System.out.print(bandManager.deleteVideo(FileName));
 		File f = new File(Path+FileName);
 		f.delete();
-		RequestDispatcher dispatch = request.getRequestDispatcher("BandProfile.jsp");
+		try {
+			if(placeManager.getProfileImage(placeID).equals(FileName))
+			{
+				//vtvlit rom default is nomeri 1 ia
+				placeManager.changeProfileImage(placeID, "default.jpg");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		placeManager.deleteImage(FileName);
+		
+		RequestDispatcher dispatch = request.getRequestDispatcher("place.jsp");
 		dispatch.forward(request, response);
 	}
 

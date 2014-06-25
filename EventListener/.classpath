@@ -14,10 +14,10 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/Maghrian/workspace/commons-fileupload-1.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Maghrian/workspace/commons-io-2.4-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Maghrian/workspace/mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Maghrian/workspace/mailsender.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Maghrian/workspace/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tornike/workspace/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tornike/workspace/commons-fileupload-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tornike/workspace/commons-io-2.4-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tornike/workspace/mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tornike/workspace/mailsender.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -162,9 +162,12 @@
 						out.println("<div class =\"column\" style=\"width:20%;Text-align:center;float:left;\">");
 						out.println("<p><img src='ImageLoader?FileName="+ imageList.get(i) + "' height=\"100\" width=\"80\" /></p></b>");
 						if(hasAddedThis)
-						out.println("<a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + 
-						"&PlacePageNum=" + pageNum + "\"> Set Prof </a>");
-						out.println("</div>");						 
+						{
+							out.println("<a href=\"updatePlaceProfileServlet?name=" + imageList.get(i) + "&PlacePageNum=" + pageNum + "\"> Set Prof </a>");
+							out.println("<a href=\"DeleteImageForPlace?Path="+ConstantValues.PATH_TO_IMAGES+"&FileName="+imageList.get(i)+
+								 	"&PlaceID=" + placeID +"\"> DEL </a>");
+							out.println("</div>");
+						}
 					} 
 					 
 					out.println("</div></p> ");

@@ -32,7 +32,7 @@
 					 		out.println("</video>");
 					 		 if(hasAdded)
 					 		out.println("<a href=\"DeleteVideoForBand?Path="+ConstantValues.PATH_TO_VIDEOS+"&FileName="+videosArray.get(i)+
-								 	"&BandID=" + BandID +"\"> DEL </a>");
+								 	"&BandID=" + BandID +"\"> DEL </a></br>");
 					 	 }
 					%>
 				</div>

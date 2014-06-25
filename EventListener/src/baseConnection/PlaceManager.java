@@ -520,7 +520,12 @@ public class PlaceManager {
 		}
 		return BaseErrors.ALL_DONE;
 	} 
-	
+	/**
+	 * 
+	 * @param placeID
+	 * @return returns ID who added
+	 * @throws SQLException
+	 */
 	public int getAuthorID(int placeID) throws SQLException{
 		String query = "select UserID from Place where ID=" + placeID + ";";
 		
@@ -539,6 +544,16 @@ public class PlaceManager {
 		}
 		
 		return userID;
+	}
+	/**
+	 * deletes the image in base
+	 * @param ImageName
+	 * @return
+	 */
+	public int deleteImage(String ImageName)
+	{
+		String query = "DELETE from Place_Image where Name='"+ImageName+"'";
+		return changeBase(query);
 	}
 	
 }
