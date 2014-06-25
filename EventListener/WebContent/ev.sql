@@ -40,7 +40,7 @@ create table Band(
 	Mail text,
 	FOREIGN KEY (UserID) REFERENCES User(ID)	 ON DELETE CASCADE
 );
- 
+
 create table Place(
 	ID int auto_increment not null,
 	primary key(ID),
@@ -220,10 +220,6 @@ END;
 $$
 DELIMITER ; 
  
-insert into User(FirstName,LastName,UserName,PAssword,Mail,MobileNumber,Image) 
-	values('misha','maghriani','mmagh','12','mag','312','default.jpg');
-insert into Admin(UserID) value( 1);
-insert into Band_Image(Name) values('default.jpg');
 
 /*
 use ev;

@@ -64,6 +64,7 @@ public class deleteEvent extends HttpServlet {
 		RequestDispatcher	dispatch = request.getRequestDispatcher("homePage.jsp");
 		dispatch.forward(request, response);
 		
+		
 	}
 
 }

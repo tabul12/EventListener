@@ -924,4 +924,86 @@ public class UserManagerTests {
 		assertEquals(arr,bands);
 	}
 	
+	
+	@Test
+	public void deleteBandTest() throws SQLException{
+		Connection con = dataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
+				+ "Image,Mail) Values('leonardo','davinchi','ldavin','123456','123456789','boria.jpg',"
+				+ "'bnizh2013@agruni.edu.ge');";
+		stmt.executeUpdate(query);
+		ResultSet res = stmt.executeQuery("select ID from User where UserName ='ldavin';");
+		int userID = -1;
+		while(res.next()){
+			userID = res.getInt("ID");
+		}
+		query = "Insert into Band(UserID,Name,About,Mail) values("+ userID + "'jondi','fwfg','jondo@mail.ru');";
+		ResultSet re = stmt.executeQuery("select ID from Band where Name = 'jondi';");
+		int bandID = -1;
+		while(re.next()){
+			bandID = re.getInt("ID");
+		}
+		manager.deleteBand(bandID);
+		ResultSet r = stmt.executeQuery("select ID from Band where Name ='jondi';");
+		assertEquals(r.next(), false);
+		con.close();
+	}
+	
+	@Test
+	public void deletePlaceTest() throws SQLException{
+		Connection con = dataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
+				+ "Image,Mail) Values('mikelangelo','buenaroti','mbuen','123456','123456789','boria.jpg',"
+				+ "'bnizh2013@agruni.edu.ge');";
+		stmt.executeUpdate(query);
+		ResultSet res = stmt.executeQuery("select ID from User where UserName ='mbuen';");
+		int userID = -1;
+		while(res.next()){
+			userID = res.getInt("ID");
+		}
+		query = "Insert into Place(UserID,Name,About,Mail) values("+ userID + "'shalva','natelashvili','jondo@mail.ru');";
+		ResultSet re = stmt.executeQuery("select ID from Place where Name = 'shalva';");
+		int placeID = -1;
+		while(re.next()){
+			placeID = re.getInt("ID");
+		}
+		manager.deletePlace(placeID);
+		ResultSet r = stmt.executeQuery("select ID from Place where Name ='shalva';");
+		assertEquals(r.next(), false);
+		con.close();
+	}
+	
+	@Test
+	public void deleteEventTest() throws SQLException{
+		Connection con = dataSource.getConnection();
+		Statement stmt = con.createStatement();
+		String query = "Insert into User(FirstName,LastName,UserName,Password,MobileNumber,"
+				+ "Image,Mail) Values('lasha','nemsiwveridze','lashnem','123456','123456789','boria.jpg',"
+				+ "'bnizh2013@agruni.edu.ge');";
+		stmt.executeUpdate(query);
+		ResultSet res = stmt.executeQuery("select ID from User where UserName ='lashnem';");
+		int userID = -1;
+		while(res.next()){
+			userID = res.getInt("ID");
+		}
+		query = "Insert into Place(UserID,Name,About,Mail) values("+ userID + "'adgilseburia','natelashvili','jondo@mail.ru');";
+		ResultSet re = stmt.executeQuery("select ID from Place where Name ='adgiliseburia';");
+		int placeID = -1;
+		while(re.next()){
+			placeID = re.getInt("ID");
+		}
+		query = "Insert into Event(UserID,Name,PlaceID,Mail) values("+ userID + "'eventw','"+ placeID + "','jondo@mail.ru');";
+		ResultSet r = stmt.executeQuery("select ID from Event where Name = 'eventw';");
+		int eventID = -1;
+		while(r.next()){
+			eventID = re.getInt("ID");
+		}
+		manager.deleteEvent(eventID);
+		ResultSet k = stmt.executeQuery("select ID from Event where Name ='eventw';");
+		assertEquals(k.next(), false);
+		con.close();
+	}
+	
 }
