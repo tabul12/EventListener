@@ -224,7 +224,7 @@ insert into Band_Image(Name) value('default.jpg');
 
 /*
 use ev;
-
+delete  from band where ID=1;
 select * from Video;
 select * from Band_Image;
 select * from User;

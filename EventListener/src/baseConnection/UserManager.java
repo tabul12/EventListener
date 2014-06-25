@@ -34,23 +34,33 @@ public class UserManager {
 	 */
 
 	public User getUser(int ID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select * from User where ID = " + ID + ";";
-		ResultSet res = stmt.executeQuery(query);
+		Connection con = null;
 		User user = null;
-		if (res.next()) {
-			String name = res.getString("FirstName");
-			String lastName = res.getString("LastName");
-			String mail = res.getString("Mail");
-			String image = res.getString("Image");
-			String mobileNumber = res.getString("MobileNumber");
-			String userName = res.getString("UserName");
-			String password = res.getString("Password");
-			user = new User(ID, name, lastName, userName, password, mail,
-					image, mobileNumber);
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select * from User where ID = " + ID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			 
+			if (res.next()) {
+				String name = res.getString("FirstName");
+				String lastName = res.getString("LastName");
+				String mail = res.getString("Mail");
+				String image = res.getString("Image");
+				String mobileNumber = res.getString("MobileNumber");
+				String userName = res.getString("UserName");
+				String password = res.getString("Password");
+				user = new User(ID, name, lastName, userName, password, mail,
+						image, mobileNumber);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
-		con.close();
+		 
 		return user;
 	}
 
@@ -97,18 +107,24 @@ public class UserManager {
 	 */
 
 	public boolean alreadyExists(String userName) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from User  where UserName = '" + userName
-				+ "';";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con = null;
+		boolean ans = false;
+		
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from User  where UserName = '" + userName
+					+ "';";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = true;
+			} 
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		  return ans;
 	}
 
 	/***
@@ -119,18 +135,25 @@ public class UserManager {
 	 */
 
 	public boolean isPunished(int userID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from  Punished  where UserID = " + userID
-				+ ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con = null;
+		boolean ans = false;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from  Punished  where UserID = " + userID
+					+ ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = true;
+			}  
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		 return ans;
 	}
 
 	/***
@@ -141,17 +164,24 @@ public class UserManager {
 	 */
 
 	public boolean isAdmin(int userID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Admin  where UserID = " + userID + ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con = null;
+		boolean ans = false;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Admin  where UserID = " + userID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = true;
+			}  
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		 return ans;
 	}
 
 	/***
@@ -165,17 +195,27 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numBeenPlacesPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select EventID from User_Going_Event where "
-				+ "UserID  = " + userID + " LIMIT " + num + ","
-				+ numBeenPlacesPerPage + ";";
-		ResultSet res = stmt.executeQuery(query);
-		while (res.next()) {
-			int eventID = res.getInt("EventID");
-			list.add(eventID);
+		Connection con = null;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select EventID from User_Going_Event where "
+					+ "UserID  = " + userID + " LIMIT " + num + ","
+					+ numBeenPlacesPerPage + ";";
+			ResultSet res = stmt.executeQuery(query);
+			while (res.next()) {
+				int eventID = res.getInt("EventID");
+				list.add(eventID);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
-		con.close();
+		 
+		 
 		return list;
 	}
 
@@ -186,18 +226,23 @@ public class UserManager {
 	 * returns -1 if there is no such user else returns ID;
 	 */
 	public int getVIPUserID(String userName) throws SQLException{
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from User where UserName=" + userName + ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			int ret = res.getInt("ID"); 
-			con.close();
-			return ret;
-		} else {
-			con.close();
-			return -1;
+		Connection con = null;
+		int ans = BaseErrors.NO_SUCH_USER;
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from User where UserName=" + userName + ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = res.getInt("ID"); 				 
+			}  
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		 return ans;
 	}
 	
 	/***
@@ -210,19 +255,25 @@ public class UserManager {
 	 */
 
 	public int getUserID(String userName, String password) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from User where " + "Username  = '"
-				+ userName + "' and Password= '" + password + "';";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			int ret = res.getInt("ID");
-			con.close();
-			return ret;
-		} else {
-			con.close();
-			return -1;
+		Connection con = null;
+		int ans = BaseErrors.NO_SUCH_USER;
+		
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from User where " + "Username  = '"
+					+ userName + "' and Password= '" + password + "';";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = res.getInt("ID");
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		 return ans;
 	}
 	
 	/*
@@ -231,12 +282,22 @@ public class UserManager {
 	 */
 	
 	public boolean userExists(String userName,String password) throws SQLException{
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from User where Password='" + password + "' and UserName='" + userName + "';";
-		ResultSet result = stmt.executeQuery(query);
-		boolean is = result.next();
-		con.close();return is;
+		Connection con = null;
+		boolean is = false;
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from User where Password='" + password + "' and UserName='" + userName + "';";
+			ResultSet result = stmt.executeQuery(query);
+			is = result.next();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
+		}
+		 
+		return is;
 	}
 
 	/***
@@ -251,16 +312,26 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numBandsPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Band  where " + "UserID  = " + userID
-				+ " LIMIT " + num + "," + numBandsPerPage + ";";
-		ResultSet res = stmt.executeQuery(query);
-		while(res.next()){
-			int bandID = res.getInt("ID");
-			list.add(bandID);
-		 }
-		con.close();
+		Connection con = null;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Band  where " + "UserID  = " + userID
+					+ " LIMIT " + num + "," + numBandsPerPage + ";";
+			ResultSet res = stmt.executeQuery(query);
+			while(res.next()){
+				int bandID = res.getInt("ID");
+				list.add(bandID);
+			 }
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
+		}
+		 
+		 
 		return list;
 	}
 
@@ -274,18 +345,26 @@ public class UserManager {
 
 	public ArrayList<Integer> addedPlaces(int userID, int pageNum)
 			throws SQLException {
+		Connection con = null;
 		int num = (pageNum - 1) * numPlacesPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Place where " + "UserID  = " + userID
-				+ " LIMIT " + num + "," + numPlacesPerPage + ";";
-		ResultSet res = stmt.executeQuery(query);
-		while (res.next()) {
-			int placeID = res.getInt("ID");
-			list.add(placeID);
-		}
-		con.close();
+		try {
+			 
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Place where " + "UserID  = " + userID
+					+ " LIMIT " + num + "," + numPlacesPerPage + ";";
+			ResultSet res = stmt.executeQuery(query);
+			while (res.next()) {
+				int placeID = res.getInt("ID");
+				list.add(placeID);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
+		}	 
+		 
 		return list;
 	}
 
@@ -301,36 +380,52 @@ public class UserManager {
 			throws SQLException {
 		int num = (pageNum - 1) * numEventsPerPage;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Event where " + "UserID  = " + userID
-				+ " LIMIT " + num + "," + numEventsPerPage + ";";
-		ResultSet res = stmt.executeQuery(query);
-		
-		while (res.next()) {
-			int eventID = res.getInt("ID");
-			list.add(eventID);
+		Connection con = null;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Event where " + "UserID  = " + userID
+					+ " LIMIT " + num + "," + numEventsPerPage + ";";
+			ResultSet res = stmt.executeQuery(query);
+			
+			while (res.next()) {
+				int eventID = res.getInt("ID");
+				list.add(eventID);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		con.close();
+		finally{
+			if(con != null) con.close();
+		}	
+		 
 		return list;
 	}
 	
 	public boolean alreadyAddedToWishlist(int userID,int bandID) throws SQLException{
 		 
-		
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from User_Band_Wishlist where UserID=" + userID + " and BandID=" + bandID + ";";
-		ResultSet res = stmt.executeQuery(query);
-		System.out.println(query + "   esaa wishlist");
-		if(res.next()){
-			con.close();
-		
-			return true;
-		}
-		
-		con.close();
-		return false;
+		Connection con = null;
+		boolean ans = false;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from User_Band_Wishlist where UserID=" + userID + " and BandID=" + bandID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()){
+				ans = true;
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
+		}	
+		 
+		return ans;
 	}
 	/***
 	 * amatebs bands useris wishlistshi
@@ -355,18 +450,26 @@ public class UserManager {
 	 */
 
 	public boolean hasAddedBand(int userID, int bandID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Band  " + " where ID  = " + bandID
-				+ " and UserID = " + userID + ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con = null;
+		boolean ans = false;
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Band  " + " where ID  = " + bandID
+					+ " and UserID = " + userID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = true;
+			}  
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		
+		return ans;
+		 
 	}
 
 	/***
@@ -378,18 +481,25 @@ public class UserManager {
 	 */
 
 	public boolean hasAddedPlace(int userID, int placeID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Place  " + " where ID  = " + placeID
-				+ " and UserID = " + userID + ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con  = null;
+		boolean ans = false;
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Place  " + " where ID  = " + placeID
+					+ " and UserID = " + userID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = true;
+			} 
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		
+		 return ans;
 	}
 
 	/***
@@ -401,18 +511,24 @@ public class UserManager {
 	 */
 
 	public boolean hasAddedEvent(int userID, int eventID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from Event  " + " where ID  = " + eventID
-				+ " and UserID = " + userID + ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con = null;
+		boolean ans = false;
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from Event  " + " where ID  = " + eventID
+					+ " and UserID = " + userID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans = true;
+			}  
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		
+		 return ans;
 	}
 
 	/***
@@ -427,18 +543,29 @@ public class UserManager {
 	public ArrayList<Integer> getWishlist(int userID, int pageNum)
 			throws SQLException {
 		int num = (pageNum - 1) * numWishlistBandsPerPage;
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select BandID from User_Band_Wishlist where "
-				+ "UserID = " + userID + " LIMIT " + num + ","
-				+ numWishlistBandsPerPage + ";";
-		ResultSet bandIDsSet = stmt.executeQuery(query);
+		Connection con = null;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		while (bandIDsSet.next()) {
-			int bandID = bandIDsSet.getInt("BandID");
-			list.add(bandID);
+		try {
+			
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select BandID from User_Band_Wishlist where "
+					+ "UserID = " + userID + " LIMIT " + num + ","
+					+ numWishlistBandsPerPage + ";";
+			ResultSet bandIDsSet = stmt.executeQuery(query);
+		 
+			while (bandIDsSet.next()) {
+				int bandID = bandIDsSet.getInt("BandID");
+				list.add(bandID);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
-		con.close();
+		 
+		 
 		return list;
 	}
 
@@ -506,82 +633,144 @@ public class UserManager {
 	 */
 
 	public boolean isGoing(int userID, int eventID) throws SQLException {
-		Connection con = eventDataSource.getConnection();
-		Statement stmt = con.createStatement();
-		String query = "select ID from  User_Going_Event where UserID = "
-				+ userID + " and EventID = " + eventID + ";";
-		ResultSet res = stmt.executeQuery(query);
-		if (res.next()) {
-			con.close();
-			return true;
-		} else {
-			con.close();
-			return false;
+		Connection con = null;
+		boolean ans = false;
+		
+		try {
+			con = eventDataSource.getConnection();
+			Statement stmt = con.createStatement();
+			String query = "select ID from  User_Going_Event where UserID = "
+					+ userID + " and EventID = " + eventID + ";";
+			ResultSet res = stmt.executeQuery(query);
+			if (res.next()) {
+				ans  = true;
+			}  
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(con != null) con.close();
 		}
+		 return ans;
 	}
 	
 	public int getMyBandsNum(int userID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
 		
-		String query = "select count(ID) from Band where UserID="+ userID +";";		 
-		ResultSet result = stmt.executeQuery(query);
-		
+		Connection connection = null;
 		int ans = 0;
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		try {
+			
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select count(ID) from Band where UserID="+ userID +";";		 
+			ResultSet result = stmt.executeQuery(query);
+			
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null) connection.close();
+		}
+		 
+		 
 		return ans;
 	}
 	
 	public int getMyEventsNum(int userID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select count(ID) from Event where UserID="+ userID +";";		 
-		ResultSet result = stmt.executeQuery(query);
-		
+		Connection connection = null;
 		int ans = 0;
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		try {
+			
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select count(ID) from Event where UserID="+ userID +";";		 
+			ResultSet result = stmt.executeQuery(query);
+			
+			 
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null) connection.close();
+		}
+		 
+		 
 		return ans;
 	}
 	
 	public int getMyPlacesNum(int userID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
 		
-		String query = "select count(ID) from Place where UserID="+ userID +";";		 
-		ResultSet result = stmt.executeQuery(query);
-		
+		Connection connection = null;
 		int ans = 0;
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		try {
+			
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select count(ID) from Place where UserID="+ userID +";";		 
+			ResultSet result = stmt.executeQuery(query);
+			
+			 
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			if(connection != null) connection.close();
+		}
+		 
+		 
 		return ans;
 	}
 	
 	public int getBeenOnEventsNum(int userID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select count(ID) from User_Going_Event where UserID="+ userID +";";		 
-		ResultSet result = stmt.executeQuery(query);
-		
+		Connection connection = null;
 		int ans = 0;
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		try {
+			
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select count(ID) from User_Going_Event where UserID="+ userID +";";		 
+			ResultSet result = stmt.executeQuery(query);
+			
+			 
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			if(connection != null) connection.close();
+		}
+		 
 		return ans;
 	}
 	
 	public int getWhishlistNum(int userID) throws SQLException{
-		Connection connection = eventDataSource.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String query = "select count(ID) from User_Band_Wishlist where UserID="+ userID +";";		 
-		ResultSet result = stmt.executeQuery(query);
-		
+		Connection connection = null;
 		int ans = 0;
-		if(result.next()) ans = result.getInt("count(ID)");
-		connection.close();
+		try {
+			
+			connection = eventDataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			
+			String query = "select count(ID) from User_Band_Wishlist where UserID="+ userID +";";		 
+			ResultSet result = stmt.executeQuery(query);
+			
+			 
+			if(result.next()) ans = result.getInt("count(ID)");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		finally{
+			if(connection != null) connection.close();
+		}
+		 
 		return ans;
 	}
 	
@@ -594,7 +783,7 @@ public class UserManager {
 	 */
 
 	private int changeBase(String quer) {
-		Connection con;
+		Connection con = null;
 		try {
 			con = eventDataSource.getConnection();
 			try {
@@ -602,18 +791,60 @@ public class UserManager {
 				try {
 					stm.executeUpdate(quer);
 				} catch (Exception e) {
-					con.close();
+					 
 					return BaseErrors.UNABLE_EXECUTE;
 				}
-				con.close();
+				 
 			} catch (Exception e) {
-				con.close();
+				 
 				return BaseErrors.UNABLE_CREATE_STATEMENT;
 			}
 		} catch (SQLException e) {
 			return BaseErrors.UNABLE_CONNECTION;
+		} finally{
+			if(con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return BaseErrors.ALL_DONE;
+	}
+
+	///////////////////////////////////////////////////////////deletes
+	
+	/***
+	 * deletes band from base
+	 * @param bandID
+	 * @return
+	 */
+	
+	public int deleteBand(int bandID){
+		String query = "delete  from Band where ID ="+ bandID+ ";";
+		return changeBase(query);
+	}
+	/***
+	 * deletes place from base
+	 * @param placeID
+	 * @return
+	 */
+	
+	public int deletePlace(int placeID){
+		String query = "delete  from Place where ID ="+ placeID+ ";";
+		return changeBase(query);
+	}
+	
+	/***
+	 * deletes event from base
+	 * @param eventID
+	 * @return
+	 */
+	
+	public int deleteEvent(int eventID){
+		String query = "delete  from Event where ID ="+ eventID+ ";";
+		return changeBase(query);
 	}
 
 }
