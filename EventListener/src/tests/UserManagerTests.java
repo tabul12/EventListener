@@ -366,7 +366,6 @@ public class UserManagerTests {
 			assertEquals(re.getString("LastName"),"vashaymadze");
 			assertEquals(re.getString("Mail"),"jvash13@freeuni.edu.ge");
 			assertEquals(re.getString("MobileNumber"),"5555555555");
-			assertEquals(re.getString("Image"),"yvelazemagaridgeee.jpg");
 			assertEquals(re.getString("Password"),"raisparoli");
 		}
 		else
