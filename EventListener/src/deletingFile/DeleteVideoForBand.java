@@ -1,7 +1,7 @@
-package servlets;
+package deletingFile;
 
+import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -10,22 +10,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import baseConnection.BandManager;
-import baseConnection.PlaceManager;
 
 /**
- * Servlet implementation class updateBandProfileServlet
+ * Servlet implementation class DeleteVideoForBand
  */
-@WebServlet("/updateBandProfileServlet")
-public class updateBandProfileServlet extends HttpServlet {
+@WebServlet("/DeleteVideoForBand")
+public class DeleteVideoForBand extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public updateBandProfileServlet() {
+    public DeleteVideoForBand() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,35 +31,32 @@ public class updateBandProfileServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		ServletContext context = request.getServletContext();
 		BandManager bandManager = (BandManager) context.getAttribute("BandManager");
 		 
 		
 		String st = request.getParameter("BandID");
 		Integer bandID = Integer.parseInt(st);
-			
-		String name = request.getParameter("name");
-		
-		
-		System.out.println(" aqamde movida vaaaxs");
-		
-		int imageID = 0;
-		imageID = bandManager.getImageID(name);
-		
-		System.out.println(bandID + " " + imageID);
-		 
-		bandManager.updateProfileImage(bandID, imageID);
+		String Path = request.getParameter("Path");
+		String FileName = request.getParameter("FileName");
+		System.out.println(Path+FileName+" esaa videos misamarti");
+		//vtvlit rom default is nomeri 1 ia
+		System.out.print(bandManager.deleteVideo(FileName));
+		File f = new File(Path+FileName);
+		f.delete();
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("BandProfile.jsp");
 		dispatch.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

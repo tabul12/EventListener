@@ -354,7 +354,7 @@ public class BandManager {
 	 * @return profile image name of Band
 	 */
 	public String getProfileImage(int BandID) {
-		String ans = null;
+		String ans = "default.jpg";
 		String query = "select Name from Band_Image,Band_Profile_Image where "
 				+ "Band_Profile_Image.Band_ImageID=Band_Image.ID and Band_Image.BandID="
 				+ BandID;
@@ -606,6 +606,36 @@ public class BandManager {
 			connection.close();			
 		}
 		return answ;		
+	}
+	/**
+	 * deletes image from images
+	 * @param ImageName
+	 * @return
+	 */
+	public int deleteImage(String ImageName)
+	{
+		String  query ="DELETE from Band_Image where Name='"+ImageName+"'";
+		return changeBase(query);
+	}
+	/**
+	 * deletes music 
+	 * @param MusicName
+	 * @return constant
+	 */
+	public int deleteMusic(String MusicName)
+	{
+		String query = "DELETE from Music where Name='"+MusicName+"'";
+		return changeBase(query);
+	}
+	/**
+	 * deletes video from base
+	 * @param VideoName
+	 * @return constant
+	 */
+	public int deleteVideo(String VideoName)
+	{
+		String query = "DELETE from Video where Name='"+VideoName+"'";
+		return changeBase(query);	
 	}
 	
 

@@ -214,8 +214,12 @@
 								
 								out.println("</a>");
 								if(hasAdded)
+								{
 									out.println("<a href=\"updateBandProfileServlet?name=" + imagesArray.get(i) + 
-										 	"&BandPageNum=" + 1 + "&BandID=" + BandID +"\"> Set Prof </a>"); 
+										 	"&BandPageNum=" + 1 + "&BandID=" + BandID +"\"> SET  </a>"); 
+									out.println("<a href=\"DeleteImageForBand?Path="+ConstantValues.PATH_TO_IMAGES+"&FileName="+imagesArray.get(i)+
+										 	"&BandID=" + BandID +"\"> DEL </a>");
+								}
 								 
 								 
 							}
@@ -268,6 +272,8 @@
 								out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 										+ "' type='video/mp4'>");
 								out.println("</audio>");
+								out.println("<a href=\"DeleteMusicForBand?Path="+ConstantValues.PATH_TO_MUSICS+"&FileName="+musicsArray.get(i)+
+									 	"&BandID=" + BandID +"\"> DEL </a>");
 							}
 						%>
 
@@ -312,6 +318,8 @@
 								out.println("<source src='VideoLoader?FileName=" + videosArray.get(i)
 										+ "' type='video/mp4'>");
 								out.println("</video>");
+								out.println("<a href=\"DeleteVideoForBand?Path="+ConstantValues.PATH_TO_VIDEOS+"&FileName="+videosArray.get(i)+
+									 	"&BandID=" + BandID +"\"> DEL </a>");
 							}
 						%>
 					</div>

@@ -31,6 +31,8 @@
 					out.println("<source src='MusicLoader?FileName=" + musicsArray.get(i)
 							+ "'  type='video/mp4'>");
 					out.println("</audio>");
+					out.println("<a href=\"DeleteMusicForBand?Path="+ConstantValues.PATH_TO_MUSICS+"&FileName="+musicsArray.get(i)+
+						 	"&BandID=" + BandID +"\"> DEL </a>");
 				}
 			%>
 

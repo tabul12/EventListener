@@ -33,7 +33,9 @@
 							out.println("</a>");
 							if(hasAdded)
 								out.println("<a href=\"updateBandProfileServlet?name=" + imagesArray.get(i) + 
-										"&BandPageNum=" + imagePageNum + "&BandID=" + BandID +"\"> Set Prof </a>");
+									 	"&BandPageNum=" + 1 + "&BandID=" + BandID +"\"> SET  </a>"); 
+								out.println("<a href=\"DeleteImageForBand?Path="+ConstantValues.PATH_TO_IMAGES+"&FileName="+imagesArray.get(i)+
+									 	"&BandID=" + BandID +"\"> DEL </a>");
 							 
 						}
 					%>

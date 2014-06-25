@@ -230,3 +230,4 @@ select * from Band_Image;
 select * from User;
 select * from Event;
 select * from User_Band_Wishlist
+Delete  from Band_Image where Name='default.jpg';
